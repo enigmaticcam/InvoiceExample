@@ -31,10 +31,12 @@ public class InvoiceHeaderDbEntity : IInvoiceHeaderDbEntity
         return _lateLoaderCollection.Add(() => Task.FromResult(Mapper.FromEf(invoice)), tempId);
     }
 
-    public async Task<InvoiceHeaderEntity> Get(int id)
+    public async Task<List<InvoiceHeaderEntity>> Get(IEnumerable<int> ids)
     {
-        var result = await GetFromDb(new List<int>() { id });
-        return Mapper.FromEf(result.First());
+        var result = await GetFromDb(ids);
+        return result
+            .Select(Mapper.FromEf)
+            .ToList();
     }
 
     private async Task<List<InvoiceHeader>> GetFromDb(IEnumerable<int> ids)

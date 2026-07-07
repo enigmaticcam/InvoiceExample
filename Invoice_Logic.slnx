@@ -1,6 +1,6 @@
 <Solution>
   <Project Path="Invoice_Logic/Invoice_Logic.csproj" />
-  <Project Path="Invoice_SQL/Invoice_SQL.sqlproj">
+  <Project Path="Invoice_SQL/Invoice_SQL.sqlproj" Id="703d1148-fdfb-44d7-a320-cfe185371a0c">
     <Build />
     <Deploy />
   </Project>

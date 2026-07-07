@@ -1,0 +1,49 @@
+﻿using Invoice_Logic.Caching;
+
+namespace Invoice_Logic.Repositories;
+
+public abstract class CacheEntity<TId, TObject> where TId : notnull
+{
+    private ICache _cache;
+
+    protected CacheEntity(ICache cache)
+    {
+        _cache = cache;
+    }
+
+    protected abstract Task<List<TObject>> GetFromEntity(IEnumerable<TId> ids);
+    protected abstract TId GetId(TObject obj);
+    protected abstract string ObjectKey { get; }
+
+    protected void CacheQueueSet(Func<TObject> getObj)
+    {
+        _cache.QueueSet<TObject>(ObjectKey, getObj, () => GetId(getObj()).ToString() ?? "");
+    }
+
+    protected async Task<TObject> GetFromCache(TId id)
+    {
+        var ids = new List<TId>() { id };
+        var value = await GetFromCache(ids);
+        return value.First();
+    }
+
+    protected async Task<List<TObject>> GetFromCache(IEnumerable<TId> ids)
+    {
+        var stringIds = ids
+            .Select(x => new
+            {
+                Value = x,
+                StringValue = x.ToString() ?? ""
+            })
+            .ToList();
+        var result = await _cache.Get<TObject>(ObjectKey, stringIds.Select(x => x.StringValue));
+        var diff = stringIds.ExceptBy(result.Select(x => GetId(x).ToString()), x => x.StringValue);
+        if (diff.Count() > 0)
+        {
+            var fromEntity = await GetFromEntity(diff.Select(x => x.Value));
+            await _cache.Set(fromEntity.Select(x => new CacheObjectField<TObject>(ObjectKey, GetId(x).ToString() ?? "", x)));
+            result.AddRange(fromEntity);
+        }
+        return result;
+    }
+}
