@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Invoice_Logic/Invoice_Logic.csproj" />
+  <Project Path="Invoice_SQL/Invoice_SQL.sqlproj">
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
