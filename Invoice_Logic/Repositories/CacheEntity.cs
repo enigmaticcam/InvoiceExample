@@ -14,6 +14,7 @@ public abstract class CacheEntity<TId, TObject> where TId : notnull
     protected abstract Task<List<TObject>> GetFromEntity(IEnumerable<TId> ids);
     protected abstract TId GetId(TObject obj);
     protected abstract string ObjectKey { get; }
+    private string ListKey => $"{ObjectKey}_List";
 
     protected void CacheQueueSet(Func<TObject> getObj)
     {
@@ -45,5 +46,19 @@ public abstract class CacheEntity<TId, TObject> where TId : notnull
             result.AddRange(fromEntity);
         }
         return result;
+    }
+
+    protected async Task<List<TObject>> GetFromCache(string listKey, Func<Task<List<TId>>> GetFromEntity)
+    {
+        var list = await _cache.GetOrCreate(listKey, async () =>
+        {
+            await _cache.SSet(ListKey, listKey);
+            return await GetFromEntity();
+        });
+        if (list == null)
+        {
+            throw new Exception($"Cache contains null value for List Key {listKey}");
+        }
+        return await GetFromCache(list);
     }
 }
