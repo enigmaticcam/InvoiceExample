@@ -18,6 +18,17 @@ public static class Mapper
         };
     }
 
+    public static InvoiceHeader ToEf(InvoiceHeaderCreateDTO source)
+    {
+        return new InvoiceHeader()
+        {
+            Customer = source.Customer,
+            Description = source.Description,
+            InvoiceDate = source.InvoiceDate,
+            StatusTypeId = source.StatusTypeId
+        };
+    }
+
     public static InvoiceDetailEntity FromEf(InvoiceDetail source)
     {
         return new InvoiceDetailEntity(
@@ -28,6 +39,17 @@ public static class Mapper
             CustomerRate: source.CustomerRate,
             ApprovedRate: source.ApprovedRate,
             Cases: source.Cases
+        );
+    }
+
+    public static InvoiceHeaderEntity FromEf(InvoiceHeader source)
+    {
+        return new InvoiceHeaderEntity(
+            InvoiceHeaderId: source.InvoiceHeaderId,
+            Customer: source.Customer,
+            InvoiceDate: source.InvoiceDate,
+            StatusTypeId: source.StatusTypeId,
+            Description: source.Description
         );
     }
 }

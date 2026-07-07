@@ -3,6 +3,7 @@
 public interface ILateLoaderCollection
 {
     LateLoader<T> Add<T>(Func<Task<T>> func);
+    LateLoader<TId, TObject> Add<TId, TObject>(Func<Task<TObject>> func, TId tempId);
     Task Commit();
 }
 
@@ -12,6 +13,13 @@ public class LateLoaderCollection : ILateLoaderCollection
     public LateLoader<T> Add<T>(Func<Task<T>> func)
     {
         var added = new LateLoader<T>(func);
+        _loaders.Add(added);
+        return added;
+    }
+
+    public LateLoader<TId, TObject> Add<TId, TObject>(Func<Task<TObject>> func, TId tempId)
+    {
+        var added = new LateLoader<TId, TObject>(func, tempId);
         _loaders.Add(added);
         return added;
     }
