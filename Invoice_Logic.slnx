@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="Invoice_API/Invoice_API.csproj" Id="19b46390-461b-483e-83b3-6baa06f3c054" />
   <Project Path="Invoice_Logic/Invoice_Logic.csproj" />
   <Project Path="Invoice_SQL/Invoice_SQL.sqlproj" Id="703d1148-fdfb-44d7-a320-cfe185371a0c">
     <Build />
