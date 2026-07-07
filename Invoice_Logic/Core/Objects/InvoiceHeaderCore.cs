@@ -1,0 +1,30 @@
+﻿using Invoice_Logic.Core.Interfaces;
+using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Factories;
+using Invoice_Logic.Repositories.CacheEntities;
+
+namespace Invoice_Logic.Core.Objects;
+
+public class InvoiceHeaderCore : IInvoiceHeaderCore
+{
+    private IFactoryMain _factory;
+    private IInvoiceHeaderCacheEntity _invoiceHeaderCacheEntity;
+    private IInvoiceDetailCacheEntity _invoiceDetailCacheEntity;
+
+    public InvoiceHeaderCore(IFactoryMain factory, IInvoiceHeaderCacheEntity invoiceHeaderCacheEntity, IInvoiceDetailCacheEntity invoiceDetailCacheEntity)
+    {
+        _factory = factory;
+        _invoiceHeaderCacheEntity = invoiceHeaderCacheEntity;
+        _invoiceDetailCacheEntity = invoiceDetailCacheEntity;
+    }
+
+    public Task<InvoiceHeaderEntity> Get(int id)
+    {
+        return _invoiceHeaderCacheEntity.Get(id);
+    }
+
+    public Task<List<InvoiceDetailEntity>> GetDetail(int id)
+    {
+        return _invoiceDetailCacheEntity.Get(id);
+    }
+}

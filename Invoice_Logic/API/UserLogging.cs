@@ -5,6 +5,7 @@ namespace Invoice_Logic.API;
 
 public interface IUserLogging
 {
+    string GetLogsConcat(string delimiter);
     [DoesNotReturn] void ThrowInvoiceDetailNotFoundException(IEnumerable<int> ids);
     [DoesNotReturn] void ThrowInvoiceHeaderNotFoundException(IEnumerable<int> ids);
 }
@@ -12,6 +13,11 @@ public interface IUserLogging
 public class UserLogging : IUserLogging
 {
     private List<string> _logs = new();
+
+    public string GetLogsConcat(string delimiter)
+    {
+        return string.Join(delimiter, _logs);
+    }
 
     [DoesNotReturn]
     public void ThrowInvoiceDetailNotFoundException(IEnumerable<int> ids)
