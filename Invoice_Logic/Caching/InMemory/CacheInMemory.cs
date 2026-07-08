@@ -93,4 +93,11 @@ public class CacheInMemory : ICache
         dictionary.AddOrUpdate(field, value, (key, v) => value);
         return Task.CompletedTask;
     }
+
+    public Task Set<T>(string key, T value)
+    {
+        var options = GetMemoryCacheEntryOptions();
+        _cache.Set(key, value, options);
+        return Task.CompletedTask;
+    }
 }

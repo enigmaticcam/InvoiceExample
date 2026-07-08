@@ -16,7 +16,9 @@ namespace Invoice_Logic.Factories;
 
 public interface IFactoryMain
 {
+    ICache Cache { get; }
     IInvoiceHeaderCore InvoiceHeaderCore { get; }
+    IInvoiceSearchCore InvoiceSearchCore { get; }
     IPipeline Pipeline { get; }
 }
 
@@ -30,6 +32,7 @@ public class FactoryMain : IFactoryMain
     private Lazy<IInvoiceHeaderCollection> _invoiceHeaderCollection;
     private Lazy<IInvoiceDetailCacheEntity> _invoiceDetailCacheEntity;
     private Lazy<IInvoiceDetailDbEntity> _invoiceDetailDbEntity;
+    private Lazy<IInvoiceSearchCore> _invoiceSearchCore;
     private Lazy<ILateLoaderCollection> _lateLoaderCollection;
     private Lazy<IPipeline> _pipeline;
     private Lazy<IUserLogging> _userLogging;
@@ -44,6 +47,7 @@ public class FactoryMain : IFactoryMain
         _invoiceHeaderCore = new Lazy<IInvoiceHeaderCore>(() => new InvoiceHeaderCore(this, InvoiceHeaderCacheEntity, InvoiceDetailCacheEntity));
         _invoiceHeaderDbEntity = new Lazy<IInvoiceHeaderDbEntity>(() => new InvoiceHeaderDbEntity(context, LateLoaderCollection, InvoiceHeaderCollection, UserLogging));
         _invoiceHeaderCollection = new Lazy<IInvoiceHeaderCollection>(() => new InvoiceHeaderCollection(AllItemCollections));
+        _invoiceSearchCore = new Lazy<IInvoiceSearchCore>(() => new InvoiceSearchCore(this));
         _lateLoaderCollection = new Lazy<ILateLoaderCollection>(() => new LateLoaderCollection());
         _pipeline = new Lazy<IPipeline>(CreatePipeline);
         _userLogging = new Lazy<IUserLogging>(() => new UserLogging());
@@ -65,6 +69,7 @@ public class FactoryMain : IFactoryMain
     public IInvoiceHeaderCacheEntity InvoiceHeaderCacheEntity => _invoiceHeaderCacheEntity.Value;
     public IInvoiceHeaderDbEntity InvoiceHeaderDbEntity => _invoiceHeaderDbEntity.Value;
     public IInvoiceHeaderCollection InvoiceHeaderCollection => _invoiceHeaderCollection.Value;
+    public IInvoiceSearchCore InvoiceSearchCore => _invoiceSearchCore.Value;
     public ILateLoaderCollection LateLoaderCollection => _lateLoaderCollection.Value;
     public IPipeline Pipeline => _pipeline.Value;
     public IUserLogging UserLogging => _userLogging.Value;

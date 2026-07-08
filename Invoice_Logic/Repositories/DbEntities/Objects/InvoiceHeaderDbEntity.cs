@@ -1,4 +1,5 @@
 ﻿using Invoice_Logic.API;
+using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
 using Invoice_Logic.Data.EF;
@@ -37,6 +38,19 @@ public class InvoiceHeaderDbEntity : IInvoiceHeaderDbEntity
         return result
             .Select(Mapper.FromEf)
             .ToList();
+    }
+
+    public async Task<List<int>> Get(InvoiceFilterDTO filter)
+    {
+        var list = await _context.InvoiceHeaders
+            .Where(x => (!filter.ByHeader || x.InvoiceHeaderId == filter.HeaderId)
+                && (!filter.ByCustomer || x.Customer == filter.Customer)
+                && (!filter.ByMonth || x.InvoiceDate.Year * 100 + x.InvoiceDate.Month == filter.MonthId))
+            .OrderByDescending(x => x.InvoiceHeaderId)
+            .Select(x => x.InvoiceHeaderId)
+            .Take(100)
+            .ToListAsync();
+        return list;
     }
 
     private async Task<List<InvoiceHeader>> GetFromDb(IEnumerable<int> ids)

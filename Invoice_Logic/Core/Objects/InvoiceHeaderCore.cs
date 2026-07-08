@@ -1,4 +1,5 @@
 ﻿using Invoice_Logic.Core.Interfaces;
+using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Entity;
 using Invoice_Logic.Factories;
 using Invoice_Logic.Repositories.CacheEntities;
@@ -21,6 +22,11 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
     public Task<InvoiceHeaderEntity> Get(int id)
     {
         return _invoiceHeaderCacheEntity.Get(id);
+    }
+
+    public Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter)
+    {
+        return _invoiceHeaderCacheEntity.Get(filter);
     }
 
     public Task<List<InvoiceDetailEntity>> GetDetail(int id)

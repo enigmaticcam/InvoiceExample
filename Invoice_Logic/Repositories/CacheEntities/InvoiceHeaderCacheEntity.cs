@@ -1,4 +1,5 @@
 ﻿using Invoice_Logic.Caching;
+using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
 using Invoice_Logic.Repositories.DbEntities.Interfaces;
@@ -9,6 +10,7 @@ public interface IInvoiceHeaderCacheEntity
 {
     Task<LateLoader<int, InvoiceHeaderEntity>> Create(InvoiceHeaderCreateDTO create);
     Task<InvoiceHeaderEntity> Get(int id);
+    Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter);
 }
 
 public class InvoiceHeaderCacheEntity : CacheEntity<int, InvoiceHeaderEntity>, IInvoiceHeaderCacheEntity
@@ -31,6 +33,12 @@ public class InvoiceHeaderCacheEntity : CacheEntity<int, InvoiceHeaderEntity>, I
     public Task<InvoiceHeaderEntity> Get(int id)
     {
         return GetFromCache(id);
+    }
+
+    public async Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter)
+    {
+        var result = await _invoiceHeaderDbEntity.Get(filter);
+        return await GetFromCache(result);
     }
 
     protected override Task<List<InvoiceHeaderEntity>> GetFromEntity(IEnumerable<int> ids)
