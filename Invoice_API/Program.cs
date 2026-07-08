@@ -3,7 +3,6 @@ using Invoice_Logic.Caching;
 using Invoice_Logic.Data.EF;
 using Invoice_Logic.Factories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi;
 
 string corsPolicy = "corsPolicy";
 var builder = WebApplication.CreateBuilder(args);
@@ -22,11 +21,11 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(setup =>
-{
-    setup.UseAllOfToExtendReferenceSchemas();
-    setup.MapType<decimal>(() => new OpenApiSchema { Type = JsonSchemaType.Number, Format = "decimal" });
-});
+//builder.Services.AddSwaggerGen(setup =>
+//{
+//    setup.UseAllOfToExtendReferenceSchemas();
+//    setup.MapType<decimal>(() => new OpenApiSchema { Type = JsonSchemaType.Number, Format = "decimal" });
+//});
 builder.Services.AddMemoryCache();
 builder.Services.AddDbContext<Invoice_Context>(options =>
 {
@@ -38,12 +37,16 @@ builder.Services.AddScoped(x => new CacheOptions()
     SlidingExpirationInSeconds = builder.Configuration.GetSection("CacheOptions").GetValue<int>("SlidingExpirationInSeconds")
 });
 builder.Services.UseInvoice();
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "Version One");
+    });
 }
 app.UseHttpsRedirection();
 app.UseCors(corsPolicy);
