@@ -2,6 +2,7 @@
 
 public interface ICache
 {
+    Task CommitQueue();
     Task<List<T>> Get<T>(string key, IEnumerable<string> fields);
     Task<T?> GetOrCreate<T>(string key, Func<Task<T>> failover);
     void QueueSet<T>(string key, Func<T> getValue, Func<string> getField);

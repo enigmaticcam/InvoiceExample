@@ -38,7 +38,7 @@ public class APIResult<T> : APIResult
         };
     }
 
-    public static APIResult<T> Failure(string message)
+    public static new APIResult<T> Failure(string message)
     {
         return new APIResult<T>()
         {

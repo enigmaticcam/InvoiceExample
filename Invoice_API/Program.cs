@@ -1,5 +1,6 @@
 using Invoice_API;
 using Invoice_Logic.Caching;
+using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.EF;
 using Invoice_Logic.Factories;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,8 @@ builder.Services.AddScoped(x => new CacheOptions()
 });
 builder.Services.UseInvoice();
 builder.Services.AddOpenApi();
+builder.Services.AddOptions<WebServerDTO>()
+    .BindConfiguration("WebServer");
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

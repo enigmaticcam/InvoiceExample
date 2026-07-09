@@ -4,13 +4,16 @@ using Invoice_Logic.Caching;
 using Invoice_Logic.Caching.InMemory;
 using Invoice_Logic.Core.Interfaces;
 using Invoice_Logic.Core.Objects;
+using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.EF;
 using Invoice_Logic.Repositories;
 using Invoice_Logic.Repositories.CacheEntities;
 using Invoice_Logic.Repositories.DbEntities.Interfaces;
 using Invoice_Logic.Repositories.DbEntities.Objects;
 using Invoice_Logic.Repositories.ItemCollections;
+using Invoice_Logic.Servers;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace Invoice_Logic.Factories;
 
@@ -20,6 +23,7 @@ public interface IFactoryMain
     IInvoiceHeaderCore InvoiceHeaderCore { get; }
     IInvoiceSearchCore InvoiceSearchCore { get; }
     IPipeline Pipeline { get; }
+    IWebServer WebServer { get; }
 }
 
 public class FactoryMain : IFactoryMain
@@ -36,8 +40,9 @@ public class FactoryMain : IFactoryMain
     private Lazy<ILateLoaderCollection> _lateLoaderCollection;
     private Lazy<IPipeline> _pipeline;
     private Lazy<IUserLogging> _userLogging;
+    private Lazy<IWebServer> _webServer;
 
-    public FactoryMain(Invoice_Context context, IMemoryCache memoryCache, CacheOptions cacheOptions)
+    public FactoryMain(Invoice_Context context, IMemoryCache memoryCache, CacheOptions cacheOptions, IOptions<WebServerDTO> webServer)
     {
         _allItemCollections = new Lazy<IAllItemCollections>(() => new AllItemCollections());
         _cache = new Lazy<ICache>(() => new CacheInMemory(cacheOptions, memoryCache));
@@ -51,6 +56,7 @@ public class FactoryMain : IFactoryMain
         _lateLoaderCollection = new Lazy<ILateLoaderCollection>(() => new LateLoaderCollection());
         _pipeline = new Lazy<IPipeline>(CreatePipeline);
         _userLogging = new Lazy<IUserLogging>(() => new UserLogging());
+        _webServer = new Lazy<IWebServer>(() => new WebServer(webServer));
     }
 
     private IPipeline CreatePipeline()
@@ -73,4 +79,5 @@ public class FactoryMain : IFactoryMain
     public ILateLoaderCollection LateLoaderCollection => _lateLoaderCollection.Value;
     public IPipeline Pipeline => _pipeline.Value;
     public IUserLogging UserLogging => _userLogging.Value;
+    public IWebServer WebServer => _webServer.Value;
 }

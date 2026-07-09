@@ -22,6 +22,15 @@ public class CacheInMemory : ICache
         };
     }
 
+    public async Task CommitQueue()
+    {
+        foreach (var t in _queue)
+        {
+            await t();
+        }
+        _queue.Clear();
+    }
+
     public Task<List<T>> Get<T>(string key, IEnumerable<string> fields)
     {
         var dictionary = GetDictionary<T>(key);

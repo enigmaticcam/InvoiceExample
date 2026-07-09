@@ -21,6 +21,7 @@ public abstract class ItemCollection<T> : IItemCollection<T>, IDisposable
     protected ItemCollection(IAllItemCollections allItemCollections)
     {
         _allItemCollections = allItemCollections;
+        _thisId = allItemCollections.RegisterCollection(this);
     }
 
     public int AddItem(T item)
