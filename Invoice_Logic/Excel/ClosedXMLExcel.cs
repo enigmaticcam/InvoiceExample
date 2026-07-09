@@ -3,13 +3,13 @@ using Invoice_Logic.Servers;
 
 namespace Invoice_Logic.Excel;
 
-public class ClosedXML : IExcel
+public class ClosedXMLExcel : IExcel
 {
     private IWebServer _webServer;
     private XLWorkbook _workbook;
     private IXLWorksheet _worksheet;
 
-    public ClosedXML(IWebServer webServer)
+    public ClosedXMLExcel(IWebServer webServer)
     {
         _webServer = webServer;
         _workbook = new XLWorkbook();

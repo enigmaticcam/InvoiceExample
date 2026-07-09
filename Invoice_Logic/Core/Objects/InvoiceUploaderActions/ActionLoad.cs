@@ -1,10 +1,10 @@
 ﻿using Invoice_Logic.API;
+using Invoice_Logic.Core.Interfaces;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
 using Invoice_Logic.Enums;
 using Invoice_Logic.Excel;
 using Invoice_Logic.Repositories;
-using Invoice_Logic.Repositories.CacheEntities;
 using Invoice_Logic.Servers;
 
 namespace Invoice_Logic.Core.Objects.InvoiceUploaderActions;
@@ -14,26 +14,26 @@ public class ActionLoad
     private IExcel _excel;
     private IWebServer _webServer;
     private IUserLogging _userLogging;
-    private IInvoiceHeaderCacheEntity _invoiceHeaderCacheEntity;
-    private IInvoiceDetailCacheEntity _invoiceDetailCacheEntity;
+    private IInvoiceHeaderCore _invoiceHeaderCore;
     private IRepository _repository;
+    private IInvoiceUploaderCoreActions _actions;
 
-    public ActionLoad(IExcel excel, IWebServer webServer, IUserLogging userLogging, IInvoiceHeaderCacheEntity invoiceHeaderCacheEntity, IInvoiceDetailCacheEntity invoiceDetailCacheEntity, IRepository repository)
+    public ActionLoad(IExcel excel, IWebServer webServer, IUserLogging userLogging, IInvoiceHeaderCore invoiceHeaderCore, IRepository repository, IInvoiceUploaderCoreActions actions)
     {
         _excel = excel;
         _webServer = webServer;
         _userLogging = userLogging;
-        _invoiceHeaderCacheEntity = invoiceHeaderCacheEntity;
-        _invoiceDetailCacheEntity = invoiceDetailCacheEntity;
+        _invoiceHeaderCore = invoiceHeaderCore;
         _repository = repository;
+        _actions = actions;
     }
 
     public async Task<List<InvoiceHeaderEntity>> Perform(Stream stream)
     {
         await LoadFile(stream);
         var result = await CreateInvoices();
-        // Save created invoice to Search
         // Run stored proc
+        await _actions.Set(result);
         return result;
     }
 
@@ -79,7 +79,7 @@ public class ActionLoad
             InvoiceDate: DateOnly.FromDateTime(date),
             StatusTypeId: (int)enumStatusType.Draft,
             Description: description);
-        var header = await _invoiceHeaderCacheEntity.Create(create);
+        var header = await _invoiceHeaderCore.QueueCreate(create);
         return header;
     }
 
@@ -101,7 +101,7 @@ public class ActionLoad
                 Cases: custCases));
         }
         creates = Aggregate(creates);
-        await _invoiceDetailCacheEntity.Create(headerId, creates);
+        await _invoiceHeaderCore.QueueCreate(headerId, creates);
     }
 
     private List<InvoiceDetailCreateDTO> Aggregate(List<InvoiceDetailCreateDTO> creates)
