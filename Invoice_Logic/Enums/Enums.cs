@@ -2,7 +2,7 @@
 
 public enum enumStatusType
 {
-    Draft,
+    Draft = 1,
     Approved,
     Finished
 }

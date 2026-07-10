@@ -57,6 +57,10 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\InvoiceHeader.sql" />
@@ -66,6 +70,14 @@
     <Build Include="Tables\ResultStatusType.sql" />
     <Build Include="Tables\CaseSummary.sql" />
     <Build Include="Tables\PriceDeal.sql" />
+    <Build Include="dbo\Views\vRAndValue.sql" />
+    <Build Include="dbo\Functions\RandomInteger.sql" />
+    <Build Include="dbo\Functions\RandomCode.sql" />
+    <Build Include="dbo\Functions\GenerateRandomIntegers.sql" />
+    <Build Include="dbo\Functions\GenerateRandomCodes.sql" />
+    <Build Include="dbo\Stored Procedures\GenerateRandomData.sql" />
+    <Build Include="dbo\Functions\RandomMonth.sql" />
+    <Build Include="dbo\Stored Procedures\GenerateRandomInvoice.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Invoice_SQL.refactorlog" />
