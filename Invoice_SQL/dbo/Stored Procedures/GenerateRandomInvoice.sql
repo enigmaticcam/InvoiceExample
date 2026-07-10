@@ -24,9 +24,11 @@ select top 100
 into #temp
 from PriceDeals a
 inner join (
-	select top 100 CustomerItemCode, OurItemCode, Cases
+	select CustomerItemCode, OurItemCode, Cases, CustomerId
 	from CaseSummary
-) b on b.OurItemCode = a.ItemCode
+) b 
+	on b.OurItemCode = a.ItemCode
+	and b.CustomerId = a.Customer
 where @effectiveMonth between EffectiveMonth and EndMonth
 and a.Customer = (
 	select top 1 Customer
@@ -70,8 +72,6 @@ begin
 		, Cases
 	from #temp
 end
-else
-begin
-	select *
-	from #temp
-end
+
+select *
+from #temp

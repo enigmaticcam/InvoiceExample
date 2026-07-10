@@ -103,15 +103,12 @@ public partial class Invoice_Context : DbContext
 
         modelBuilder.Entity<PriceDeal>(entity =>
         {
-            entity.Property(e => e.PriceDealId).ValueGeneratedNever();
-            entity.Property(e => e.Customer).ValueGeneratedOnAdd();
+            entity.HasKey(e => e.PriceDealId).HasName("PK__PriceDea__F0B2B9A7E50270FC");
+
             entity.Property(e => e.ItemCode)
                 .IsRequired()
                 .HasMaxLength(15);
             entity.Property(e => e.Rate).HasColumnType("numeric(18, 2)");
-            entity.Property(e => e.StructureId)
-                .IsRequired()
-                .HasMaxLength(15);
         });
 
         modelBuilder.Entity<ResultStatusType>(entity =>

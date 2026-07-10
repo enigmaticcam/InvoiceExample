@@ -11,8 +11,6 @@ public partial class PriceDeal
 
     public string ItemCode { get; set; }
 
-    public string StructureId { get; set; }
-
     public int Customer { get; set; }
 
     public decimal Rate { get; set; }

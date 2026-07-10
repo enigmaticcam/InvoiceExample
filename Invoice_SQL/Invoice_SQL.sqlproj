@@ -78,6 +78,7 @@
     <Build Include="dbo\Stored Procedures\GenerateRandomData.sql" />
     <Build Include="dbo\Functions\RandomMonth.sql" />
     <Build Include="dbo\Stored Procedures\GenerateRandomInvoice.sql" />
+    <Build Include="dbo\Stored Procedures\ProcessInvoices.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Invoice_SQL.refactorlog" />
