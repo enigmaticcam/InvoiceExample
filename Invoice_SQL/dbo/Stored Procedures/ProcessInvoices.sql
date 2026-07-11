@@ -91,8 +91,8 @@ Match rates
 
 update a
 set ApprovedRate = b.Rate
-	, HasFailedRate = case when b.rate is null then 1 else 0 end
-	, ResultStatusTypeId = case when b.rate is null then 3 else 0 end
+	, HasFailedRate = case when b.Rate is null then 1 else 0 end
+	, ResultStatusTypeId = case when b.Rate is null then 3 else 0 end
 from #temp a
 left join PriceDeals b
 	on b.Customer = a.Customer

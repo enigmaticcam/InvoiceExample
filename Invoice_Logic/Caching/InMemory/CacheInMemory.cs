@@ -54,6 +54,20 @@ public class CacheInMemory : ICache
         return result;
     }
 
+    private ConcurrentDictionary<T, byte> GetHash<T>(string key) where T : notnull
+    {
+        var result = _cache.GetOrCreate(key, x =>
+        {
+            _configOptions(x);
+            return new ConcurrentDictionary<T, byte>();
+        });
+        if (result == null)
+        {
+            throw new Exception($"Cache contains null value for {key}");
+        }
+        return result;
+    }
+
     private MemoryCacheEntryOptions GetMemoryCacheEntryOptions()
     {
         return new MemoryCacheEntryOptions()
@@ -80,12 +94,44 @@ public class CacheInMemory : ICache
         });
     }
 
+    public Task Remove(string key)
+    {
+        _cache.Remove(key);
+        return Task.CompletedTask;
+    }
+
+    public Task Remove(IEnumerable<string> keys)
+    {
+        foreach (var key in keys)
+        {
+            _cache.Remove(key);
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task Remove<T>(string key, IEnumerable<string> fields)
+    {
+        var dictionary = GetDictionary<T>(key);
+        foreach (var field in fields)
+        {
+            dictionary.TryRemove(field, out _);
+        }
+        return Task.CompletedTask;
+    }
+
     public Task Set<T>(IEnumerable<CacheObjectField<T>> objects)
     {
         foreach (var obj in objects)
         {
             Set(obj.Key, obj.Value, obj.Field);
         }
+        return Task.CompletedTask;
+    }
+
+    public Task SRemove<T>(string key, T value) where T : notnull
+    {
+        var hash = GetHash<T>(key);
+        hash.TryRemove(value, out _);
         return Task.CompletedTask;
     }
 

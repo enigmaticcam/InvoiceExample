@@ -23,6 +23,7 @@ public interface IFactoryMain
 {
     ICache Cache { get; }
     IExcel Excel { get; }
+    IInvoice_ContextProcedures InvoiceProcedures { get; }
     IInvoiceHeaderCore InvoiceHeaderCore { get; }
     IInvoiceSearchCore InvoiceSearchCore { get; }
     IPipeline Pipeline { get; }
@@ -36,6 +37,7 @@ public class FactoryMain : IFactoryMain
     private Lazy<IAllItemCollections> _allItemCollections;
     private Lazy<ICache> _cache;
     private Lazy<IExcel> _excel;
+    private Lazy<IInvoice_ContextProcedures> _invoiceProcedures;
     private Lazy<IInvoiceHeaderCacheEntity> _invoiceHeaderCacheEntity;
     private Lazy<IInvoiceHeaderCore> _invoiceHeaderCore;
     private Lazy<IInvoiceHeaderDbEntity> _invoiceHeaderDbEntity;
@@ -54,6 +56,7 @@ public class FactoryMain : IFactoryMain
         _allItemCollections = new Lazy<IAllItemCollections>(() => new AllItemCollections());
         _cache = new Lazy<ICache>(() => new CacheInMemory(cacheOptions, memoryCache));
         _excel = new Lazy<IExcel>(() => new ClosedXMLExcel(WebServer));
+        _invoiceProcedures = new Lazy<IInvoice_ContextProcedures>(() => new Invoice_ContextProcedures(context));
         _invoiceDetailCacheEntity = new Lazy<IInvoiceDetailCacheEntity>(() => new InvoiceDetailCacheEntity(Cache, InvoiceDetailDbEntity));
         _invoiceDetailDbEntity = new Lazy<IInvoiceDetailDbEntity>(() => new InvoiceDetailDbEntity(context, InvoiceHeaderCollection, UserLogging));
         _invoiceHeaderCacheEntity = new Lazy<IInvoiceHeaderCacheEntity>(() => new InvoiceHeaderCacheEntity(Cache, InvoiceHeaderDbEntity));
@@ -79,6 +82,7 @@ public class FactoryMain : IFactoryMain
     public IAllItemCollections AllItemCollections => _allItemCollections.Value;
     public ICache Cache => _cache.Value;
     public IExcel Excel => _excel.Value;
+    public IInvoice_ContextProcedures InvoiceProcedures => _invoiceProcedures.Value;
     public IInvoiceHeaderCore InvoiceHeaderCore => _invoiceHeaderCore.Value;
     public IInvoiceDetailCacheEntity InvoiceDetailCacheEntity => _invoiceDetailCacheEntity.Value;
     public IInvoiceDetailDbEntity InvoiceDetailDbEntity => _invoiceDetailDbEntity.Value;

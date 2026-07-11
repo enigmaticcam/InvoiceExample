@@ -45,4 +45,11 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
     {
         return _invoiceDetailCacheEntity.Create(headerId, creates);
     }
+
+    public async Task<List<InvoiceDetailEntity>> UpdateRefreshResults(int headerId)
+    {
+        await _factory.InvoiceProcedures.ProcessInvoicesAsync(headerId);
+        await _invoiceDetailCacheEntity.Clear(headerId);
+        return await GetDetail(headerId);
+    }
 }

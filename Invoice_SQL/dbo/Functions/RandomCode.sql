@@ -5,7 +5,7 @@ begin
 	declare @text nvarchar(max) = ''
 	while len(@text) < @length
 	begin
-		select @text = @text + char(cast((select RandValue from vRandValue) * 26 + 65 as int))
+		select @text = @text + char(cast((select RandValue from vRAndValue) * 26 + 65 as int))
 	end
 	return @text
 end;

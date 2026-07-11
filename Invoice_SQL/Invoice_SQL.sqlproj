@@ -56,20 +56,13 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="Tables" />
     <Folder Include="dbo\" />
     <Folder Include="dbo\Views\" />
     <Folder Include="dbo\Functions\" />
     <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Tables\InvoiceHeader.sql" />
-    <Build Include="Tables\InvoiceDetail.sql" />
-    <Build Include="Tables\InvoiceResult.sql" />
-    <Build Include="Tables\StatusType.sql" />
-    <Build Include="Tables\ResultStatusType.sql" />
-    <Build Include="Tables\CaseSummary.sql" />
-    <Build Include="Tables\PriceDeal.sql" />
     <Build Include="dbo\Views\vRAndValue.sql" />
     <Build Include="dbo\Functions\RandomInteger.sql" />
     <Build Include="dbo\Functions\RandomCode.sql" />
@@ -79,6 +72,13 @@
     <Build Include="dbo\Functions\RandomMonth.sql" />
     <Build Include="dbo\Stored Procedures\GenerateRandomInvoice.sql" />
     <Build Include="dbo\Stored Procedures\ProcessInvoices.sql" />
+    <Build Include="dbo\Tables\CaseSummary.sql" />
+    <Build Include="dbo\Tables\InvoiceDetail.sql" />
+    <Build Include="dbo\Tables\InvoiceHeader.sql" />
+    <Build Include="dbo\Tables\InvoiceResult.sql" />
+    <Build Include="dbo\Tables\PriceDeal.sql" />
+    <Build Include="dbo\Tables\ResultStatusType.sql" />
+    <Build Include="dbo\Tables\StatusType.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Invoice_SQL.refactorlog" />

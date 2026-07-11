@@ -7,6 +7,7 @@ namespace Invoice_Logic.Repositories.CacheEntities;
 
 public interface IInvoiceDetailCacheEntity
 {
+    Task Clear(int headerId);
     Task Create(int headerId, IEnumerable<InvoiceDetailCreateDTO> creates);
     Task<List<InvoiceDetailEntity>> Get(int headerId);
 }
@@ -40,5 +41,12 @@ public class InvoiceDetailCacheEntity : CacheEntity<int, InvoiceDetailEntity>, I
     protected override int GetId(InvoiceDetailEntity obj)
     {
         return obj.InvoiceDetailId;
+    }
+
+    public async Task Clear(int headerId)
+    {
+        var list = await GetList(ListKey_ByHeader(headerId), () => _invoiceDetailDbEntity.Get(headerId));
+        await CacheClear(list);
+        await CacheClearList(ListKey_ByHeader(headerId));
     }
 }
