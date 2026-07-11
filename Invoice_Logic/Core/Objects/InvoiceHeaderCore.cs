@@ -2,6 +2,7 @@
 using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Enums;
 using Invoice_Logic.Factories;
 using Invoice_Logic.Repositories;
 using Invoice_Logic.Repositories.CacheEntities;
@@ -48,8 +49,19 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
 
     public async Task<List<InvoiceDetailEntity>> UpdateRefreshResults(int headerId)
     {
+        await CanPerform(headerId, enumStatusType.Draft);
         await _factory.InvoiceProcedures.ProcessInvoicesAsync(headerId);
         await _invoiceDetailCacheEntity.Clear(headerId);
         return await GetDetail(headerId);
+    }
+
+    private async Task CanPerform(int headerId, params enumStatusType[] statuses)
+    {
+        var numbers = statuses.Cast<int>();
+        var invoice = await Get(headerId);
+        if (!numbers.Contains(invoice.StatusTypeId))
+        {
+            _factory.UserLogging.ThrowInvoiceHeaderInvalidActionException();
+        }
     }
 }

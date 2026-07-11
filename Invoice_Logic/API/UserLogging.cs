@@ -8,6 +8,7 @@ public interface IUserLogging
     void AddLog(string message);
     string GetLogsConcat(string delimiter);
     [DoesNotReturn] void ThrowInvoiceDetailNotFoundException(IEnumerable<int> ids);
+    [DoesNotReturn] void ThrowInvoiceHeaderInvalidActionException();
     [DoesNotReturn] void ThrowInvoiceHeaderNotFoundException(IEnumerable<int> ids);
 }
 
@@ -31,6 +32,14 @@ public class UserLogging : IUserLogging
         var message = $"The following Invoice Detail(s) were not found: {string.Join(",", ids)}";
         _logs.Add(message);
         throw new InvoiceDetailNotFoundException(message);
+    }
+
+    [DoesNotReturn]
+    public void ThrowInvoiceHeaderInvalidActionException()
+    {
+        var message = "This billback does not support the requested action";
+        _logs.Add(message);
+        throw new InvoiceHeaderInvalidActionException(message);
     }
 
     [DoesNotReturn]
