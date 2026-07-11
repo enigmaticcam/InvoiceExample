@@ -26,6 +26,7 @@ public interface IFactoryMain
     IInvoice_ContextProcedures InvoiceProcedures { get; }
     IInvoiceHeaderCore InvoiceHeaderCore { get; }
     IInvoiceSearchCore InvoiceSearchCore { get; }
+    IInvoiceUploaderCore InvoiceUploaderCore { get; }
     IPipeline Pipeline { get; }
     IRepository Repository { get; }
     IUserLogging UserLogging { get; }
@@ -45,6 +46,7 @@ public class FactoryMain : IFactoryMain
     private Lazy<IInvoiceDetailCacheEntity> _invoiceDetailCacheEntity;
     private Lazy<IInvoiceDetailDbEntity> _invoiceDetailDbEntity;
     private Lazy<IInvoiceSearchCore> _invoiceSearchCore;
+    private Lazy<IInvoiceUploaderCore> _invoiceUploaderCore;
     private Lazy<ILateLoaderCollection> _lateLoaderCollection;
     private Lazy<IPipeline> _pipeline;
     private Lazy<IRepository> _repository;
@@ -64,6 +66,7 @@ public class FactoryMain : IFactoryMain
         _invoiceHeaderDbEntity = new Lazy<IInvoiceHeaderDbEntity>(() => new InvoiceHeaderDbEntity(context, LateLoaderCollection, InvoiceHeaderCollection, UserLogging));
         _invoiceHeaderCollection = new Lazy<IInvoiceHeaderCollection>(() => new InvoiceHeaderCollection(AllItemCollections));
         _invoiceSearchCore = new Lazy<IInvoiceSearchCore>(() => new InvoiceSearchCore(this));
+        _invoiceUploaderCore = new Lazy<IInvoiceUploaderCore>(() => new InvoiceUploaderCore(this));
         _lateLoaderCollection = new Lazy<ILateLoaderCollection>(() => new LateLoaderCollection());
         _pipeline = new Lazy<IPipeline>(CreatePipeline);
         _repository = new Lazy<IRepository>(() => new RepositoryEF(context, Cache, LateLoaderCollection, AllItemCollections));
@@ -90,6 +93,7 @@ public class FactoryMain : IFactoryMain
     public IInvoiceHeaderDbEntity InvoiceHeaderDbEntity => _invoiceHeaderDbEntity.Value;
     public IInvoiceHeaderCollection InvoiceHeaderCollection => _invoiceHeaderCollection.Value;
     public IInvoiceSearchCore InvoiceSearchCore => _invoiceSearchCore.Value;
+    public IInvoiceUploaderCore InvoiceUploaderCore => _invoiceUploaderCore.Value;
     public ILateLoaderCollection LateLoaderCollection => _lateLoaderCollection.Value;
     public IPipeline Pipeline => _pipeline.Value;
     public IRepository Repository => _repository.Value;
