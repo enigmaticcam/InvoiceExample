@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject IAPIConnection _apiConnection
 
 @* Required *@
 <MudThemeProvider />
@@ -15,7 +16,7 @@
 <MudLayout>
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        Invoice Manager
+        Invoice Manager (@_apiConnection.Name)
         <MudSpacer />
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" ClipMode="DrawerClipMode.Docked">
