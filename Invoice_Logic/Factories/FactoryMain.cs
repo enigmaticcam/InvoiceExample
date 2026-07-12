@@ -38,6 +38,7 @@ public class FactoryMain : IFactoryMain
     private Lazy<IAllItemCollections> _allItemCollections;
     private Lazy<ICache> _cache;
     private Lazy<IExcel> _excel;
+    private Lazy<IExceptionHandler> _exceptionHandler;
     private Lazy<IInvoice_ContextProcedures> _invoiceProcedures;
     private Lazy<IInvoiceHeaderCacheEntity> _invoiceHeaderCacheEntity;
     private Lazy<IInvoiceHeaderCore> _invoiceHeaderCore;
@@ -58,6 +59,7 @@ public class FactoryMain : IFactoryMain
         _allItemCollections = new Lazy<IAllItemCollections>(() => new AllItemCollections());
         _cache = new Lazy<ICache>(() => new CacheInMemory(cacheOptions, memoryCache));
         _excel = new Lazy<IExcel>(() => new ClosedXMLExcel(WebServer));
+        _exceptionHandler = new Lazy<IExceptionHandler>(() => new ExceptionHandler(context));
         _invoiceProcedures = new Lazy<IInvoice_ContextProcedures>(() => new Invoice_ContextProcedures(context));
         _invoiceDetailCacheEntity = new Lazy<IInvoiceDetailCacheEntity>(() => new InvoiceDetailCacheEntity(Cache, InvoiceDetailDbEntity));
         _invoiceDetailDbEntity = new Lazy<IInvoiceDetailDbEntity>(() => new InvoiceDetailDbEntity(context, InvoiceHeaderCollection, UserLogging));
@@ -77,7 +79,7 @@ public class FactoryMain : IFactoryMain
     private IPipeline CreatePipeline()
     {
         IPipeline pipeline = new Pipeline();
-        pipeline = new ExceptionPipeline(pipeline);
+        pipeline = new ExceptionPipeline(pipeline, ExceptionHandler);
         pipeline = new UserLoggingPipeline(pipeline, UserLogging);
         return pipeline;
     }
@@ -85,6 +87,7 @@ public class FactoryMain : IFactoryMain
     public IAllItemCollections AllItemCollections => _allItemCollections.Value;
     public ICache Cache => _cache.Value;
     public IExcel Excel => _excel.Value;
+    public IExceptionHandler ExceptionHandler => _exceptionHandler.Value;
     public IInvoice_ContextProcedures InvoiceProcedures => _invoiceProcedures.Value;
     public IInvoiceHeaderCore InvoiceHeaderCore => _invoiceHeaderCore.Value;
     public IInvoiceDetailCacheEntity InvoiceDetailCacheEntity => _invoiceDetailCacheEntity.Value;

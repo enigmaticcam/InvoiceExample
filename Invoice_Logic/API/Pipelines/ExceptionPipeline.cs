@@ -2,8 +2,10 @@
 
 public class ExceptionPipeline : PipelineDecorator
 {
-    public ExceptionPipeline(IPipeline pipeline) : base(pipeline)
+    private IExceptionHandler _exceptionHandler;
+    public ExceptionPipeline(IPipeline pipeline, IExceptionHandler exceptionHandler) : base(pipeline)
     {
+        _exceptionHandler = exceptionHandler;
     }
 
     public override async Task<APIResult> Perform(Func<Task> action, string actionName)
@@ -13,8 +15,9 @@ public class ExceptionPipeline : PipelineDecorator
             var response = await base.Perform(action, actionName);
             return response;
         }
-        catch
+        catch (Exception ex)
         {
+            await _exceptionHandler.LogException(ex);
             return APIResult.Failure("An error occurred");
         }
     }
@@ -26,8 +29,9 @@ public class ExceptionPipeline : PipelineDecorator
             var response = await base.Perform(action, actionName);
             return response;
         }
-        catch
+        catch (Exception ex)
         {
+            await _exceptionHandler.LogException(ex);
             return APIResult<T>.Failure("An error occurred");
         }
     }

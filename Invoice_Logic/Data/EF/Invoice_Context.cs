@@ -15,6 +15,8 @@ public partial class Invoice_Context : DbContext
 
     public virtual DbSet<CaseSummary> CaseSummaries { get; set; }
 
+    public virtual DbSet<ExceptionLog> ExceptionLogs { get; set; }
+
     public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
 
     public virtual DbSet<InvoiceHeader> InvoiceHeaders { get; set; }
@@ -45,6 +47,19 @@ public partial class Invoice_Context : DbContext
             entity.Property(e => e.OurItemCode)
                 .IsRequired()
                 .HasMaxLength(15);
+        });
+
+        modelBuilder.Entity<ExceptionLog>(entity =>
+        {
+            entity.HasKey(e => e.LogId);
+
+            entity.ToTable("ExceptionLog");
+
+            entity.Property(e => e.AddedOn)
+                .HasDefaultValueSql("getutcdate()")
+                .HasColumnType("datetime");
+            entity.Property(e => e.LogMessage).IsRequired();
+            entity.Property(e => e.LogStackTrace).IsRequired();
         });
 
         modelBuilder.Entity<InvoiceDetail>(entity =>
