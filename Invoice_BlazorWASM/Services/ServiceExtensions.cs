@@ -2,6 +2,7 @@
 using Invoice_BlazorWASM.Services.Entities.ServerCommand;
 using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceHeader;
 using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceSearch;
+using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceUploader;
 
 namespace Invoice_BlazorWASM.Services;
 
@@ -13,6 +14,7 @@ public static class ServiceExtensions
         services.AddScoped<IInvoiceHeaderInvoker, InvoiceHeaderInvoker>();
         services.AddScoped<IInvoiceHeaderState, InvoiceHeaderState>();
         services.AddScoped<IInvoiceSearchInvoker, InvoiceSearchInvoker>();
+        services.AddScoped<IInvoiceUploaderInvoker, InvoiceUploaderInvoker>();
         services.AddScoped<IServerInvoker, ServerInvoker>();
         services.AddScoped<IServerStatus, ServerStatus>();
         services.AddScoped<IServiceWrapper, ServiceWrapper>();

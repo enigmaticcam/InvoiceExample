@@ -73,5 +73,12 @@ begin
 	from #temp
 end
 
-select *
+select
+	Customer
+	, InvoiceDate
+	, CustomerItemCode
+	, Rate
+	, Cases
 from #temp
+
+drop table #temp

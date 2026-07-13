@@ -16,6 +16,7 @@ public static class APIMapper
         app.MapPost("/api/invoicesearch", InvoiceSearch_GetWithFilter);
 
         app.MapGet("/api/invoiceuploader", InvoiceUploader_Get);
+        app.MapGet("/api/invoiceuploader/random", InvoiceUploader_GetRandom);
         app.MapPost("/api/invoiceuploader", InvoiceUploader_Create);
     }
 
@@ -40,6 +41,12 @@ public static class APIMapper
     private static async Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get(IAPICaller caller)
     {
         var result = await caller.InvoiceSearch_Get();
+        return result;
+    }
+
+    private static async Task<APIResult<string>> InvoiceUploader_GetRandom(IAPICaller caller)
+    {
+        var result = await caller.InvoiceUploader_GetRandom();
         return result;
     }
 

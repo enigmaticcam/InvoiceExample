@@ -6,6 +6,7 @@ using Invoice_Logic.Core.Interfaces;
 using Invoice_Logic.Core.Objects;
 using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.EF;
+using Invoice_Logic.Database;
 using Invoice_Logic.Excel;
 using Invoice_Logic.Repositories;
 using Invoice_Logic.Repositories.CacheEntities;
@@ -22,6 +23,7 @@ namespace Invoice_Logic.Factories;
 public interface IFactoryMain
 {
     ICache Cache { get; }
+    IConnectionControl ConnectionControl { get; }
     IExcel Excel { get; }
     IInvoice_ContextProcedures InvoiceProcedures { get; }
     IInvoiceHeaderCore InvoiceHeaderCore { get; }
@@ -37,6 +39,7 @@ public class FactoryMain : IFactoryMain
 {
     private Lazy<IAllItemCollections> _allItemCollections;
     private Lazy<ICache> _cache;
+    private Lazy<IConnectionControl> _connectionControl;
     private Lazy<IExcel> _excel;
     private Lazy<IExceptionHandler> _exceptionHandler;
     private Lazy<IInvoice_ContextProcedures> _invoiceProcedures;
@@ -54,10 +57,11 @@ public class FactoryMain : IFactoryMain
     private Lazy<IUserLogging> _userLogging;
     private Lazy<IWebServer> _webServer;
 
-    public FactoryMain(Invoice_Context context, IMemoryCache memoryCache, CacheOptions cacheOptions, IOptions<WebServerDTO> webServer)
+    public FactoryMain(Invoice_Context context, IMemoryCache memoryCache, CacheOptions cacheOptions, IOptions<WebServerDTO> webServer, ICustomSettings settings)
     {
         _allItemCollections = new Lazy<IAllItemCollections>(() => new AllItemCollections());
         _cache = new Lazy<ICache>(() => new CacheInMemory(cacheOptions, memoryCache));
+        _connectionControl = new Lazy<IConnectionControl>(() => new ConnectionControl(settings));
         _excel = new Lazy<IExcel>(() => new ClosedXMLExcel(WebServer));
         _exceptionHandler = new Lazy<IExceptionHandler>(() => new ExceptionHandler(context));
         _invoiceProcedures = new Lazy<IInvoice_ContextProcedures>(() => new Invoice_ContextProcedures(context));
@@ -86,6 +90,7 @@ public class FactoryMain : IFactoryMain
 
     public IAllItemCollections AllItemCollections => _allItemCollections.Value;
     public ICache Cache => _cache.Value;
+    public IConnectionControl ConnectionControl => _connectionControl.Value;
     public IExcel Excel => _excel.Value;
     public IExceptionHandler ExceptionHandler => _exceptionHandler.Value;
     public IInvoice_ContextProcedures InvoiceProcedures => _invoiceProcedures.Value;

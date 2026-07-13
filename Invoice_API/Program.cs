@@ -1,4 +1,5 @@
 using Invoice_API;
+using Invoice_Logic.API;
 using Invoice_Logic.Caching;
 using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.EF;
@@ -37,6 +38,7 @@ builder.Services.AddScoped(x => new CacheOptions()
     AbsoluteExpirationInSeconds = builder.Configuration.GetSection("CacheOptions").GetValue<int>("AbsoluteExpirationInSeconds"),
     SlidingExpirationInSeconds = builder.Configuration.GetSection("CacheOptions").GetValue<int>("SlidingExpirationInSeconds")
 });
+builder.Services.AddScoped<ICustomSettings, CustomSettings>();
 builder.Services.UseInvoice();
 builder.Services.AddOpenApi();
 builder.Services.AddOptions<WebServerDTO>()

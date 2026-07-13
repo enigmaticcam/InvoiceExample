@@ -47,4 +47,10 @@ public class InvoiceUploaderCore : IInvoiceUploaderCore, IInvoiceUploaderCoreAct
     {
         await _factory.Cache.Set(UploaderKey, invoices);
     }
+
+    public Task<string> GetRandom()
+    {
+        var action = new ActionGetRandom(_factory.ConnectionControl);
+        return action.Perform();
+    }
 }
