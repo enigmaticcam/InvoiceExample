@@ -1,0 +1,77 @@
+﻿@page "/search/"
+@inject IInvoiceSearchInvoker _invoiceSearchInvoker
+
+<ResponseMessage Token="_token" />
+
+<MudCard>
+    <MudCardContent>
+        @if (_search != null)
+        {
+            <MudPaper MaxWidth="400px" Elevation="0">
+                <MudGrid Spacing="1">
+                    <MudItem xs="1">
+                        <MudCheckBox 
+                            @bind-Value="@_search.Filter.ByHeader" 
+                            Dense="true" 
+                            Size="Size.Small" />
+                    </MudItem>
+                    <MudItem xs="11">
+                        <MudTextField 
+                            @bind-Value="@_search.Filter.HeaderId" 
+                            Immediate 
+                            Label="Header Id" 
+                            Margin="Margin.Dense" 
+                            Variant="Variant.Outlined" />
+                    </MudItem>
+                    <MudItem xs="1">
+                        <MudCheckBox
+                            @bind-Value="@_search.Filter.ByCustomer"
+                            Dense="true"
+                            Size="Size.Small"/>
+                    </MudItem>
+                    <MudItem xs="11">
+                        <MudTextField
+                            @bind-Value="@_search.Filter.Customer"
+                            Immediate
+                            Label="Customer"
+                            Margin="Margin.Dense"
+                            Variant="Variant.Outlined" />
+                    </MudItem>
+                </MudGrid>
+                @if (Disabled())
+                {
+                    <MudProgressLinear Indeterminate="true" />
+                }
+                <MudButton Disabled="Disabled()" Color="Color.Secondary" Variant="Variant.Filled">Search</MudButton>
+            </MudPaper>
+        }
+    </MudCardContent>
+</MudCard>
+@if (_search?.Invoices?.Count == 0)
+{
+    <MudText>No results</MudText>
+}
+else
+{
+    <MudTable Items="_search?.Invoices" T="InvoiceHeaderEntity" FixedHeader="true" Height="800px">
+        <HeaderContent>
+            <MudTh>Header Id</MudTh>
+            <MudTh>Customer</MudTh>
+            <MudTh>Status</MudTh>
+            <MudTh>Invoice Date</MudTh>
+            <MudTh>Description</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            @{
+                var link = $"bb/{context.InvoiceHeaderId}";
+            }
+            <MudTd DataLabel="Header Id"><MudLink Href="@link">@context.InvoiceHeaderId</MudLink></MudTd>
+            <MudTd DataLabel="Customer">@context.Customer</MudTd>
+            <MudTd DataLabel="Status"></MudTd>
+            <MudTd DataLabel="Invoice Date">@context.InvoiceDate.ToString("yyyy-MM-dd")</MudTd>
+            <MudTd DataLabel="Description">@context.Description</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+
