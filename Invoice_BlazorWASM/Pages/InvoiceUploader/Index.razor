@@ -1,4 +1,49 @@
 ﻿@page "/uploader"
 @inject IInvoiceUploaderInvoker _invoiceUploaderInvoker
+@inject IInvoiceUploaderState _invoiceUploaderState
 
+<ResponseMessage Token="_token" />
+
+<MudStack>
+    @if (Disabled())
+    {
+        <MudPaper Elevation="0" Class="pa-4">
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+        </MudPaper>
+    }
+    <MudPaper Elevation="0">
+        <MudButton Disabled="Disabled()" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Download Latest Template</MudButton>
+    </MudPaper>
+    <MudPaper Elevation="0">
+        <InputFile />
+        @if (_file != null)
+        {
+            <MudButton Disabled="Disabled()" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Upload</MudButton>
+        }
+    </MudPaper>
+    @if (_invoiceUploaderState.IsLoaded && _invoiceUploaderState.Items.Count() > 0)
+    {
+        <MudTable Items="@_invoiceUploaderState.Items" T="DTO_InvoiceHeader">
+            <HeaderContent>
+                <MudTh>Header Id</MudTh>
+                <MudTh>Customer</MudTh>
+                <MudTh>Description</MudTh>
+                <MudTh>Invoice Date</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                @{
+                    var link = $"header/{context.InvoiceHeaderId}";
+                }
+                <MudTd DataLabel="Header Id"><MudLink Href="@link">@context.InvoiceHeaderId</MudLink></MudTd>
+                <MudTd DataLabel="Customer">@context.Customer</MudTd>
+                <MudTd DataLabel="Description">@context.Description</MudTd>
+                <MudTd DataLabel="Invoice Date">@context.InvoiceDate.ToString("yyyy-MM-dd")</MudTd>
+            </RowTemplate>
+        </MudTable>
+    }
+    <MudPaper Elevation="0">
+        <MudTextField Value="_randomInvoice" Lines="10" />
+        <MudButton OnClick="OnGetRandom" Disabled="Disabled()" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Generate Random Invoice</MudButton>
+    </MudPaper>
+</MudStack>
 

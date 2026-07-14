@@ -4,6 +4,7 @@ namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceUploader;
 
 public interface IInvoiceUploaderInvoker
 {
+    Task<BlazorResult> Get(BroadcastToken token);
     Task<BlazorResult<string>> GetRandom(BroadcastToken token);
 }
 
@@ -11,11 +12,19 @@ public class InvoiceUploaderInvoker : IInvoiceUploaderInvoker
 {
     private IServerInvoker _invoker;
     private IServiceWrapper _service;
+    private IInvoiceUploaderState _state;
 
-    public InvoiceUploaderInvoker(IServerInvoker invoker, IServiceWrapper service)
+    public InvoiceUploaderInvoker(IServerInvoker invoker, IServiceWrapper service, IInvoiceUploaderState state)
     {
         _invoker = invoker;
         _service = service;
+        _state = state;
+    }
+
+    public Task<BlazorResult> Get(BroadcastToken token)
+    {
+        var command = new InvoiceUploaderGet(_service, _state);
+        return _invoker.Perform(command, token);
     }
 
     public Task<BlazorResult<string>> GetRandom(BroadcastToken token)

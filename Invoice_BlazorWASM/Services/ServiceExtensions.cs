@@ -15,6 +15,7 @@ public static class ServiceExtensions
         services.AddScoped<IInvoiceHeaderState, InvoiceHeaderState>();
         services.AddScoped<IInvoiceSearchInvoker, InvoiceSearchInvoker>();
         services.AddScoped<IInvoiceUploaderInvoker, InvoiceUploaderInvoker>();
+        services.AddScoped<IInvoiceUploaderState, InvoiceUploaderState>();
         services.AddScoped<IServerInvoker, ServerInvoker>();
         services.AddScoped<IServerStatus, ServerStatus>();
         services.AddScoped<IServiceWrapper, ServiceWrapper>();
