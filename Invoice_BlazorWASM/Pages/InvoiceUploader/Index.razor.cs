@@ -1,5 +1,6 @@
 using Invoice_BlazorWASM.Services;
 using Microsoft.AspNetCore.Components.Forms;
+using MudBlazor;
 
 namespace Invoice_BlazorWASM.Pages.InvoiceUploader;
 
@@ -10,7 +11,6 @@ public partial class Index
     private StandByControls _standBy = new();
     private Controls _controls = new();
     private IBrowserFile? _file;
-    private string? _randomInvoice;
 
     protected override void OnInitialized()
     {
@@ -35,12 +35,15 @@ public partial class Index
 
     private async Task OnGetRandom()
     {
-        var result = await _invoiceUploaderInvoker.GetRandom(_token);
-        if (result.IsSuccess && result.Obj != null)
+        var options = new DialogOptions
         {
-            _randomInvoice = result.Obj;
-            await InvokeAsync(StateHasChanged);
-        }
+            BackdropClick = false,
+            CloseButton = false,
+            CloseOnEscapeKey = false,
+            FullWidth = true
+        };
+        var result = await _dialog.ShowAsync<RandomInvoice>("Generate Random Invoice", options);
+        await result.Result;
     }
 
     private bool Disabled()

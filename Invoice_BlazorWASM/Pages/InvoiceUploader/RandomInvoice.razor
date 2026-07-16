@@ -1,0 +1,60 @@
+﻿@inject IInvoiceUploaderInvoker _invoiceUploaderInvoker
+
+<MudDialog>
+    <DialogContent>
+        <ResponseMessage Token="_token" />
+
+        @if (_randomInvoice != null)
+        {
+            <MudTextField Value="_randomInvoice" Lines="10" />
+        }
+    </DialogContent>
+    <DialogActions>
+        @if (Disabled())
+        {
+            <MudProgressLinear Indeterminate="true" />
+        }
+        <MudButton OnClick="OnGetRandom" Disabled="Disabled()" Color="Color.Primary" Variant="Variant.Filled" Size="Size.Small">Go</MudButton>
+        <MudButton onclick="Close" Disabled="Disabled()" Size="Size.Small">Close</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] IMudDialogInstance? MudDialog { get; set; }
+    private BroadcastToken _token = new();
+    private StandByControls _standBy = new();
+    private Controls _controls = new();
+    private string? _randomInvoice;
+
+    protected override void OnInitialized()
+    {
+        _standBy.RegisterControl(_controls.ControlAll, _token);
+    }
+
+    private async Task OnGetRandom()
+    {
+        var result = await _invoiceUploaderInvoker.GetRandom(_token);
+        if (result.IsSuccess && result.Obj != null)
+        {
+            _randomInvoice = result.Obj;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private bool Disabled()
+    {
+        return _standBy.Disabled(_controls.ControlAll);
+    }
+
+    private void Close()
+    {
+        if (MudDialog != null)
+        {
+            MudDialog.Close();
+        }
+    }
+
+    private record Controls(
+        string ControlAll = "ControlAll"
+    );
+}
