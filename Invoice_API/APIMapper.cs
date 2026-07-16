@@ -44,7 +44,7 @@ public static class APIMapper
         return result;
     }
 
-    private static async Task<APIResult<string>> InvoiceUploader_GetRandom(IAPICaller caller)
+    private static async Task<APIResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom(IAPICaller caller)
     {
         var result = await caller.InvoiceUploader_GetRandom();
         return result;

@@ -1,4 +1,5 @@
-﻿using Invoice_Logic.Database;
+﻿using Invoice_Logic.Data.DTOs;
+using Invoice_Logic.Database;
 using System.Text;
 
 namespace Invoice_Logic.Core.Objects.InvoiceUploaderActions;
@@ -12,7 +13,7 @@ public class ActionGetRandom
         _connection = connection;
     }
 
-    public async Task<string> Perform()
+    public async Task<RandomInvoiceDTO> Perform()
     {
         var invoice = await GenerateRandomInvoice();
         return ConvertToText(invoice);
@@ -24,29 +25,25 @@ public class ActionGetRandom
         return result.ToList();
     }
 
-    private string ConvertToText(List<InvoiceResult> result)
+    private RandomInvoiceDTO ConvertToText(List<InvoiceResult> result)
     {
-        var text = new StringBuilder();
-        ConvertToTextHeader(result, text);
-        ConvertToTextDetail(result, text);
-        return text.ToString();
+        var header = ConvertToTextHeader(result);
+        var detail = ConvertToTextDetail(result);
+        return new RandomInvoiceDTO(header, detail);
     }
 
-    private void ConvertToTextHeader(List<InvoiceResult> result, StringBuilder text)
+    private string ConvertToTextHeader(List<InvoiceResult> result)
     {
-        text.AppendLine("-------------------");
-        text.AppendLine("Header");
-        text.AppendLine("-------------------");
+        var text = new StringBuilder();
         text.AppendLine(result.First().Customer);
         text.AppendLine(result.First().InvoiceDate.ToShortDateString());
         text.AppendLine("Random invoice");
+        return text.ToString();
     }
 
-    private void ConvertToTextDetail(List<InvoiceResult> result, StringBuilder text)
+    private string ConvertToTextDetail(List<InvoiceResult> result)
     {
-        text.AppendLine("-------------------");
-        text.AppendLine("Detail");
-        text.AppendLine("-------------------");
+        var text = new StringBuilder();
         foreach (var line in result)
         {
             var join = string.Join("\t",
@@ -56,6 +53,7 @@ public class ActionGetRandom
                 line.Cases);
             text.AppendLine(join);
         }
+        return text.ToString();
     }
 
     private class InvoiceResult

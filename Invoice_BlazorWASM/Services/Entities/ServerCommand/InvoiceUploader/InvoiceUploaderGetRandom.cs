@@ -2,7 +2,7 @@
 
 namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceUploader;
 
-public class InvoiceUploaderGetRandom : IServerCommand<BlazorResult<string>>
+public class InvoiceUploaderGetRandom : IServerCommand<BlazorResult<RandomInvoiceDTO>>
 {
     private IServiceWrapper _service;
 
@@ -11,7 +11,7 @@ public class InvoiceUploaderGetRandom : IServerCommand<BlazorResult<string>>
         _service = service;
     }
 
-    public Task<BlazorResult<string>> Execute()
+    public Task<BlazorResult<RandomInvoiceDTO>> Execute()
     {
         return _service.InvoiceUploader_GetRandom();
     }

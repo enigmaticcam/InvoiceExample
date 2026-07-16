@@ -10,6 +10,7 @@ public static class ServiceExtensions
 {
     public static void UseInvoice(this IServiceCollection services)
     {
+        services.AddScoped<ClipboardService>();
         services.AddScoped<IClearCollection, ClearCollection>();
         services.AddScoped<IInvoiceHeaderInvoker, InvoiceHeaderInvoker>();
         services.AddScoped<IInvoiceHeaderState, InvoiceHeaderState>();

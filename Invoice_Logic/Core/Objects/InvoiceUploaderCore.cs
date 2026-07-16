@@ -1,5 +1,6 @@
 ﻿using Invoice_Logic.Core.Interfaces;
 using Invoice_Logic.Core.Objects.InvoiceUploaderActions;
+using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Entity;
 using Invoice_Logic.Factories;
 
@@ -48,7 +49,7 @@ public class InvoiceUploaderCore : IInvoiceUploaderCore, IInvoiceUploaderCoreAct
         await _factory.Cache.Set(UploaderKey, invoices);
     }
 
-    public Task<string> GetRandom()
+    public Task<RandomInvoiceDTO> GetRandom()
     {
         var action = new ActionGetRandom(_factory.ConnectionControl);
         return action.Perform();

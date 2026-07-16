@@ -5,7 +5,7 @@ public interface IServiceWrapper
     Task<BlazorResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int headerId);
     Task<BlazorResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
-    Task<BlazorResult<string>> InvoiceUploader_GetRandom();
+    Task<BlazorResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom();
 }
 
 public class ServiceWrapper : IServiceWrapper
@@ -39,10 +39,10 @@ public class ServiceWrapper : IServiceWrapper
         };
     }
 
-    public async Task<BlazorResult<string>> InvoiceUploader_GetRandom()
+    public async Task<BlazorResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom()
     {
         var result = await _client.ApiInvoiceuploaderRandomAsync();
-        return new BlazorResult<string>()
+        return new BlazorResult<RandomInvoiceDTO>()
         {
             IsSuccess = result.Success,
             Message = result.Message,

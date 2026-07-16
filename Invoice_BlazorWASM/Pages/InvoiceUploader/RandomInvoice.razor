@@ -1,12 +1,27 @@
 ﻿@inject IInvoiceUploaderInvoker _invoiceUploaderInvoker
+@inject ClipboardService _clipboard
 
 <MudDialog>
     <DialogContent>
-        <ResponseMessage Token="_token" />
+        <ResponseMessage Token="_token" @ref="_responseMessage" />
 
         @if (_randomInvoice != null)
         {
-            <MudTextField Value="_randomInvoice" Lines="10" />
+            <MudGrid>
+                <MudItem xs="11">
+                    <MudTextField Value="_randomInvoice.Header" Lines="4" />
+                </MudItem>
+                <MudItem xs="1">
+                    <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" OnClick="CopyToClipboardHeader" />
+                </MudItem>
+                <MudItem xs="11">
+                    <MudTextField Value="_randomInvoice.Detail" Lines="10" />
+                </MudItem>
+                <MudItem xs="1">
+                    <MudIconButton Icon="@Icons.Material.Filled.ContentCopy" OnClick="CopyToClipboardDetail" />
+                </MudItem>
+            </MudGrid>
+            
         }
     </DialogContent>
     <DialogActions>
@@ -20,11 +35,12 @@
 </MudDialog>
 
 @code {
-    [CascadingParameter] IMudDialogInstance? MudDialog { get; set; }
+        [CascadingParameter] IMudDialogInstance? MudDialog { get; set; }
     private BroadcastToken _token = new();
     private StandByControls _standBy = new();
     private Controls _controls = new();
-    private string? _randomInvoice;
+    private RandomInvoiceDTO? _randomInvoice;
+    private ResponseMessage? _responseMessage;
 
     protected override void OnInitialized()
     {
@@ -38,6 +54,30 @@
         {
             _randomInvoice = result.Obj;
             await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task CopyToClipboardHeader()
+    {
+        if (_randomInvoice != null)
+        {
+            await _clipboard.WriteTextAsync(_randomInvoice.Header);
+            if (_responseMessage != null)
+            {
+                _responseMessage.SendMessage("Header copied to clipboard", Severity.Normal);
+            }
+        }
+    }
+
+    private async Task CopyToClipboardDetail()
+    {
+        if (_randomInvoice != null)
+        {
+            await _clipboard.WriteTextAsync(_randomInvoice.Detail);
+            if (_responseMessage != null)
+            {
+                _responseMessage.SendMessage("Detail copied to clipboard", Severity.Normal);
+            }
         }
     }
 

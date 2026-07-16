@@ -92,12 +92,12 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfstring> ApiInvoiceuploaderRandomAsync();
+        System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfstring> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -712,7 +712,7 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfstring> ApiInvoiceuploaderRandomAsync()
+        public virtual System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync()
         {
             return ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken.None);
         }
@@ -720,7 +720,7 @@ namespace Invoice_BlazorWASM.Services.Core
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfstring> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -761,7 +761,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfstring>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfRandomInvoiceDTO>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1030,11 +1030,11 @@ namespace Invoice_BlazorWASM.Services.Core
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class APIResultOfstring
+    public partial class APIResultOfRandomInvoiceDTO
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("obj")]
-        public string Obj { get; set; }
+        public RandomInvoiceDTO Obj { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("success")]
         public bool Success { get; set; }
@@ -1188,6 +1188,29 @@ namespace Invoice_BlazorWASM.Services.Core
 
         [System.Text.Json.Serialization.JsonPropertyName("invoices")]
         public System.Collections.Generic.List<InvoiceHeaderEntity> Invoices { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RandomInvoiceDTO
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("header")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Header { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("detail")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Detail { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

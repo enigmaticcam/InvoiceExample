@@ -12,7 +12,7 @@ public interface IAPICaller
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
     Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
-    Task<APIResult<string>> InvoiceUploader_GetRandom();
+    Task<APIResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom();
     Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Create(Stream stream);
 
 }
@@ -75,7 +75,7 @@ public class APICaller : IAPICaller
             actionName: "InvoiceUploader_Get");
     }
 
-    public Task<APIResult<string>> InvoiceUploader_GetRandom()
+    public Task<APIResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom()
     {
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceUploaderCore.GetRandom(),
