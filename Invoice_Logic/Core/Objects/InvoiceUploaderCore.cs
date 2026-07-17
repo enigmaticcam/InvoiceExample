@@ -54,4 +54,11 @@ public class InvoiceUploaderCore : IInvoiceUploaderCore, IInvoiceUploaderCoreAct
         var action = new ActionGetRandom(_factory.ConnectionControl);
         return action.Perform();
     }
+
+    public string GetBlankTemplate()
+    {
+        var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Files");
+        path += @"\Invoice Upload Template.xlsx";
+        return path;
+    }
 }

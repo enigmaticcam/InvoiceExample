@@ -12,6 +12,7 @@ public interface IAPICaller
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
     Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
+    Task<APIResult<string>> InvoiceUploader_GetBlankTemplate();
     Task<APIResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom();
     Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Create(Stream stream);
 
@@ -73,6 +74,13 @@ public class APICaller : IAPICaller
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceUploaderCore.Get(),
             actionName: "InvoiceUploader_Get");
+    }
+
+    public Task<APIResult<string>> InvoiceUploader_GetBlankTemplate()
+    {
+        return _factory.Pipeline.Perform(
+            action: () => Task.FromResult(_factory.InvoiceUploaderCore.GetBlankTemplate()),
+            actionName: "InvoiceUploader_GetBlankTemplate");
     }
 
     public Task<APIResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom()

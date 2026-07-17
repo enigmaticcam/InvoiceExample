@@ -12,6 +12,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<ClipboardService>();
         services.AddScoped<IClearCollection, ClearCollection>();
+        services.AddScoped<IFileDownload, FileDownload>();
         services.AddScoped<IInvoiceHeaderInvoker, InvoiceHeaderInvoker>();
         services.AddScoped<IInvoiceHeaderState, InvoiceHeaderState>();
         services.AddScoped<IInvoiceSearchInvoker, InvoiceSearchInvoker>();

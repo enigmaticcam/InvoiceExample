@@ -17,7 +17,9 @@ public static class APIMapper
 
         app.MapGet("/api/invoiceuploader", InvoiceUploader_Get);
         app.MapGet("/api/invoiceuploader/random", InvoiceUploader_GetRandom);
-        app.MapPost("/api/invoiceuploader", InvoiceUploader_Create);
+        app.MapPost("/api/invoiceuploader", InvoiceUploader_Create)
+            .DisableAntiforgery();
+        app.MapGet("/api/invoiceuploader/template", InvoiceUploader_GetBlankTemplate);
     }
 
     private static async Task<APIResult<List<InvoiceDetailEntity>>> InvoiceDetail_Get(int headerId, IAPICaller caller)
@@ -66,5 +68,18 @@ public static class APIMapper
     {
         var result = await caller.InvoiceUploader_Create(stream);
         return result;
+    }
+
+    private static async Task<IResult> InvoiceUploader_GetBlankTemplate(IAPICaller caller)
+    {
+        var result = await caller.InvoiceUploader_GetBlankTemplate();
+        if (result.Success && result.Obj != null)
+        {
+            return Results.File(result.Obj, fileDownloadName: "Template.xlsx");
+        }
+        else
+        {
+            return Results.BadRequest(result.Message);
+        }
     }
 }

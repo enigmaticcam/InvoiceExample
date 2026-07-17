@@ -33,6 +33,16 @@ public partial class Index
         }
     }
 
+    private void OnSetFile(InputFileChangeEventArgs e)
+    {
+        _file = e.File;
+    }
+
+    private async Task OnGetDATemplate()
+    {
+        await _fileDownload.Download("api/invoiceuploader/template", "template.xlsx");
+    }
+
     private async Task OnGetRandom()
     {
         var options = new DialogOptions
