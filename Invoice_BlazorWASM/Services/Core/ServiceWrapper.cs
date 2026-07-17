@@ -6,6 +6,7 @@ public interface IServiceWrapper
     Task<BlazorResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
     Task<BlazorResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom();
+    Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Upload(FileParameter file);
 }
 
 public class ServiceWrapper : IServiceWrapper
@@ -54,6 +55,17 @@ public class ServiceWrapper : IServiceWrapper
     {
         var result = await _client.ApiInvoicesearchGetAsync();
         return new BlazorResult<InvoiceSearchDTO>()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message,
+            Obj = result.Obj
+        };
+    }
+
+    public async Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Upload(FileParameter file)
+    {
+        var result = await _client.ApiInvoiceuploaderPostAsync(file);
+        return new BlazorResult<List<InvoiceHeaderEntity>>()
         {
             IsSuccess = result.Success,
             Message = result.Message,

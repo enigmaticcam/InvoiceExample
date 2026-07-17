@@ -32,7 +32,7 @@ public class ActionLoad
     {
         await LoadFile(stream);
         var result = await CreateInvoices();
-        // Run stored proc
+        await RefreshResults(result);
         await _actions.Set(result);
         return result;
     }
@@ -60,6 +60,14 @@ public class ActionLoad
         return creates
             .Select(x => x.LoadObject!)
             .ToList();
+    }
+
+    private async Task RefreshResults(List<InvoiceHeaderEntity> invoices)
+    {
+        foreach (var i in invoices)
+        {
+            await _invoiceHeaderCore.UpdateRefreshResults(i.InvoiceHeaderId);
+        }
     }
 
     private async Task<LateLoader<int, InvoiceHeaderEntity>> CreateInvoice(string worksheet)

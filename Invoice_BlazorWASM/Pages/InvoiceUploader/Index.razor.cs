@@ -56,6 +56,19 @@ public partial class Index
         await result.Result;
     }
 
+    private async Task OnUpload()
+    {
+        if (_file != null)
+        {
+            var stream = _file.OpenReadStream(maxAllowedSize: 50000000);
+            var result = await _invoiceUploaderInvoker.Upload(_token, stream);
+            if (result.IsSuccess)
+            {
+                _file = null;
+            }
+        }
+    }
+
     private bool Disabled()
     {
         return _standBy.Disabled(_controls.ControlAll);

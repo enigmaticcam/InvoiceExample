@@ -6,6 +6,7 @@ public interface IInvoiceUploaderInvoker
 {
     Task<BlazorResult> Get(BroadcastToken token);
     Task<BlazorResult<RandomInvoiceDTO>> GetRandom(BroadcastToken token);
+    Task<BlazorResult<List<InvoiceHeaderEntity>>> Upload(BroadcastToken token, Stream stream);
 }
 
 public class InvoiceUploaderInvoker : IInvoiceUploaderInvoker
@@ -30,6 +31,12 @@ public class InvoiceUploaderInvoker : IInvoiceUploaderInvoker
     public Task<BlazorResult<RandomInvoiceDTO>> GetRandom(BroadcastToken token)
     {
         var command = new InvoiceUploaderGetRandom(_service);
+        return _invoker.Perform(command, token);
+    }
+
+    public Task<BlazorResult<List<InvoiceHeaderEntity>>> Upload(BroadcastToken token, Stream stream)
+    {
+        var command = new InvoiceUploaderUpload(_service, _state, stream);
         return _invoker.Perform(command, token);
     }
 }

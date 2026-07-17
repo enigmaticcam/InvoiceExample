@@ -21,7 +21,7 @@
         <InputFile OnChange="OnSetFile" />
         @if (_file != null)
         {
-            <MudButton Disabled="Disabled()" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Upload</MudButton>
+            <MudButton OnClick="OnUpload" Disabled="Disabled()" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Upload</MudButton>
         }
     </MudPaper>
     @if (_invoiceUploaderState.IsLoaded && _invoiceUploaderState.Items.Count() > 0)

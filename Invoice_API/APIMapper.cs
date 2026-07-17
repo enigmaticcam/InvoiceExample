@@ -64,11 +64,14 @@ public static class APIMapper
         return result;
     }
 
-    private static async Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Create(Stream stream, IAPICaller caller)
+
+    private static async Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Create(IFormFile file, IAPICaller caller)
     {
+        using var stream = file.OpenReadStream();
         var result = await caller.InvoiceUploader_Create(stream);
         return result;
     }
+
 
     private static async Task<IResult> InvoiceUploader_GetBlankTemplate(IAPICaller caller)
     {

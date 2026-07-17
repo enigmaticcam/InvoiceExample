@@ -29,79 +29,115 @@ namespace Invoice_BlazorWASM.Services.Core
     {
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfInvoiceHeaderEntity> ApiInvoiceheaderAsync(int id);
+        System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderAsync(int id);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        InvoiceHeaderEntityAPIResult ApiInvoiceheader(int id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfInvoiceHeaderEntity> ApiInvoiceheaderAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderAsync(int id, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderDetailAsync(int headerId);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>OK</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderDetailAsync(int headerId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderRefreshresultsAsync(int id);
+        InvoiceDetailEntityListAPIResult ApiInvoiceheaderDetail(int headerId);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderRefreshresultsAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchGetAsync();
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>OK</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchGetAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchPostAsync(InvoiceFilterDTO body);
+        InvoiceDetailEntityListAPIResult ApiInvoiceheaderRefreshresults(int id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchPostAsync(InvoiceFilterDTO body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderGetAsync();
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>OK</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderGetAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchGetAsync();
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderPostAsync(FileParameter body);
+        InvoiceSearchDTOAPIResult ApiInvoicesearchGet();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderPostAsync(FileParameter body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchGetAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync();
+        System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchPostAsync(InvoiceFilterDTO body);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        InvoiceSearchDTOAPIResult ApiInvoicesearchPost(InvoiceFilterDTO body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchPostAsync(InvoiceFilterDTO body, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderGetAsync();
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        InvoiceHeaderEntityListAPIResult ApiInvoiceuploaderGet();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderGetAsync(System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderPostAsync(FileParameter file);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        InvoiceHeaderEntityListAPIResult ApiInvoiceuploaderPost(FileParameter file);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderPostAsync(FileParameter file, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<RandomInvoiceDTOAPIResult> ApiInvoiceuploaderRandomAsync();
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        RandomInvoiceDTOAPIResult ApiInvoiceuploaderRandom();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<RandomInvoiceDTOAPIResult> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task ApiInvoiceuploaderTemplateAsync();
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        void ApiInvoiceuploaderTemplate();
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
@@ -144,15 +180,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfInvoiceHeaderEntity> ApiInvoiceheaderAsync(int id)
+        public virtual System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderAsync(int id)
         {
             return ApiInvoiceheaderAsync(id, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual InvoiceHeaderEntityAPIResult ApiInvoiceheader(int id)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderAsync(id, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfInvoiceHeaderEntity> ApiInvoiceheaderAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -197,7 +240,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfInvoiceHeaderEntity>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceHeaderEntityAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -226,15 +269,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderDetailAsync(int headerId)
+        public virtual System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId)
         {
             return ApiInvoiceheaderDetailAsync(headerId, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual InvoiceDetailEntityListAPIResult ApiInvoiceheaderDetail(int headerId)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderDetailAsync(headerId, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderDetailAsync(int headerId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId, System.Threading.CancellationToken cancellationToken)
         {
             if (headerId == null)
                 throw new System.ArgumentNullException("headerId");
@@ -282,7 +332,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfListOfInvoiceDetailEntity>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceDetailEntityListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -311,15 +361,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderRefreshresultsAsync(int id)
+        public virtual System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id)
         {
             return ApiInvoiceheaderRefreshresultsAsync(id, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual InvoiceDetailEntityListAPIResult ApiInvoiceheaderRefreshresults(int id)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderRefreshresultsAsync(id, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfListOfInvoiceDetailEntity> ApiInvoiceheaderRefreshresultsAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -366,7 +423,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfListOfInvoiceDetailEntity>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceDetailEntityListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -395,15 +452,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchGetAsync()
+        public virtual System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchGetAsync()
         {
             return ApiInvoicesearchGetAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual InvoiceSearchDTOAPIResult ApiInvoicesearchGet()
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoicesearchGetAsync(System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchGetAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchGetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -444,7 +508,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfInvoiceSearchDTO>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceSearchDTOAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -473,15 +537,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchPostAsync(InvoiceFilterDTO body)
+        public virtual System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchPostAsync(InvoiceFilterDTO body)
         {
             return ApiInvoicesearchPostAsync(body, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual InvoiceSearchDTOAPIResult ApiInvoicesearchPost(InvoiceFilterDTO body)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoicesearchPostAsync(body, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfInvoiceSearchDTO> ApiInvoicesearchPostAsync(InvoiceFilterDTO body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceSearchDTOAPIResult> ApiInvoicesearchPostAsync(InvoiceFilterDTO body, System.Threading.CancellationToken cancellationToken)
         {
             if (body == null)
                 throw new System.ArgumentNullException("body");
@@ -529,7 +600,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfInvoiceSearchDTO>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceSearchDTOAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -558,15 +629,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderGetAsync()
+        public virtual System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderGetAsync()
         {
             return ApiInvoiceuploaderGetAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual InvoiceHeaderEntityListAPIResult ApiInvoiceuploaderGet()
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceuploaderGetAsync(System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderGetAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderGetAsync(System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -607,7 +685,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfListOfInvoiceHeaderEntity>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceHeaderEntityListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -636,28 +714,43 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderPostAsync(FileParameter body)
+        public virtual System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderPostAsync(FileParameter file)
         {
-            return ApiInvoiceuploaderPostAsync(body, System.Threading.CancellationToken.None);
+            return ApiInvoiceuploaderPostAsync(file, System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual InvoiceHeaderEntityListAPIResult ApiInvoiceuploaderPost(FileParameter file)
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceuploaderPostAsync(file, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfListOfInvoiceHeaderEntity> ApiInvoiceuploaderPostAsync(FileParameter body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceHeaderEntityListAPIResult> ApiInvoiceuploaderPostAsync(FileParameter file, System.Threading.CancellationToken cancellationToken)
         {
-            if (body == null)
-                throw new System.ArgumentNullException("body");
-
             var client_ = _httpClient;
             var disposeClient_ = false;
             try
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    var json_ = System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(body, JsonSerializerSettings);
-                    var content_ = new System.Net.Http.ByteArrayContent(json_);
-                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/octet-stream");
+                    var boundary_ = System.Guid.NewGuid().ToString();
+                    var content_ = new System.Net.Http.MultipartFormDataContent(boundary_);
+                    content_.Headers.Remove("Content-Type");
+                    content_.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=" + boundary_);
+
+                    if (file == null)
+                        throw new System.ArgumentNullException("file");
+                    else
+                    {
+                        var content_file_ = new System.Net.Http.StreamContent(file.Data);
+                        if (!string.IsNullOrEmpty(file.ContentType))
+                            content_file_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(file.ContentType);
+                        content_.Add(content_file_, "file", file.FileName ?? "file");
+                    }
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
@@ -692,7 +785,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfListOfInvoiceHeaderEntity>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceHeaderEntityListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -721,15 +814,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync()
+        public virtual System.Threading.Tasks.Task<RandomInvoiceDTOAPIResult> ApiInvoiceuploaderRandomAsync()
         {
             return ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual RandomInvoiceDTOAPIResult ApiInvoiceuploaderRandom()
+        {
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<APIResultOfRandomInvoiceDTO> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<RandomInvoiceDTOAPIResult> ApiInvoiceuploaderRandomAsync(System.Threading.CancellationToken cancellationToken)
         {
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -770,7 +870,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<APIResultOfRandomInvoiceDTO>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<RandomInvoiceDTOAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -802,6 +902,13 @@ namespace Invoice_BlazorWASM.Services.Core
         public virtual System.Threading.Tasks.Task ApiInvoiceuploaderTemplateAsync()
         {
             return ApiInvoiceuploaderTemplateAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual void ApiInvoiceuploaderTemplate()
+        {
+            System.Threading.Tasks.Task.Run(async () => await ApiInvoiceuploaderTemplateAsync(System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -999,190 +1106,47 @@ namespace Invoice_BlazorWASM.Services.Core
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class APIResultOfInvoiceHeaderEntity
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("obj")]
-        public InvoiceHeaderEntity Obj { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("success")]
-        public bool Success { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        public string Message { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("time")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
-        public long Time { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
-
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class APIResultOfInvoiceSearchDTO
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("obj")]
-        public InvoiceSearchDTO Obj { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("success")]
-        public bool Success { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        public string Message { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("time")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
-        public long Time { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
-
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class APIResultOfListOfInvoiceDetailEntity
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("obj")]
-        public System.Collections.Generic.List<InvoiceDetailEntity> Obj { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("success")]
-        public bool Success { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        public string Message { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("time")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
-        public long Time { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
-
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class APIResultOfListOfInvoiceHeaderEntity
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("obj")]
-        public System.Collections.Generic.List<InvoiceHeaderEntity> Obj { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("success")]
-        public bool Success { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        public string Message { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("time")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
-        public long Time { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
-
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class APIResultOfRandomInvoiceDTO
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("obj")]
-        public RandomInvoiceDTO Obj { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("success")]
-        public bool Success { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        public string Message { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("time")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
-        public long Time { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
-
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class InvoiceDetailEntity
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("invoiceDetailId")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int InvoiceDetailId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("invoiceHeaderId")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int InvoiceHeaderId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("custItemCode")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CustItemCode { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("custItemDesc")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CustItemDesc { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("customerRate")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)(?:\.\d+)?$")]
-        public double CustomerRate { get; set; }
+        public decimal CustomerRate { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("approvedRate")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)(?:\.\d+)?$")]
-        public double ApprovedRate { get; set; }
+        public decimal ApprovedRate { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("cases")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)(?:\.\d+)?$")]
-        public double Cases { get; set; }
+        public decimal Cases { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+    }
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceDetailEntityListAPIResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public long Time { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("obj")]
+        public System.Collections.Generic.List<InvoiceDetailEntity> Obj { get; set; }
 
     }
 
@@ -1200,25 +1164,13 @@ namespace Invoice_BlazorWASM.Services.Core
         public bool ByMonth { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("customer")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int? Customer { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("headerId")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int? HeaderId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("monthId")]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int? MonthId { get; set; }
-
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
-
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
 
     }
 
@@ -1227,36 +1179,55 @@ namespace Invoice_BlazorWASM.Services.Core
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("invoiceHeaderId")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int InvoiceHeaderId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("customer")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int Customer { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("invoiceDate")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateOnly InvoiceDate { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("statusTypeId")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.ComponentModel.DataAnnotations.RegularExpression(@"^-?(?:0|[1-9]\d*)$")]
         public int StatusTypeId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Description { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+    }
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceHeaderEntityAPIResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public long Time { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("obj")]
+        public InvoiceHeaderEntity Obj { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceHeaderEntityListAPIResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public long Time { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("obj")]
+        public System.Collections.Generic.List<InvoiceHeaderEntity> Obj { get; set; }
 
     }
 
@@ -1270,14 +1241,23 @@ namespace Invoice_BlazorWASM.Services.Core
         [System.Text.Json.Serialization.JsonPropertyName("invoices")]
         public System.Collections.Generic.List<InvoiceHeaderEntity> Invoices { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+    }
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceSearchDTOAPIResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public long Time { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("obj")]
+        public InvoiceSearchDTO Obj { get; set; }
 
     }
 
@@ -1286,21 +1266,28 @@ namespace Invoice_BlazorWASM.Services.Core
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("header")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Header { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("detail")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Detail { get; set; }
 
-        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+    }
 
-        [System.Text.Json.Serialization.JsonExtensionData]
-        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
-        {
-            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
-            set { _additionalProperties = value; }
-        }
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RandomInvoiceDTOAPIResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public long Time { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("obj")]
+        public RandomInvoiceDTO Obj { get; set; }
 
     }
 
