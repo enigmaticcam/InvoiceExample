@@ -137,8 +137,8 @@ public class CacheInMemory : ICache
 
     public Task SSet<T>(string key, T value) where T : notnull
     {
-        var options = GetMemoryCacheEntryOptions();
-        _cache.Set(key, value, options);
+        var hash = GetHash<T>(key);
+        hash.AddOrUpdate(value, 0, (key, v) => 0);
         return Task.CompletedTask;
     }
 
