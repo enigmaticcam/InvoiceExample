@@ -107,6 +107,7 @@ public class ActionLoad
                 CustomerRate: custRate,
                 ApprovedRate: 0,
                 Cases: custCases));
+            row++;
         }
         creates = Aggregate(creates);
         await _invoiceHeaderCore.QueueCreate(headerId, creates);
