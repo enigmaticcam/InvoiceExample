@@ -6,3 +6,11 @@ public enum enumStatusType
     Approved,
     Finished
 }
+
+public enum enumnResultStatusType
+{
+    New = 0,
+    Pass,
+    ItemCodeLookupFail,
+    InvalidRate
+}
