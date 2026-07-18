@@ -17,7 +17,9 @@
                     </MudItem>
                     <MudItem xs="11">
                         <MudTextField 
-                            @bind-Value="@_search.Filter.HeaderId" 
+                            Value="FilterHeader"
+                            ValueChanged="OnHeaderIdChange"
+                            T="int"
                             Immediate 
                             Label="Header Id" 
                             Margin="Margin.Dense" 
@@ -31,7 +33,9 @@
                     </MudItem>
                     <MudItem xs="11">
                         <MudTextField
-                            @bind-Value="@_search.Filter.Customer"
+                            Value="FilterCustomer"
+                            T="int"
+                            ValueChanged="OnFilterCustomerChange"
                             Immediate
                             Label="Customer"
                             Margin="Margin.Dense"
@@ -42,7 +46,7 @@
                 {
                     <MudProgressLinear Indeterminate="true" />
                 }
-                <MudButton Disabled="Disabled()" Color="Color.Secondary" Variant="Variant.Filled">Search</MudButton>
+                <MudButton OnClick="OnSearch" Disabled="Disabled()" Color="Color.Secondary" Variant="Variant.Filled">Search</MudButton>
             </MudPaper>
         }
     </MudCardContent>

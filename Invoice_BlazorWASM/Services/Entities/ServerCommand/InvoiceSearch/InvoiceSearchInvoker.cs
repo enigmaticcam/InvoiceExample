@@ -5,6 +5,7 @@ namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceSearch;
 public interface IInvoiceSearchInvoker
 {
     Task<BlazorResult<InvoiceSearchDTO>> Get(BroadcastToken token);
+    Task<BlazorResult<InvoiceSearchDTO>> Get(BroadcastToken token, InvoiceFilterDTO filter);
 }
 
 public class InvoiceSearchInvoker : IInvoiceSearchInvoker
@@ -21,6 +22,12 @@ public class InvoiceSearchInvoker : IInvoiceSearchInvoker
     public Task<BlazorResult<InvoiceSearchDTO>> Get(BroadcastToken token)
     {
         var command = new InvoiceSearchGet(_service);
+        return _invoker.Perform(command, token);
+    }
+
+    public Task<BlazorResult<InvoiceSearchDTO>> Get(BroadcastToken token, InvoiceFilterDTO filter)
+    {
+        var command = new InvoiceSearchGetWithFilter(_service, filter);
         return _invoker.Perform(command, token);
     }
 }
