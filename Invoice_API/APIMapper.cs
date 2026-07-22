@@ -9,8 +9,8 @@ public static class APIMapper
     public static void ConfigureApi(this WebApplication app)
     {
         app.MapGet("/api/invoiceheader/{id:int}", InvoiceHeader_Get);
-        app.MapGet("/api/invoiceheader/{id:int}/detail", InvoiceDetail_Get);
-        app.MapPut("/api/invoiceheader/{id:int}/refreshresults", InvoiceHeader_RefreshResults);
+        app.MapGet("/api/invoiceheader/{id:int}/results", InvoiceHeader_GetResults);
+        app.MapPut("/api/invoiceheader/{id:int}/results", InvoiceHeader_RefreshResults);
 
         app.MapGet("/api/invoicesearch", InvoiceSearch_Get);
         app.MapPost("/api/invoicesearch", InvoiceSearch_GetWithFilter);
@@ -22,15 +22,15 @@ public static class APIMapper
         app.MapGet("/api/invoiceuploader/template", InvoiceUploader_GetBlankTemplate);
     }
 
-    private static async Task<APIResult<List<InvoiceDetailEntity>>> InvoiceDetail_Get(int headerId, IAPICaller caller)
-    {
-        var result = await caller.InvoiceDetail_Get(headerId);
-        return result;
-    }
-
     private static async Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id, IAPICaller caller)
     {
         var result = await caller.InvoiceHeader_Get(id);
+        return result;
+    }
+
+    private static async Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id, IAPICaller caller)
+    {
+        var result = await caller.InvoiceHeader_GetResults(id);
         return result;
     }
 

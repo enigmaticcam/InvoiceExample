@@ -3,6 +3,7 @@
 public interface IServiceWrapper
 {
     Task<BlazorResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int headerId);
+    Task<BlazorResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int headerId);
     Task<BlazorResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<BlazorResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
     Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
@@ -78,6 +79,17 @@ public class ServiceWrapper : IServiceWrapper
     {
         var result = await _client.ApiInvoicesearchPostAsync(filter);
         return new BlazorResult<InvoiceSearchDTO>()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message,
+            Obj = result.Obj
+        };
+    }
+
+    public async Task<BlazorResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int headerId)
+    {
+        var result = await _client.ApiInvoiceheaderResultsGetAsync(headerId);
+        return new BlazorResult<List<InvoiceFullResultDTO>>()
         {
             IsSuccess = result.Success,
             Message = result.Message,

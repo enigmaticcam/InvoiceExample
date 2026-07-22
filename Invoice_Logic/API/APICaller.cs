@@ -6,8 +6,8 @@ namespace Invoice_Logic.API;
 
 public interface IAPICaller
 {
-    Task<APIResult<List<InvoiceDetailEntity>>> InvoiceDetail_Get(int headerId);
     Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id);
+    Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id);
     Task<APIResult<List<InvoiceDetailEntity>>> InvoiceHeader_RefreshResults(int id);
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
@@ -27,18 +27,18 @@ public class APICaller : IAPICaller
         _factory = factory;
     }
 
-    public Task<APIResult<List<InvoiceDetailEntity>>> InvoiceDetail_Get(int headerId)
-    {
-        return _factory.Pipeline.Perform(
-            action: () => _factory.InvoiceHeaderCore.GetDetail(headerId),
-            actionName: "InvoiceDetail_Get");
-    }
-
     public Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id)
     {
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceHeaderCore.Get(id),
             actionName: "InvoiceHeader_Get");
+    }
+
+    public Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id)
+    {
+        return _factory.Pipeline.Perform(
+            action: () => _factory.InvoiceHeaderCore.GetResults(id),
+            actionName: "InvoiceHeader_GetFull");
     }
 
     public Task<APIResult<List<InvoiceDetailEntity>>> InvoiceHeader_RefreshResults(int id)

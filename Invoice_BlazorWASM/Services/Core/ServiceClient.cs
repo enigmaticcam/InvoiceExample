@@ -42,29 +42,29 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId);
+        System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsGetAsync(int id);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        InvoiceDetailEntityListAPIResult ApiInvoiceheaderDetail(int headerId);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>OK</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId, System.Threading.CancellationToken cancellationToken);
-
-        /// <returns>OK</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id);
-
-        /// <returns>OK</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        InvoiceDetailEntityListAPIResult ApiInvoiceheaderRefreshresults(int id);
+        InvoiceFullResultDTOListAPIResult ApiInvoiceheaderResultsGet(int id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsGetAsync(int id, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id);
+
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        InvoiceDetailEntityListAPIResult ApiInvoiceheaderResultsPut(int id);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>OK</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -269,25 +269,25 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId)
+        public virtual System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsGetAsync(int id)
         {
-            return ApiInvoiceheaderDetailAsync(headerId, System.Threading.CancellationToken.None);
+            return ApiInvoiceheaderResultsGetAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual InvoiceDetailEntityListAPIResult ApiInvoiceheaderDetail(int headerId)
+        public virtual InvoiceFullResultDTOListAPIResult ApiInvoiceheaderResultsGet(int id)
         {
-            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderDetailAsync(headerId, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderResultsGetAsync(id, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderDetailAsync(int headerId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsGetAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
-            if (headerId == null)
-                throw new System.ArgumentNullException("headerId");
+            if (id == null)
+                throw new System.ArgumentNullException("id");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -300,12 +300,10 @@ namespace Invoice_BlazorWASM.Services.Core
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "api/invoiceheader/{id}/detail"
+                    // Operation Path: "api/invoiceheader/{id}/results"
                     urlBuilder_.Append("api/invoiceheader/");
-                    urlBuilder_.Append("/detail");
-                    urlBuilder_.Append('?');
-                    urlBuilder_.Append(System.Uri.EscapeDataString("headerId")).Append('=').Append(System.Uri.EscapeDataString(ConvertToString(headerId, System.Globalization.CultureInfo.InvariantCulture))).Append('&');
-                    urlBuilder_.Length--;
+                    urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+                    urlBuilder_.Append("/results");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -332,7 +330,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceDetailEntityListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceFullResultDTOListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -361,22 +359,22 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id)
+        public virtual System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id)
         {
-            return ApiInvoiceheaderRefreshresultsAsync(id, System.Threading.CancellationToken.None);
+            return ApiInvoiceheaderResultsPutAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual InvoiceDetailEntityListAPIResult ApiInvoiceheaderRefreshresults(int id)
+        public virtual InvoiceDetailEntityListAPIResult ApiInvoiceheaderResultsPut(int id)
         {
-            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderRefreshresultsAsync(id, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
+            return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderResultsPutAsync(id, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderRefreshresultsAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -393,10 +391,10 @@ namespace Invoice_BlazorWASM.Services.Core
 
                     var urlBuilder_ = new System.Text.StringBuilder();
                 
-                    // Operation Path: "api/invoiceheader/{id}/refreshresults"
+                    // Operation Path: "api/invoiceheader/{id}/results"
                     urlBuilder_.Append("api/invoiceheader/");
                     urlBuilder_.Append(System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-                    urlBuilder_.Append("/refreshresults");
+                    urlBuilder_.Append("/results");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -1171,6 +1169,66 @@ namespace Invoice_BlazorWASM.Services.Core
 
         [System.Text.Json.Serialization.JsonPropertyName("monthId")]
         public int? MonthId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceFullResultDTO
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("invoiceHeaderId")]
+        public int InvoiceHeaderId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("invoiceDetailId")]
+        public int InvoiceDetailId { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("custItemCode")]
+        public string CustItemCode { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("custItemDesc")]
+        public string CustItemDesc { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerRate")]
+        public decimal CustomerRate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("approvedRate")]
+        public decimal ApprovedRate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("cases")]
+        public decimal Cases { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("ourItemCode")]
+        public string OurItemCode { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("casesRemaining")]
+        public decimal? CasesRemaining { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("hasFailedCase")]
+        public bool? HasFailedCase { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("hasFailedRate")]
+        public bool? HasFailedRate { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("resultStatusTypeId")]
+        public int? ResultStatusTypeId { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceFullResultDTOListAPIResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public long Time { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("obj")]
+        public System.Collections.Generic.List<InvoiceFullResultDTO> Obj { get; set; }
 
     }
 

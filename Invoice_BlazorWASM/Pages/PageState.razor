@@ -1,0 +1,158 @@
+﻿@inherits LayoutComponentBase
+@inject IServerStatus _serverStatus
+
+@if (_state == EnumPageState.Loading)
+{
+    <MudText Typo="Typo.h6">Loading...</MudText>
+}
+else if (_state == EnumPageState.Authorized)
+{
+    <MudText Typo="Typo.h6">Authorized...</MudText>
+}
+else if (_state == EnumPageState.Authorizing)
+{
+    <MudText Typo="Typo.h6">Authorizing...</MudText>
+}
+else if (_state == EnumPageState.Loaded)
+{
+    @ChildContent
+}
+else if (_state == EnumPageState.AccessDenied)
+{
+    <MudText Typo="Typo.h6">Access Denied</MudText>
+}
+else if (_state == EnumPageState.Error)
+{
+    <MudText>The following error(s) occurred:</MudText>
+    @if (_errors != null)
+    {
+        <MudList T="string">
+            @foreach (var error in _errors)
+            {
+                <MudListItem Text="@error.Message" Icon="@Icons.Material.Filled.Error" IconColor="Color.Error" />
+            }
+        </MudList>
+    }
+    <MudButton OnClick="Retry" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small">Retry</MudButton>
+}
+
+@code {
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter, EditorRequired]
+    public BroadcastToken Token { get; set; }
+
+    [Parameter]
+    public Func<Task>? LoadFunction { get; set; }
+
+    [Parameter]
+    public Func<Task<bool>>? AuthorizeFunction { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> CanShowContent { get; set; }
+
+    private static Lock _lock = new();
+    private EnumPageState _state = EnumPageState.Authorizing;
+    private List<BlazorResult>? _errors;
+    private bool _authorizedIsFinished;
+
+    protected override void OnInitialized()
+    {
+        Token.OnComplete += OnComplete;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await SetPageState();
+        }
+    }
+
+    private async Task Retry()
+    {
+        if (_authorizedIsFinished)
+        {
+            _state = EnumPageState.Authorized;
+        }
+        else
+        {
+            _state = EnumPageState.Authorizing;
+        }
+        StateHasChanged();
+        await SetPageState();
+    }
+
+    private async Task SetPageState()
+    {
+        ; if (!_authorizedIsFinished && AuthorizeFunction != null)
+        {
+            var result = await AuthorizeFunction();
+            if (_state != EnumPageState.Error)
+            {
+                if (!result)
+                {
+                    _state = EnumPageState.AccessDenied;
+                }
+                else
+                {
+                    _state = EnumPageState.Authorized;
+                }
+                _authorizedIsFinished = true;
+            }
+        }
+        else
+        {
+            _state = EnumPageState.Authorized;
+            _authorizedIsFinished = true;
+        }
+        StateHasChanged();
+        if (_state == EnumPageState.Authorized)
+        {
+            if (LoadFunction != null)
+            {
+                _state = EnumPageState.Loading;
+                StateHasChanged();
+                await LoadFunction();
+                if (_state == EnumPageState.Loading)
+                {
+                    _state = EnumPageState.Loaded;
+                }
+            }
+            else
+            {
+                _state = EnumPageState.Loaded;
+            }
+        }
+        await CanShowContent.InvokeAsync(_state == EnumPageState.Loaded);
+        StateHasChanged();
+    }
+
+    private Task OnComplete(List<BlazorResult> results)
+    {
+        lock (_lock)
+        {
+            if (_state == EnumPageState.Loading || _state == EnumPageState.Authorizing)
+            {
+                var errors = results.Where(x => !x.IsSuccess);
+                if (errors.Count() > 0)
+                {
+                    _errors = errors.ToList();
+                    _state = EnumPageState.Error;
+                }
+            }
+            return Task.CompletedTask;
+        }
+    }
+
+    private enum EnumPageState
+    {
+        Authorizing,
+        Authorized,
+        Loading,
+        Loaded,
+        AccessDenied,
+        Error
+    }
+}

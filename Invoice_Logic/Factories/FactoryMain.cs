@@ -49,6 +49,8 @@ public class FactoryMain : IFactoryMain
     private Lazy<IInvoiceHeaderCollection> _invoiceHeaderCollection;
     private Lazy<IInvoiceDetailCacheEntity> _invoiceDetailCacheEntity;
     private Lazy<IInvoiceDetailDbEntity> _invoiceDetailDbEntity;
+    private Lazy<IInvoiceResultCacheEntity> _invoiceResultCacheEntity;
+    private Lazy<IInvoiceResultDbEntity> _invoiceResultDbEntity;
     private Lazy<IInvoiceSearchCore> _invoiceSearchCore;
     private Lazy<IInvoiceUploaderCore> _invoiceUploaderCore;
     private Lazy<ILateLoaderCollection> _lateLoaderCollection;
@@ -68,9 +70,11 @@ public class FactoryMain : IFactoryMain
         _invoiceDetailCacheEntity = new Lazy<IInvoiceDetailCacheEntity>(() => new InvoiceDetailCacheEntity(Cache, InvoiceDetailDbEntity));
         _invoiceDetailDbEntity = new Lazy<IInvoiceDetailDbEntity>(() => new InvoiceDetailDbEntity(context, InvoiceHeaderCollection, UserLogging));
         _invoiceHeaderCacheEntity = new Lazy<IInvoiceHeaderCacheEntity>(() => new InvoiceHeaderCacheEntity(Cache, InvoiceHeaderDbEntity));
-        _invoiceHeaderCore = new Lazy<IInvoiceHeaderCore>(() => new InvoiceHeaderCore(this, InvoiceHeaderCacheEntity, InvoiceDetailCacheEntity));
+        _invoiceHeaderCore = new Lazy<IInvoiceHeaderCore>(() => new InvoiceHeaderCore(this, InvoiceHeaderCacheEntity, InvoiceDetailCacheEntity, InvoiceResultCacheEntity));
         _invoiceHeaderDbEntity = new Lazy<IInvoiceHeaderDbEntity>(() => new InvoiceHeaderDbEntity(context, LateLoaderCollection, InvoiceHeaderCollection, UserLogging));
         _invoiceHeaderCollection = new Lazy<IInvoiceHeaderCollection>(() => new InvoiceHeaderCollection(AllItemCollections));
+        _invoiceResultCacheEntity = new Lazy<IInvoiceResultCacheEntity>(() => new InvoiceResultCacheEntity(Cache, InvoiceResultDbEntity));
+        _invoiceResultDbEntity = new Lazy<IInvoiceResultDbEntity>(() => new InvoiceResultDbEntity(context));
         _invoiceSearchCore = new Lazy<IInvoiceSearchCore>(() => new InvoiceSearchCore(this));
         _invoiceUploaderCore = new Lazy<IInvoiceUploaderCore>(() => new InvoiceUploaderCore(this));
         _lateLoaderCollection = new Lazy<ILateLoaderCollection>(() => new LateLoaderCollection());
@@ -100,6 +104,8 @@ public class FactoryMain : IFactoryMain
     public IInvoiceHeaderCacheEntity InvoiceHeaderCacheEntity => _invoiceHeaderCacheEntity.Value;
     public IInvoiceHeaderDbEntity InvoiceHeaderDbEntity => _invoiceHeaderDbEntity.Value;
     public IInvoiceHeaderCollection InvoiceHeaderCollection => _invoiceHeaderCollection.Value;
+    public IInvoiceResultCacheEntity InvoiceResultCacheEntity => _invoiceResultCacheEntity.Value;
+    public IInvoiceResultDbEntity InvoiceResultDbEntity => _invoiceResultDbEntity.Value;
     public IInvoiceSearchCore InvoiceSearchCore => _invoiceSearchCore.Value;
     public IInvoiceUploaderCore InvoiceUploaderCore => _invoiceUploaderCore.Value;
     public ILateLoaderCollection LateLoaderCollection => _lateLoaderCollection.Value;

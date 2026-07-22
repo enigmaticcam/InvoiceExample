@@ -1,5 +1,6 @@
 ﻿using Invoice_BlazorWASM.Services.Core;
 using Invoice_BlazorWASM.Services.Entities.ServerCommand;
+using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceDetail;
 using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceHeader;
 using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceSearch;
 using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceUploader;
@@ -13,6 +14,8 @@ public static class ServiceExtensions
         services.AddScoped<ClipboardService>();
         services.AddScoped<IClearCollection, ClearCollection>();
         services.AddScoped<IFileDownload, FileDownload>();
+        services.AddScoped<IInvoiceDetailInvoker, InvoiceDetailInvoker>();
+        services.AddScoped<IInvoiceDetailState, InvoiceDetailState>();
         services.AddScoped<IInvoiceHeaderInvoker, InvoiceHeaderInvoker>();
         services.AddScoped<IInvoiceHeaderState, InvoiceHeaderState>();
         services.AddScoped<IInvoiceSearchInvoker, InvoiceSearchInvoker>();

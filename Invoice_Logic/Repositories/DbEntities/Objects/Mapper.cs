@@ -52,4 +52,25 @@ public static class Mapper
             Description: source.Description
         );
     }
+
+    public static InvoiceResultEntity FromEf(InvoiceResult source)
+    {
+        return new InvoiceResultEntity(
+            InvoiceResultId: source.InvoiceResultId,
+            InvoiceDetailId: source.InvoiceDetailId,
+            InvoiceHeaderId: source.InvoiceHeaderId,
+            OurItemCode: source.OurItemCode,
+            CasesRemaining: source.CasesRemaining,
+            HasFailedCase: source.HasFailedCase,
+            HasFailedRate: source.HasFailedRate,
+            ResultStatusTypeId: source.ResultStatusTypeId
+        );
+    }
+
+    public static List<InvoiceResultEntity> FromEf(IEnumerable<InvoiceResult> source)
+    {
+        return source
+            .Select(FromEf)
+            .ToList();
+    }
 }

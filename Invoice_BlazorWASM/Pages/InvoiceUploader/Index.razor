@@ -35,7 +35,7 @@
             </HeaderContent>
             <RowTemplate>
                 @{
-                    var link = $"header/{context.InvoiceHeaderId}";
+                    var link = $"invoice/{context.InvoiceHeaderId}";
                 }
                 <MudTd DataLabel="Header Id"><MudLink Href="@link">@context.InvoiceHeaderId</MudLink></MudTd>
                 <MudTd DataLabel="Customer">@context.Customer</MudTd>

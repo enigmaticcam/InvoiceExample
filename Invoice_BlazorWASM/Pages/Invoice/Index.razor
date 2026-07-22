@@ -1,5 +1,81 @@
-﻿<h3>Invoice</h3>
+﻿@page "/invoice/{id:int}"
+@inject IInvoiceDetailInvoker _invoiceDetailInvoker
+@inject IInvoiceDetailState _invoiceDetailState
+@inject IInvoiceHeaderInvoker _invoiceHeaderInvoker
+@inject IInvoiceHeaderState _invoiceHeaderState
 
-@code {
+<PageState LoadFunction="LoadData" Token="_token">
+    @if (_invoiceHeader != null)
+    {
+        @* Title *@
+        <MudPaper Elevation="0" class="pa-4">
+            <MudText Typo="Typo.h6">@_invoiceHeader.Customer</MudText>
+        </MudPaper>
 
-}
+        @* Progress *@
+
+        @if (Disabled())
+        {
+            <MudPaper Elevation="0" Class="pa-4">
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+            </MudPaper>
+        }
+
+        <MudPaper Elevation="0" class="pa-4" Outlined="false">
+            <MudExpansionPanels MultiExpansion="true">
+                                
+                @* Header *@
+
+                <MudExpansionPanel Text="Header" Expanded="true">
+                    <MudGrid Spacing="1">
+                        <MudItem xs="3">
+                            <MudTextField @bind-Value="_invoiceHeader.InvoiceHeaderId" Label="Header Id" ReadOnly="true" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField @bind-Value="_invoiceHeader.Customer" Label="Customer" />
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudTextField @bind-Value="_invoiceHeader.InvoiceDate" Label="Date" ReadOnly="true" Format="yyyy-MM-dd" />
+                        </MudItem>
+                    </MudGrid>
+                </MudExpansionPanel>
+
+                
+                @* Summary *@
+
+                <MudExpansionPanel Text="Summary">
+                    <MudGrid Spacing="0">
+                        <MudItem xs="2">
+                            <MudPaper Square="true" Elevation="0" Outlined="true">
+                                <MudTextField @bind-Value="_summary.TotalRequestedDollars" ReadOnly="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Format="N2" />
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="4">Total Requested Dollars</MudItem>
+                        <MudFlexBreak />
+                        <MudItem xs="2">
+                            <MudPaper Square="true" Elevation="0" Outlined="true">
+                                <MudTextField @bind-Value="_summary.TotalExceptionDollars" ReadOnly="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Format="N2" />
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="4">Total Exception Dollars</MudItem>
+                        <MudFlexBreak />
+                        <MudItem xs="2">
+                            <MudPaper Square="true" Elevation="0" Outlined="true">
+                                <MudTextField @bind-Value="_summary.TotalAgreedDollars" ReadOnly="true" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney" Format="N2" />
+                            </MudPaper>
+                        </MudItem>
+                        <MudItem xs="4">Total Agreed Dollars</MudItem>
+                    </MudGrid>
+                </MudExpansionPanel>
+
+
+            </MudExpansionPanels>
+        </MudPaper>
+    }
+</PageState>
+
+
+
+
+
+
