@@ -1,10 +1,9 @@
 ﻿namespace Invoice_Logic.Enums;
 
-public enum enumStatusType
+public enum enumInvoiceActionType
 {
-    Draft = 1,
-    Approved,
-    Finished
+    Delete,
+    RefreshResults
 }
 
 public enum enumnResultStatusType
@@ -13,4 +12,11 @@ public enum enumnResultStatusType
     Pass,
     ItemCodeLookupFail,
     InvalidRate
+}
+
+public enum enumStatusType
+{
+    Draft = 1,
+    Approved,
+    Finished
 }

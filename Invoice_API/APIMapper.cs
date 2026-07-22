@@ -11,6 +11,7 @@ public static class APIMapper
         app.MapGet("/api/invoiceheader/{id:int}", InvoiceHeader_Get);
         app.MapGet("/api/invoiceheader/{id:int}/results", InvoiceHeader_GetResults);
         app.MapPut("/api/invoiceheader/{id:int}/results", InvoiceHeader_RefreshResults);
+        app.MapGet("/api/invoiceheader/{id:int}/permissions", InvoiceHeader_GetPermissions);
 
         app.MapGet("/api/invoicesearch", InvoiceSearch_Get);
         app.MapPost("/api/invoicesearch", InvoiceSearch_GetWithFilter);
@@ -31,6 +32,12 @@ public static class APIMapper
     private static async Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id, IAPICaller caller)
     {
         var result = await caller.InvoiceHeader_GetResults(id);
+        return result;
+    }
+
+    private static async Task<APIResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int id, IAPICaller caller)
+    {
+        var result = await caller.InvoiceHeader_GetPermissions(id);
         return result;
     }
 
@@ -64,14 +71,12 @@ public static class APIMapper
         return result;
     }
 
-
     private static async Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Create(IFormFile file, IAPICaller caller)
     {
         using var stream = file.OpenReadStream();
         var result = await caller.InvoiceUploader_Create(stream);
         return result;
     }
-
 
     private static async Task<IResult> InvoiceUploader_GetBlankTemplate(IAPICaller caller)
     {

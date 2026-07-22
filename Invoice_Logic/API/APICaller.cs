@@ -7,6 +7,7 @@ namespace Invoice_Logic.API;
 public interface IAPICaller
 {
     Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id);
+    Task<APIResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int id);
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id);
     Task<APIResult<List<InvoiceDetailEntity>>> InvoiceHeader_RefreshResults(int id);
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get();
@@ -32,6 +33,13 @@ public class APICaller : IAPICaller
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceHeaderCore.Get(id),
             actionName: "InvoiceHeader_Get");
+    }
+
+    public Task<APIResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int id)
+    {
+        return _factory.Pipeline.Perform(
+            action: () => _factory.InvoiceHeaderCore.GetPermissions(id),
+            actionName: "InvoiceHeader_GetPermissions");
     }
 
     public Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id)

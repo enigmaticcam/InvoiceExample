@@ -10,6 +10,7 @@ public interface IUserLogging
     [DoesNotReturn] void ThrowInvoiceDetailNotFoundException(IEnumerable<int> ids);
     [DoesNotReturn] void ThrowInvoiceHeaderInvalidActionException();
     [DoesNotReturn] void ThrowInvoiceHeaderNotFoundException(IEnumerable<int> ids);
+    [DoesNotReturn] void ThrowInvoiceHeaderPermissionException(string message);
 }
 
 public class UserLogging : IUserLogging
@@ -48,5 +49,12 @@ public class UserLogging : IUserLogging
         var message = $"The following Invoice Headers(s) were not found: {string.Join(",", ids)}";
         _logs.Add(message);
         throw new InvoiceHeaderNotFoundException(message);
+    }
+
+    [DoesNotReturn]
+    public void ThrowInvoiceHeaderPermissionException(string message)
+    {
+        _logs.Add(message);
+        throw new InvoiceHeaderPermissionException(message);
     }
 }

@@ -39,6 +39,13 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         return _invoiceDetailCacheEntity.Get(id);
     }
 
+    public async Task<InvoicePermissionsDTO> GetPermissions(int id)
+    {
+        var headerObj = await Get(id);
+        var headerType = FactoryInvoiceHeaderType.Create((enumStatusType)headerObj.StatusTypeId);
+        return headerType.GetPermissions(headerObj);
+    }
+
     public async Task<List<InvoiceFullResultDTO>> GetResults(int id)
     {
         var list = new List<InvoiceFullResultDTO>();
@@ -82,19 +89,16 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
 
     public async Task<List<InvoiceDetailEntity>> UpdateRefreshResults(int headerId)
     {
-        await CanPerform(headerId, enumStatusType.Draft);
+        await CanPerform(headerId, enumInvoiceActionType.RefreshResults);
         await _factory.InvoiceProcedures.ProcessInvoicesAsync(headerId);
         await _invoiceDetailCacheEntity.Clear(headerId);
         return await GetDetail(headerId);
     }
 
-    private async Task CanPerform(int headerId, params enumStatusType[] statuses)
+    private async Task CanPerform(int headerId, enumInvoiceActionType actionType)
     {
-        var numbers = statuses.Cast<int>();
-        var invoice = await Get(headerId);
-        if (!numbers.Contains(invoice.StatusTypeId))
-        {
-            _factory.UserLogging.ThrowInvoiceHeaderInvalidActionException();
-        }
+        var headerObj = await Get(headerId);
+        var headerType = FactoryInvoiceHeaderType.Create((enumStatusType)headerObj.StatusTypeId);
+        headerType.CanPerformAction(actionType, _factory.UserLogging);
     }
 }

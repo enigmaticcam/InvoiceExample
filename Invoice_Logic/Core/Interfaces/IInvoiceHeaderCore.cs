@@ -10,6 +10,7 @@ public interface IInvoiceHeaderCore
     Task<InvoiceHeaderEntity> Get(int id);
     Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter);
     Task<List<InvoiceDetailEntity>> GetDetail(int id);
+    Task<InvoicePermissionsDTO> GetPermissions(int id);
     Task<List<InvoiceFullResultDTO>> GetResults(int id);
     Task<LateLoader<int, InvoiceHeaderEntity>> QueueCreate(InvoiceHeaderCreateDTO create);
     Task QueueCreate(int headerId, IEnumerable<InvoiceDetailCreateDTO> creates);
