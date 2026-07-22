@@ -194,6 +194,11 @@ from #temp a
 left join InvoiceResult b on b.InvoiceDetailId = a.InvoiceDetailId
 where b.InvoiceDetailId is null
 
+update a
+set ApprovedRate = case when isnull(b.ResultStatusTypeId, 0) = 1 and a.ApprovedRate = 0 then a.CustomerRate else a.ApprovedRate end
+from dbo.InvoiceDetail a
+left join dbo.InvoiceResult b on b.InvoiceDetailId = a.InvoiceDetailId
+
 commit transaction
 
 drop table #temp
