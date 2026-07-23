@@ -2,6 +2,7 @@
 
 public interface IServiceWrapper
 {
+    Task<BlazorResult> InvoiceHeader_Delete(int headerId);
     Task<BlazorResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int headerId);
     Task<BlazorResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int headerId);
     Task<BlazorResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int headerId);
@@ -24,7 +25,7 @@ public class ServiceWrapper : IServiceWrapper
 
     public async Task<BlazorResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int headerId)
     {
-        var result = await _client.ApiInvoiceheaderAsync(headerId);
+        var result = await _client.ApiInvoiceheaderGetAsync(headerId);
         return new BlazorResult<InvoiceHeaderEntity>()
         {
             IsSuccess = result.Success,
@@ -118,6 +119,16 @@ public class ServiceWrapper : IServiceWrapper
             IsSuccess = result.Success,
             Message = result.Message,
             Obj = result.Obj
+        };
+    }
+
+    public async Task<BlazorResult> InvoiceHeader_Delete(int headerId)
+    {
+        var result = await _client.ApiInvoiceheaderDeleteAsync(headerId);
+        return new BlazorResult()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message
         };
     }
 }

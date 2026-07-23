@@ -7,6 +7,7 @@ namespace Invoice_Logic.Repositories.DbEntities.Interfaces;
 public interface IInvoiceHeaderDbEntity
 {
     Task<LateLoader<int, InvoiceHeaderEntity>> Create(InvoiceHeaderCreateDTO create);
+    Task Delete(int id);
     Task<List<InvoiceHeaderEntity>> Get(IEnumerable<int> ids);
     Task<List<int>> Get(InvoiceFilterDTO filter);
 }

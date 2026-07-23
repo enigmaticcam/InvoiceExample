@@ -24,6 +24,15 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         _invoiceResultCacheEntity = invoiceResultCacheEntity;
     }
 
+    public async Task Delete(int id)
+    {
+        await CanPerform(id, enumInvoiceActionType.Delete);
+        await _invoiceResultCacheEntity.Delete(id);
+        await _invoiceDetailCacheEntity.Delete(id);
+        await _invoiceHeaderCacheEntity.Delete(id);
+        await _factory.Repository.SaveChanges();
+    }
+
     public Task<InvoiceHeaderEntity> Get(int id)
     {
         return _invoiceHeaderCacheEntity.Get(id);

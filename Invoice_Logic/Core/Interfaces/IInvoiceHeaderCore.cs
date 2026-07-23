@@ -7,6 +7,7 @@ namespace Invoice_Logic.Core.Interfaces;
 
 public interface IInvoiceHeaderCore
 {
+    Task Delete(int id);
     Task<InvoiceHeaderEntity> Get(int id);
     Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter);
     Task<List<InvoiceDetailEntity>> GetDetail(int id);

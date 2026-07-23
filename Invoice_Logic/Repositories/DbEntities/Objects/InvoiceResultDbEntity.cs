@@ -14,6 +14,17 @@ public class InvoiceResultDbEntity : IInvoiceResultDbEntity
         _context = context;
     }
 
+    public async Task<List<int>> Delete(int headerId)
+    {
+        var lines = await _context.InvoiceResults
+            .Where(x => x.InvoiceHeaderId == headerId)
+            .ToListAsync();
+        _context.RemoveRange(lines);
+        return lines
+            .Select(x => x.InvoiceResultId)
+            .ToList();
+    }
+
     public Task<List<int>> Get(int headerId)
     {
         return _context.InvoiceResults

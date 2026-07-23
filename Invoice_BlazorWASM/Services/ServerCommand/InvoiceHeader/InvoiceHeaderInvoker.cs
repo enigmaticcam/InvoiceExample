@@ -5,6 +5,7 @@ namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceHeader;
 
 public interface IInvoiceHeaderInvoker
 {
+    Task<BlazorResult> Delete(BroadcastToken token, int headerId);
     Task<BlazorResult> Get(BroadcastToken token, int headerId);
     Task<BlazorResult<InvoicePermissionsDTO>> GetPermissions(BroadcastToken token, int headerId);
     Task<BlazorResult> RefreshResults(BroadcastToken token, int headerId);
@@ -23,6 +24,12 @@ public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
         _service = service;
         _headerState = state;
         _detailState = detailState;
+    }
+
+    public Task<BlazorResult> Delete(BroadcastToken token, int headerId)
+    {
+        var command = new InvoiceHeaderDelete(_service, _headerState, headerId);
+        return _invoker.Perform(command, token);
     }
 
     public Task<BlazorResult> Get(BroadcastToken token, int headerId)

@@ -9,6 +9,7 @@ public interface IInvoiceDetailCacheEntity
 {
     Task Clear(int headerId);
     Task Create(int headerId, IEnumerable<InvoiceDetailCreateDTO> creates);
+    Task Delete(int headerId);
     Task<List<InvoiceDetailEntity>> Get(int headerId);
 }
 
@@ -47,6 +48,13 @@ public class InvoiceDetailCacheEntity : CacheEntity<int, InvoiceDetailEntity>, I
     {
         var list = await GetList(ListKey_ByHeader(headerId), () => _invoiceDetailDbEntity.Get(headerId));
         await CacheClear(list);
+        await CacheClearList(ListKey_ByHeader(headerId));
+    }
+
+    public async Task Delete(int headerId)
+    {
+        var result = await _invoiceDetailDbEntity.Delete(headerId);
+        CacheQueueClear(result);
         await CacheClearList(ListKey_ByHeader(headerId));
     }
 }

@@ -6,6 +6,7 @@ namespace Invoice_Logic.API;
 
 public interface IAPICaller
 {
+    Task<APIResult> InvoiceHeader_Delete(int id);
     Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id);
     Task<APIResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int id);
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id);
@@ -26,6 +27,13 @@ public class APICaller : IAPICaller
     public APICaller(IFactoryMain factory)
     {
         _factory = factory;
+    }
+
+    public Task<APIResult> InvoiceHeader_Delete(int id)
+    {
+        return _factory.Pipeline.Perform(
+            action: () => _factory.InvoiceHeaderCore.Delete(id),
+            actionName: "InvoiceHeader_Delete");
     }
 
     public Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id)

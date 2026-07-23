@@ -9,6 +9,7 @@ public static class APIMapper
     public static void ConfigureApi(this WebApplication app)
     {
         app.MapGet("/api/invoiceheader/{id:int}", InvoiceHeader_Get);
+        app.MapDelete("/api/invoiceheader/{id:int}", InvoiceHeader_Delete);
         app.MapGet("/api/invoiceheader/{id:int}/results", InvoiceHeader_GetResults);
         app.MapPut("/api/invoiceheader/{id:int}/results", InvoiceHeader_RefreshResults);
         app.MapGet("/api/invoiceheader/{id:int}/permissions", InvoiceHeader_GetPermissions);
@@ -21,6 +22,12 @@ public static class APIMapper
         app.MapPost("/api/invoiceuploader", InvoiceUploader_Create)
             .DisableAntiforgery();
         app.MapGet("/api/invoiceuploader/template", InvoiceUploader_GetBlankTemplate);
+    }
+
+    private static async Task<APIResult> InvoiceHeader_Delete(int id, IAPICaller caller)
+    {
+        var result = await caller.InvoiceHeader_Delete(id);
+        return result;
     }
 
     private static async Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id, IAPICaller caller)

@@ -9,6 +9,7 @@ namespace Invoice_Logic.Repositories.CacheEntities;
 public interface IInvoiceHeaderCacheEntity
 {
     Task<LateLoader<int, InvoiceHeaderEntity>> Create(InvoiceHeaderCreateDTO create);
+    Task Delete(int id);
     Task<InvoiceHeaderEntity> Get(int id);
     Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter);
 }
@@ -28,6 +29,12 @@ public class InvoiceHeaderCacheEntity : CacheEntity<int, InvoiceHeaderEntity>, I
         var result = await _invoiceHeaderDbEntity.Create(create);
         CacheQueueSet(() => result.LoadObject!);
         return result;
+    }
+
+    public async Task Delete(int id)
+    {
+        await _invoiceHeaderDbEntity.Delete(id);
+        CacheQueueClear(id);
     }
 
     public Task<InvoiceHeaderEntity> Get(int id)

@@ -85,6 +85,24 @@ public class CacheInMemory : ICache
         return result;
     }
 
+    public void QueueRemove<T>(string key, string field)
+    {
+        _queue.Add(() =>
+        {
+            Remove<T>(key, field);
+            return Task.CompletedTask;
+        });
+    }
+
+    public void QueueRemove<T>(string key, IEnumerable<string> fields)
+    {
+        _queue.Add(() =>
+        {
+            Remove<T>(key, fields);
+            return Task.CompletedTask;
+        });
+    }
+
     public void QueueSet<T>(string key, Func<T> getValue, Func<string> getField)
     {
         _queue.Add(() =>
@@ -106,6 +124,13 @@ public class CacheInMemory : ICache
         {
             _cache.Remove(key);
         }
+        return Task.CompletedTask;
+    }
+
+    public Task Remove<T>(string key, string field)
+    {
+        var dictionary = GetDictionary<T>(key);
+        dictionary.TryRemove(field, out _);
         return Task.CompletedTask;
     }
 
@@ -154,5 +179,38 @@ public class CacheInMemory : ICache
         var options = GetMemoryCacheEntryOptions();
         _cache.Set(key, value, options);
         return Task.CompletedTask;
+    }
+
+    public void QueueRemove(string key)
+    {
+        _queue.Add(() =>
+        {
+            Remove(key);
+            return Task.CompletedTask;
+        });
+    }
+
+    public void QueueRemove(IEnumerable<string> keys)
+    {
+        _queue.Add(() =>
+        {
+            Remove(keys);
+            return Task.CompletedTask;
+        });
+    }
+
+    public Task<HashSet<T>> SGet<T>(string key) where T : notnull
+    {
+        var hash = GetHash<T>(key);
+        return Task.FromResult(hash.Keys.ToHashSet());
+    }
+
+    public void SQueueRemove<T>(string key, T getValue) where T : notnull
+    {
+        _queue.Add(() =>
+        {
+            SRemove(key, getValue);
+            return Task.CompletedTask;
+        });
     }
 }

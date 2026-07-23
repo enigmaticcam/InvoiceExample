@@ -21,6 +21,29 @@ public abstract class CacheEntity<TId, TObject> where TId : notnull
         return _cache.Remove<TObject>(ObjectKey, ids.Select(x => x.ToString() ?? ""));
     }
 
+    protected void CacheQueueClear(TId id)
+    {
+        _cache.QueueRemove<TObject>(ObjectKey, id.ToString() ?? "");
+    }
+
+    protected async Task CacheQueueClearList()
+    {
+        var lists = await _cache.SGet<string>(ListKey);
+        _cache.QueueRemove(lists);
+        _cache.QueueRemove(ListKey);
+    }
+
+    protected void CacheQueueClearList(string listKey)
+    {
+        _cache.QueueRemove(listKey);
+        _cache.SQueueRemove(ListKey, listKey);
+    }
+
+    protected void CacheQueueClear(IEnumerable<TId> ids)
+    {
+        _cache.QueueRemove<TObject>(ObjectKey, ids.Select(x => x.ToString() ?? ""));
+    }
+
     protected async Task CacheClearList(string listKey)
     {
         await _cache.Remove(listKey);

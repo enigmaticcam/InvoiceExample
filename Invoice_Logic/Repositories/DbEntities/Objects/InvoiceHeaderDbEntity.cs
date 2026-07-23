@@ -32,6 +32,12 @@ public class InvoiceHeaderDbEntity : IInvoiceHeaderDbEntity
         return _lateLoaderCollection.Add(() => Task.FromResult(Mapper.FromEf(invoice)), tempId);
     }
 
+    public async Task Delete(int id)
+    {
+        var header = await GetFromDb(new List<int>() { id });
+        _context.Remove(header.First());
+    }
+
     public async Task<List<InvoiceHeaderEntity>> Get(IEnumerable<int> ids)
     {
         var result = await GetFromDb(ids);

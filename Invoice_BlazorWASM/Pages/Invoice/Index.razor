@@ -1,8 +1,11 @@
 ﻿@page "/invoice/{id:int}"
+@inject NavigationManager _navigation
 @inject IInvoiceDetailInvoker _invoiceDetailInvoker
 @inject IInvoiceDetailState _invoiceDetailState
 @inject IInvoiceHeaderInvoker _invoiceHeaderInvoker
 @inject IInvoiceHeaderState _invoiceHeaderState
+
+<ResponseMessage Token="_token" />
 
 <PageState LoadFunction="LoadData" Token="_token">
     @if (_invoiceHeader != null)
@@ -21,7 +24,7 @@
                 {
                     @if (CanDelete)
                     {
-                        <MudMenuItem Label="Delete" />
+                        <MudMenuItem Label="Delete" OnClick="OnDelete" />
                     }
                     <MudMenuItem Label="Refresh Results" OnClick="OnRefreshResults" />
                 }

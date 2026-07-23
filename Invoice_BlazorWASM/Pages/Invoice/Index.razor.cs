@@ -72,6 +72,15 @@ public partial class Index
         }
     }
 
+    private async Task OnDelete()
+    {
+        var result = await _invoiceHeaderInvoker.Delete(_token, id);
+        if (result.IsSuccess)
+        {
+            _navigation.NavigateTo("/");
+        }
+    }
+
     private bool Disabled()
     {
         return _standBy.Disabled(_controls.ControlAll);

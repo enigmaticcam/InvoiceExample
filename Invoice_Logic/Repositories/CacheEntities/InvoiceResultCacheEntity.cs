@@ -6,6 +6,7 @@ namespace Invoice_Logic.Repositories.CacheEntities;
 
 public interface IInvoiceResultCacheEntity
 {
+    Task Delete(int headerId);
     Task<List<InvoiceResultEntity>> Get(int headerId);
 }
 
@@ -33,5 +34,12 @@ public class InvoiceResultCacheEntity : CacheEntity<int, InvoiceResultEntity>, I
     protected override int GetId(InvoiceResultEntity obj)
     {
         return obj.InvoiceResultId;
+    }
+
+    public async Task Delete(int headerId)
+    {
+        var result = await _invoiceResultDbEntity.Delete(headerId);
+        CacheQueueClear(result);
+        CacheQueueClearList(ListKey_ByHeader(headerId));
     }
 }
