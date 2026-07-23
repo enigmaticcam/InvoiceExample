@@ -1,6 +1,7 @@
 ﻿using Invoice_BlazorWASM.Data;
+using Invoice_BlazorWASM.Services.Entities;
 
-namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceHeader;
+namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceHeader;
 
 public interface IInvoiceHeaderState : IEntityState<int, DTO_InvoiceHeader> { }
 

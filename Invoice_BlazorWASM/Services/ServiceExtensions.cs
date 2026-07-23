@@ -1,9 +1,9 @@
 ﻿using Invoice_BlazorWASM.Services.Core;
-using Invoice_BlazorWASM.Services.Entities.ServerCommand;
-using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceDetail;
-using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceHeader;
-using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceSearch;
-using Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceUploader;
+using Invoice_BlazorWASM.Services.ServerCommand;
+using Invoice_BlazorWASM.Services.ServerCommand.InvoiceDetail;
+using Invoice_BlazorWASM.Services.ServerCommand.InvoiceHeader;
+using Invoice_BlazorWASM.Services.ServerCommand.InvoiceSearch;
+using Invoice_BlazorWASM.Services.ServerCommand.InvoiceUploader;
 
 namespace Invoice_BlazorWASM.Services;
 

@@ -1,6 +1,7 @@
 ﻿using Invoice_BlazorWASM.Services.Core;
+using Invoice_BlazorWASM.Services.ServerCommand;
 
-namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceDetail;
+namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceDetail;
 
 public interface IInvoiceDetailInvoker
 {

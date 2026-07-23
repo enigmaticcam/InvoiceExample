@@ -14,6 +14,7 @@ public class InvoiceHeaderTypeDraft : InvoiceHeaderType
         return new InvoicePermissionsDTO()
         {
             CanDelete = true,
+            CanEdit = true,
             StatusChanges = new List<int>()
             {
                 (int)enumStatusType.Approved

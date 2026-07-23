@@ -55,16 +55,16 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id);
+        System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsPutAsync(int id);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        InvoiceDetailEntityListAPIResult ApiInvoiceheaderResultsPut(int id);
+        InvoiceFullResultDTOListAPIResult ApiInvoiceheaderResultsPut(int id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsPutAsync(int id, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -372,14 +372,14 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id)
+        public virtual System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsPutAsync(int id)
         {
             return ApiInvoiceheaderResultsPutAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual InvoiceDetailEntityListAPIResult ApiInvoiceheaderResultsPut(int id)
+        public virtual InvoiceFullResultDTOListAPIResult ApiInvoiceheaderResultsPut(int id)
         {
             return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderResultsPutAsync(id, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
@@ -387,7 +387,7 @@ namespace Invoice_BlazorWASM.Services.Core
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<InvoiceDetailEntityListAPIResult> ApiInvoiceheaderResultsPutAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceFullResultDTOListAPIResult> ApiInvoiceheaderResultsPutAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -434,7 +434,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceDetailEntityListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceFullResultDTOListAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1204,51 +1204,6 @@ namespace Invoice_BlazorWASM.Services.Core
             var result = System.Convert.ToString(value, cultureInfo);
             return result == null ? "" : result;
         }
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class InvoiceDetailEntity
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("invoiceDetailId")]
-        public int InvoiceDetailId { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("invoiceHeaderId")]
-        public int InvoiceHeaderId { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("custItemCode")]
-        public string CustItemCode { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("custItemDesc")]
-        public string CustItemDesc { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("customerRate")]
-        public decimal CustomerRate { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("approvedRate")]
-        public decimal ApprovedRate { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("cases")]
-        public decimal Cases { get; set; }
-
-    }
-
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class InvoiceDetailEntityListAPIResult
-    {
-
-        [System.Text.Json.Serialization.JsonPropertyName("success")]
-        public bool Success { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("message")]
-        public string Message { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("time")]
-        public long Time { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("obj")]
-        public System.Collections.Generic.List<InvoiceDetailEntity> Obj { get; set; }
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]

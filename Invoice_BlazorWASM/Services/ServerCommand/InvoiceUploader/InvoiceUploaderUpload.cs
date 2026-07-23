@@ -1,7 +1,8 @@
 ﻿using Invoice_BlazorWASM.Data;
 using Invoice_BlazorWASM.Services.Core;
+using Invoice_BlazorWASM.Services.ServerCommand;
 
-namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceUploader;
+namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceUploader;
 
 public class InvoiceUploaderUpload : IServerCommand<BlazorResult<List<InvoiceHeaderEntity>>>
 {

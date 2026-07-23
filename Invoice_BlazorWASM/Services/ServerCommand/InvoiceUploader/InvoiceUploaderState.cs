@@ -1,6 +1,7 @@
 ﻿using Invoice_BlazorWASM.Data;
+using Invoice_BlazorWASM.Services.Entities;
 
-namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceUploader;
+namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceUploader;
 
 public interface IInvoiceUploaderState : IEntityState<int, DTO_InvoiceHeader> { }
 

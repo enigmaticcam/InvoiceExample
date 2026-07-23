@@ -3,7 +3,9 @@
 public interface IServiceWrapper
 {
     Task<BlazorResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int headerId);
+    Task<BlazorResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int headerId);
     Task<BlazorResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int headerId);
+    Task<BlazorResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int headerId);
     Task<BlazorResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<BlazorResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
     Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
@@ -89,6 +91,28 @@ public class ServiceWrapper : IServiceWrapper
     public async Task<BlazorResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int headerId)
     {
         var result = await _client.ApiInvoiceheaderResultsGetAsync(headerId);
+        return new BlazorResult<List<InvoiceFullResultDTO>>()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message,
+            Obj = result.Obj
+        };
+    }
+
+    public async Task<BlazorResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int headerId)
+    {
+        var result = await _client.ApiInvoiceheaderPermissionsAsync(headerId);
+        return new BlazorResult<InvoicePermissionsDTO>()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message,
+            Obj = result.Obj
+        };
+    }
+
+    public async Task<BlazorResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int headerId)
+    {
+        var result = await _client.ApiInvoiceheaderResultsPutAsync(headerId);
         return new BlazorResult<List<InvoiceFullResultDTO>>()
         {
             IsSuccess = result.Success,

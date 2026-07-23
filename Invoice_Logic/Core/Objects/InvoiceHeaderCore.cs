@@ -87,12 +87,12 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         return _invoiceDetailCacheEntity.Create(headerId, creates);
     }
 
-    public async Task<List<InvoiceDetailEntity>> UpdateRefreshResults(int headerId)
+    public async Task<List<InvoiceFullResultDTO>> UpdateRefreshResults(int headerId)
     {
         await CanPerform(headerId, enumInvoiceActionType.RefreshResults);
         await _factory.InvoiceProcedures.ProcessInvoicesAsync(headerId);
         await _invoiceDetailCacheEntity.Clear(headerId);
-        return await GetDetail(headerId);
+        return await GetResults(headerId);
     }
 
     private async Task CanPerform(int headerId, enumInvoiceActionType actionType)

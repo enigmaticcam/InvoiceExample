@@ -1,5 +1,6 @@
 using Invoice_BlazorWASM.Data;
 using Invoice_BlazorWASM.Services;
+using Invoice_BlazorWASM.Services.Core;
 using Microsoft.AspNetCore.Components;
 
 namespace Invoice_BlazorWASM.Pages.Invoice;
@@ -12,6 +13,10 @@ public partial class Index
     private Controls _controls = new();
     private DTO_InvoiceHeader? _invoiceHeader;
     private DTO_InvoiceSummary _summary = new();
+    private InvoicePermissionsDTO? _permissions;
+
+    public bool CanEdit => _permissions?.CanEdit ?? false;
+    public bool CanDelete => _permissions?.CanDelete ?? false;
 
     protected override void OnInitialized()
     {
@@ -22,7 +27,8 @@ public partial class Index
     {
         await Task.WhenAll(
             LoadDataHeader(),
-            LoadDataDetail()
+            LoadDataDetail(),
+            LoadDataPermissions()
         );
         await InvokeAsync(StateHasChanged);
     }
@@ -46,6 +52,24 @@ public partial class Index
     {
         await _invoiceDetailInvoker.GetResults(_token, id);
         _summary.Calc(_invoiceDetailState.Items);
+    }
+
+    private async Task LoadDataPermissions()
+    {
+        var result = await _invoiceHeaderInvoker.GetPermissions(_token, id);
+        if (result.IsSuccess)
+        {
+            _permissions = result.Obj;
+        }
+    }
+
+    private async Task OnRefreshResults()
+    {
+        var result = await _invoiceHeaderInvoker.RefreshResults(_token, id);
+        if (result.IsSuccess)
+        {
+            _summary.Calc(_invoiceDetailState.Items);
+        }
     }
 
     private bool Disabled()

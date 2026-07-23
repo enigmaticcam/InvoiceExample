@@ -9,7 +9,7 @@ public interface IAPICaller
     Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Get(int id);
     Task<APIResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int id);
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id);
-    Task<APIResult<List<InvoiceDetailEntity>>> InvoiceHeader_RefreshResults(int id);
+    Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int id);
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
     Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
@@ -49,7 +49,7 @@ public class APICaller : IAPICaller
             actionName: "InvoiceHeader_GetFull");
     }
 
-    public Task<APIResult<List<InvoiceDetailEntity>>> InvoiceHeader_RefreshResults(int id)
+    public Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int id)
     {
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceHeaderCore.UpdateRefreshResults(id),

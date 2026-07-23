@@ -8,8 +8,24 @@
     @if (_invoiceHeader != null)
     {
         @* Title *@
+
         <MudPaper Elevation="0" class="pa-4">
             <MudText Typo="Typo.h6">@_invoiceHeader.Customer</MudText>
+        </MudPaper>
+
+        @* Title *@
+
+        <MudPaper Elevation="0" Style="background-color: lightgray">
+            <MudMenu Label="Actions" Disabled="Disabled()" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
+                @if (CanEdit)
+                {
+                    @if (CanDelete)
+                    {
+                        <MudMenuItem Label="Delete" />
+                    }
+                    <MudMenuItem Label="Refresh Results" OnClick="OnRefreshResults" />
+                }
+            </MudMenu>
         </MudPaper>
 
         @* Progress *@

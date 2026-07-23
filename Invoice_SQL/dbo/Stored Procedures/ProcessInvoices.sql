@@ -198,6 +198,8 @@ update a
 set ApprovedRate = case when isnull(b.ResultStatusTypeId, 0) = 1 and a.ApprovedRate = 0 then a.CustomerRate else a.ApprovedRate end
 from dbo.InvoiceDetail a
 left join dbo.InvoiceResult b on b.InvoiceDetailId = a.InvoiceDetailId
+inner join #temp c on c.InvoiceDetailId = a.InvoiceDetailId
+where a.InvoiceHeaderId = @headerId
 
 commit transaction
 

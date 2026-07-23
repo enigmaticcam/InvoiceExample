@@ -3,6 +3,6 @@
 public class InvoicePermissionsDTO
 {
     public bool CanDelete { get; set; }
-    public bool CanEdit { get; }
+    public bool CanEdit { get; set; }
     public List<int> StatusChanges { get; set; } = new();
 }

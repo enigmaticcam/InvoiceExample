@@ -1,6 +1,7 @@
 ﻿using Invoice_BlazorWASM.Services.Core;
+using Invoice_BlazorWASM.Services.ServerCommand;
 
-namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceSearch;
+namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceSearch;
 
 public class InvoiceSearchGet : IServerCommand<BlazorResult<InvoiceSearchDTO>>
 {

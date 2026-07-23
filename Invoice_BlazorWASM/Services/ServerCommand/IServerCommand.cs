@@ -1,4 +1,4 @@
-﻿namespace Invoice_BlazorWASM.Services.Entities.ServerCommand;
+﻿namespace Invoice_BlazorWASM.Services.ServerCommand;
 
 public interface IServerCommand
 {

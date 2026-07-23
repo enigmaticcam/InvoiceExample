@@ -1,6 +1,6 @@
 ﻿using Invoice_BlazorWASM.Services.Core;
 
-namespace Invoice_BlazorWASM.Services.Entities.ServerCommand;
+namespace Invoice_BlazorWASM.Services.ServerCommand;
 
 public interface IServerInvoker
 {

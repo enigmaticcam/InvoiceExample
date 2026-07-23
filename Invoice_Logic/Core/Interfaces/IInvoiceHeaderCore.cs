@@ -14,5 +14,5 @@ public interface IInvoiceHeaderCore
     Task<List<InvoiceFullResultDTO>> GetResults(int id);
     Task<LateLoader<int, InvoiceHeaderEntity>> QueueCreate(InvoiceHeaderCreateDTO create);
     Task QueueCreate(int headerId, IEnumerable<InvoiceDetailCreateDTO> creates);
-    Task<List<InvoiceDetailEntity>> UpdateRefreshResults(int headerId);
+    Task<List<InvoiceFullResultDTO>> UpdateRefreshResults(int headerId);
 }

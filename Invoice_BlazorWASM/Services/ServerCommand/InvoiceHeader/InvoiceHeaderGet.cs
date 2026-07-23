@@ -1,7 +1,8 @@
 ﻿using Invoice_BlazorWASM.Data;
 using Invoice_BlazorWASM.Services.Core;
+using Invoice_BlazorWASM.Services.ServerCommand;
 
-namespace Invoice_BlazorWASM.Services.Entities.ServerCommand.InvoiceHeader;
+namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceHeader;
 
 public class InvoiceHeaderGet : IServerCommand<BlazorResult>
 {

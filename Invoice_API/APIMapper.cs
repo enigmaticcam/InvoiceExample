@@ -41,7 +41,7 @@ public static class APIMapper
         return result;
     }
 
-    private static async Task<APIResult<List<InvoiceDetailEntity>>> InvoiceHeader_RefreshResults(int id, IAPICaller caller)
+    private static async Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int id, IAPICaller caller)
     {
         var result = await caller.InvoiceHeader_RefreshResults(id);
         return result;
