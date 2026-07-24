@@ -213,4 +213,13 @@ public class CacheInMemory : ICache
             return Task.CompletedTask;
         });
     }
+
+    public void QueueSet<T>(Func<IEnumerable<CacheObjectField<T>>> getObjects)
+    {
+        _queue.Add(() =>
+        {
+            Set(getObjects());
+            return Task.CompletedTask;
+        });
+    }
 }

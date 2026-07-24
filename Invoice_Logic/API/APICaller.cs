@@ -17,6 +17,8 @@ public interface IAPICaller
     Task<APIResult<string>> InvoiceUploader_GetBlankTemplate();
     Task<APIResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom();
     Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Create(Stream stream);
+    Task<APIResult<List<ResultStatusTypeEntity>>> ResultStatusType_Get();
+    Task<APIResult<List<StatusTypeEntity>>> StatusType_Get();
 
 }
 
@@ -104,5 +106,19 @@ public class APICaller : IAPICaller
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceUploaderCore.GetRandom(),
             actionName: "InvoiceUploader_GetRandom");
+    }
+
+    public Task<APIResult<List<ResultStatusTypeEntity>>> ResultStatusType_Get()
+    {
+        return _factory.Pipeline.Perform(
+            action: () => _factory.ResultStatusTypeCore.Get(),
+            actionName: "ResultStatusType_Get");
+    }
+
+    public Task<APIResult<List<StatusTypeEntity>>> StatusType_Get()
+    {
+        return _factory.Pipeline.Perform(
+            action: () => _factory.StatusTypeCore.Get(),
+            actionName: "StatusType_Get");
     }
 }

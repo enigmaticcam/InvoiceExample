@@ -11,6 +11,8 @@ public interface IUserLogging
     [DoesNotReturn] void ThrowInvoiceHeaderInvalidActionException();
     [DoesNotReturn] void ThrowInvoiceHeaderNotFoundException(IEnumerable<int> ids);
     [DoesNotReturn] void ThrowInvoiceHeaderPermissionException(string message);
+    [DoesNotReturn] void ThrowResultStatusTypeNotFoundException(IEnumerable<int> ids);
+    [DoesNotReturn] void ThrowStatusTypeNotFoundException(IEnumerable<int> ids);
 }
 
 public class UserLogging : IUserLogging
@@ -56,5 +58,21 @@ public class UserLogging : IUserLogging
     {
         _logs.Add(message);
         throw new InvoiceHeaderPermissionException(message);
+    }
+
+    [DoesNotReturn]
+    public void ThrowResultStatusTypeNotFoundException(IEnumerable<int> ids)
+    {
+        var message = $"The following Result Status Type(s) were not found: {string.Join(",", ids)}";
+        _logs.Add(message);
+        throw new ResultStatusTypeNotFoundException(message);
+    }
+
+    [DoesNotReturn]
+    public void ThrowStatusTypeNotFoundException(IEnumerable<int> ids)
+    {
+        var message = $"The following Status Type(s) were not found: {string.Join(",", ids)}";
+        _logs.Add(message);
+        throw new StatusTypeNotFoundException(message);
     }
 }

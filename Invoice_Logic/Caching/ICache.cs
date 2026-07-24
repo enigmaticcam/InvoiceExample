@@ -10,6 +10,7 @@ public interface ICache
     void QueueRemove<T>(string key, string field);
     void QueueRemove<T>(string key, IEnumerable<string> fields);
     void QueueSet<T>(string key, Func<T> getValue, Func<string> getField);
+    void QueueSet<T>(Func<IEnumerable<CacheObjectField<T>>> getObjects);
     Task Remove(string key);
     Task Remove(IEnumerable<string> keys);
     Task Remove<T>(string key, IEnumerable<string> fields);

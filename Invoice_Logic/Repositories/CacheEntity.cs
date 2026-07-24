@@ -55,6 +55,17 @@ public abstract class CacheEntity<TId, TObject> where TId : notnull
         _cache.QueueSet<TObject>(ObjectKey, getObj, () => GetId(getObj()).ToString() ?? "");
     }
 
+    protected void CacheQueueSet(Func<IEnumerable<TObject>> objects)
+    {
+        _cache.QueueSet(() => objects()
+            .Select(x => new CacheObjectField<TObject>(
+                key: ObjectKey,
+                field: GetId(x).ToString() ?? "",
+                value: x))
+            .ToList()
+        );
+    }
+
     protected async Task<TObject> GetFromCache(TId id)
     {
         var ids = new List<TId>() { id };

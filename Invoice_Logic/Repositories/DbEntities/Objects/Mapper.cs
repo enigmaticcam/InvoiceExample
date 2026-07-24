@@ -29,6 +29,38 @@ public static class Mapper
         };
     }
 
+    public static ResultStatusType ToEf(ResultStatusTypeCreateDTO source)
+    {
+        return new ResultStatusType()
+        {
+            ResultStatusTypeDesc = source.ResultStatusTypeDesc,
+            ResultStatusTypeId = source.ResultStatusTypeId
+        };
+    }
+
+    public static StatusType ToEf(StatusTypeCreateDTO source)
+    {
+        return new StatusType()
+        {
+            StatusTypeDesc = source.StatusTypeDesc,
+            StatusTypeId = source.StatusTypeId
+        };
+    }
+
+    public static List<ResultStatusType> ToEf(IEnumerable<ResultStatusTypeCreateDTO> source)
+    {
+        return source
+            .Select(ToEf)
+            .ToList();
+    }
+
+    public static List<StatusType> ToEf(IEnumerable<StatusTypeCreateDTO> source)
+    {
+        return source
+            .Select(ToEf)
+            .ToList();
+    }
+
     public static InvoiceDetailEntity FromEf(InvoiceDetail source)
     {
         return new InvoiceDetailEntity(
@@ -67,7 +99,37 @@ public static class Mapper
         );
     }
 
+    public static ResultStatusTypeEntity FromEf(ResultStatusType source)
+    {
+        return new ResultStatusTypeEntity(
+            ResultStatusTypeId: source.ResultStatusTypeId,
+            ResultStatusTypeDesc: source.ResultStatusTypeDesc
+        );
+    }
+
+    public static StatusTypeEntity FromEf(StatusType source)
+    {
+        return new StatusTypeEntity(
+            StatusTypeId: source.StatusTypeId,
+            StatusTypeDesc: source.StatusTypeDesc
+        );
+    }
+
     public static List<InvoiceResultEntity> FromEf(IEnumerable<InvoiceResult> source)
+    {
+        return source
+            .Select(FromEf)
+            .ToList();
+    }
+
+    public static List<ResultStatusTypeEntity> FromEf(IEnumerable<ResultStatusType> source)
+    {
+        return source
+            .Select(FromEf)
+            .ToList();
+    }
+
+    public static List<StatusTypeEntity> FromEf(IEnumerable<StatusType> source)
     {
         return source
             .Select(FromEf)

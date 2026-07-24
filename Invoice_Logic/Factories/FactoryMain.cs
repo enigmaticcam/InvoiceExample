@@ -31,6 +31,8 @@ public interface IFactoryMain
     IInvoiceUploaderCore InvoiceUploaderCore { get; }
     IPipeline Pipeline { get; }
     IRepository Repository { get; }
+    IResultStatusTypeCore ResultStatusTypeCore { get; }
+    IStatusTypeCore StatusTypeCore { get; }
     IUserLogging UserLogging { get; }
     IWebServer WebServer { get; }
 }
@@ -56,6 +58,12 @@ public class FactoryMain : IFactoryMain
     private Lazy<ILateLoaderCollection> _lateLoaderCollection;
     private Lazy<IPipeline> _pipeline;
     private Lazy<IRepository> _repository;
+    private Lazy<IResultStatusTypeCacheEntity> _resultStatusTypeCacheEntity;
+    private Lazy<IResultStatusTypeCore> _resultStatusTypeCore;
+    private Lazy<IResultStatusTypeDbEntity> _resultStatusTypeDbEntity;
+    private Lazy<IStatusTypeCacheEntity> _statusTypeCacheEntity;
+    private Lazy<IStatusTypeCore> _statusTypeCore;
+    private Lazy<IStatusTypeDbEntity> _statusTypeDbEntity;
     private Lazy<IUserLogging> _userLogging;
     private Lazy<IWebServer> _webServer;
 
@@ -79,7 +87,13 @@ public class FactoryMain : IFactoryMain
         _invoiceUploaderCore = new Lazy<IInvoiceUploaderCore>(() => new InvoiceUploaderCore(this));
         _lateLoaderCollection = new Lazy<ILateLoaderCollection>(() => new LateLoaderCollection());
         _pipeline = new Lazy<IPipeline>(CreatePipeline);
+        _resultStatusTypeCacheEntity = new Lazy<IResultStatusTypeCacheEntity>(() => new ResultStatusTypeCacheEntity(Cache, ResultStatusTypeDbEntity));
+        _resultStatusTypeCore = new Lazy<IResultStatusTypeCore>(() => new ResultStatusTypeCore(this, ResultStatusTypeCacheEntity));
+        _resultStatusTypeDbEntity = new Lazy<IResultStatusTypeDbEntity>(() => new ResultStatusTypeDbEntity(context, LateLoaderCollection, UserLogging));
         _repository = new Lazy<IRepository>(() => new RepositoryEF(context, Cache, LateLoaderCollection, AllItemCollections));
+        _statusTypeCacheEntity = new Lazy<IStatusTypeCacheEntity>(() => new StatusTypeCacheEntity(Cache, StatusTypeDbEntity));
+        _statusTypeCore = new Lazy<IStatusTypeCore>(() => new StatusTypeCore(this, StatusTypeCacheEntity));
+        _statusTypeDbEntity = new Lazy<IStatusTypeDbEntity>(() => new StatusTypeDbEntity(context, LateLoaderCollection, UserLogging));
         _userLogging = new Lazy<IUserLogging>(() => new UserLogging());
         _webServer = new Lazy<IWebServer>(() => new WebServer(webServer));
     }
@@ -111,6 +125,14 @@ public class FactoryMain : IFactoryMain
     public ILateLoaderCollection LateLoaderCollection => _lateLoaderCollection.Value;
     public IPipeline Pipeline => _pipeline.Value;
     public IRepository Repository => _repository.Value;
+    public IResultStatusTypeCacheEntity ResultStatusTypeCacheEntity => _resultStatusTypeCacheEntity.Value;
+    public IResultStatusTypeCore ResultStatusTypeCore => _resultStatusTypeCore.Value;
+    public IResultStatusTypeDbEntity ResultStatusTypeDbEntity => _resultStatusTypeDbEntity.Value;
+    public IStatusTypeCacheEntity StatusTypeCacheEntity => _statusTypeCacheEntity.Value;
+    public IStatusTypeCore StatusTypeCore => _statusTypeCore.Value;
+    public IStatusTypeDbEntity StatusTypeDbEntity => _statusTypeDbEntity.Value;
     public IUserLogging UserLogging => _userLogging.Value;
     public IWebServer WebServer => _webServer.Value;
+
+
 }

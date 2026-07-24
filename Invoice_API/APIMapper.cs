@@ -22,6 +22,9 @@ public static class APIMapper
         app.MapPost("/api/invoiceuploader", InvoiceUploader_Create)
             .DisableAntiforgery();
         app.MapGet("/api/invoiceuploader/template", InvoiceUploader_GetBlankTemplate);
+
+        app.MapGet("/api/resultstatustype", ResultStatusType_Get);
+        app.MapGet("/api/statustype", StatusType_Get);
     }
 
     private static async Task<APIResult> InvoiceHeader_Delete(int id, IAPICaller caller)
@@ -96,5 +99,17 @@ public static class APIMapper
         {
             return Results.BadRequest(result.Message);
         }
+    }
+
+    private static async Task<APIResult<List<ResultStatusTypeEntity>>> ResultStatusType_Get(IAPICaller caller)
+    {
+        var result = await caller.ResultStatusType_Get();
+        return result;
+    }
+
+    private static async Task<APIResult<List<StatusTypeEntity>>> StatusType_Get(IAPICaller caller)
+    {
+        var result = await caller.StatusType_Get();
+        return result;
     }
 }
