@@ -87,6 +87,30 @@
                     </MudGrid>
                 </MudExpansionPanel>
 
+                @* Detail *@
+
+                <MudExpansionPanel Text="Detial">
+                    <MudChip T="string" Style="@LineColor(false, true)">Case Failure</MudChip>
+                    <MudChip T="string" Style="@LineColor(true, false)">Rate Failure</MudChip>
+                    <MudChip T="string" Style="@LineColor(true, true)">Case and Rate Failure</MudChip>
+                    <MudDataGrid T="DTO_InvoiceDetail" Items="_invoiceDetailState.Items" Height="600px" FixedHeader="true" Filterable="true" FilterMode="DataGridFilterMode.Simple"
+                                 SortMode="SortMode.Single" FixedFooter="true" EditMode="DataGridEditMode.Cell" ReadOnly="!CanEdit" RowStyleFunc="RowStyle" Dense="true">
+                        <Columns>
+                            <PropertyColumn Property="x => x.InvoiceDetailId" Title="Id" Editable="false" />
+                            <PropertyColumn Property="x => x.CustItemCode" Title="Cust Item Code" Editable="false" />
+                            <PropertyColumn Property="x => x.CustItemDesc" Title="Cust Item Desc" Editable="false" />
+                            <PropertyColumn Property="x => x.Cases" Title="Cases" Editable="false" />
+                            <PropertyColumn Property="x => x.CustomerRate" Title="Cust Rate" Editable="false" />
+                            <PropertyColumn Property="x => x.ApprovedRate" Title="Approved Rate" Editable="true" />
+                            <PropertyColumn Property="x => x.HasFailedCase" Title="Case Failure" Editable="false" />
+                            <PropertyColumn Property="x => x.HasFailedRate" Title="Rate Failure" Editable="false" />
+                            <PropertyColumn Property="x => x.ResultStatusTypeId" Title="Result" Editable="false" />
+                        </Columns>
+                        <PagerContent>
+                            <MudDataGridPager T="DTO_InvoiceDetail" />
+                        </PagerContent>
+                    </MudDataGrid>
+                </MudExpansionPanel>
 
             </MudExpansionPanels>
         </MudPaper>

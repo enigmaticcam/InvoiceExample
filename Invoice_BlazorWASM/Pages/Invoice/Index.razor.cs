@@ -50,8 +50,11 @@ public partial class Index
 
     private async Task LoadDataDetail()
     {
-        await _invoiceDetailInvoker.GetResults(_token, id);
-        _summary.Calc(_invoiceDetailState.Items);
+        var result = await _invoiceDetailInvoker.GetResults(_token, id);
+        if (result.IsSuccess)
+        {
+            _summary.Calc(_invoiceDetailState.Items);
+        }
     }
 
     private async Task LoadDataPermissions()
@@ -84,6 +87,33 @@ public partial class Index
     private bool Disabled()
     {
         return _standBy.Disabled(_controls.ControlAll);
+    }
+
+    private Func<DTO_InvoiceDetail, int, string> RowStyle => (line, i) =>
+    {
+        return LineColor(line.HasFailedRate, line.HasFailedCase);
+    };
+
+    private string LineColor(bool? isFailedRate, bool? isFailedCase)
+    {
+        bool caseFail = isFailedCase ?? false;
+        bool rateFail = isFailedRate ?? false;
+        if (rateFail && caseFail)
+        {
+            return "background-color:lightpink";
+        }
+        else if (caseFail)
+        {
+            return "background-color:lightyellow";
+        }
+        else if (rateFail)
+        {
+            return "background-color:lightcyan";
+        }
+        else
+        {
+            return "";
+        }
     }
 
     private record Controls(
