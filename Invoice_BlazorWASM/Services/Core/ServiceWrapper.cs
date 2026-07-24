@@ -12,6 +12,8 @@ public interface IServiceWrapper
     Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
     Task<BlazorResult<RandomInvoiceDTO>> InvoiceUploader_GetRandom();
     Task<BlazorResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Upload(FileParameter file);
+    Task<BlazorResult<List<ResultStatusTypeEntity>>> ResultStatusType_Get();
+    Task<BlazorResult<List<StatusTypeEntity>>> StatusType_Get();
 }
 
 public class ServiceWrapper : IServiceWrapper
@@ -129,6 +131,28 @@ public class ServiceWrapper : IServiceWrapper
         {
             IsSuccess = result.Success,
             Message = result.Message
+        };
+    }
+
+    public async Task<BlazorResult<List<ResultStatusTypeEntity>>> ResultStatusType_Get()
+    {
+        var result = await _client.ApiResultstatustypeAsync();
+        return new BlazorResult<List<ResultStatusTypeEntity>>()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message,
+            Obj = result.Obj
+        };
+    }
+
+    public async Task<BlazorResult<List<StatusTypeEntity>>> StatusType_Get()
+    {
+        var result = await _client.ApiStatustypeAsync();
+        return new BlazorResult<List<StatusTypeEntity>>()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message,
+            Obj = result.Obj
         };
     }
 }

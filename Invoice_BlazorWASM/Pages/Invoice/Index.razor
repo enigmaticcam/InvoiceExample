@@ -4,12 +4,23 @@
 @inject IInvoiceDetailState _invoiceDetailState
 @inject IInvoiceHeaderInvoker _invoiceHeaderInvoker
 @inject IInvoiceHeaderState _invoiceHeaderState
+@inject IResultStatusTypeInvoker _resultStatusTypeInvoker
+@inject IResultStatusTypeState _resultStatusTypeState
+@inject IStatusTypeInvoker _statusTypeInvoker
+@inject IStatusTypeState _statusTypeState
 
 <ResponseMessage Token="_token" />
 
 <PageState LoadFunction="LoadData" Token="_token">
     @if (_invoiceHeader != null)
     {
+        @if (!string.IsNullOrWhiteSpace(StatusText))
+        {
+            <MudAlert Severity="Severity.Info">
+                @StatusText
+            </MudAlert>
+        }
+
         @* Title *@
 
         <MudPaper Elevation="0" class="pa-4">
@@ -62,7 +73,7 @@
                 
                 @* Summary *@
 
-                <MudExpansionPanel Text="Summary">
+                <MudExpansionPanel Text="Summary" Expanded="true">
                     <MudGrid Spacing="0">
                         <MudItem xs="2">
                             <MudPaper Square="true" Elevation="0" Outlined="true">
@@ -89,7 +100,7 @@
 
                 @* Detail *@
 
-                <MudExpansionPanel Text="Detial">
+                <MudExpansionPanel Text="Detail">
                     <MudChip T="string" Style="@LineColor(false, true)">Case Failure</MudChip>
                     <MudChip T="string" Style="@LineColor(true, false)">Rate Failure</MudChip>
                     <MudChip T="string" Style="@LineColor(true, true)">Case and Rate Failure</MudChip>
@@ -104,7 +115,11 @@
                             <PropertyColumn Property="x => x.ApprovedRate" Title="Approved Rate" Editable="true" />
                             <PropertyColumn Property="x => x.HasFailedCase" Title="Case Failure" Editable="false" />
                             <PropertyColumn Property="x => x.HasFailedRate" Title="Rate Failure" Editable="false" />
-                            <PropertyColumn Property="x => x.ResultStatusTypeId" Title="Result" Editable="false" />
+                            <PropertyColumn Property="x => x.ResultStatusTypeId" Title="Result" Editable="false">
+                                <CellTemplate>
+                                    @_resultStatusTypeState.GetText(context.Item.ResultStatusTypeId ?? -1)
+                                </CellTemplate>
+                            </PropertyColumn>
                         </Columns>
                         <PagerContent>
                             <MudDataGridPager T="DTO_InvoiceDetail" />

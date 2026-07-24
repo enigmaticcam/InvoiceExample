@@ -17,6 +17,7 @@ public partial class Index
 
     public bool CanEdit => _permissions?.CanEdit ?? false;
     public bool CanDelete => _permissions?.CanDelete ?? false;
+    public string StatusText => _statusTypeState.GetText(_invoiceHeader?.StatusTypeId ?? -1);
 
     protected override void OnInitialized()
     {
@@ -28,7 +29,9 @@ public partial class Index
         await Task.WhenAll(
             LoadDataHeader(),
             LoadDataDetail(),
-            LoadDataPermissions()
+            LoadDataPermissions(),
+            LoadDataResultStatusType(),
+            LoadDataStatustype()
         );
         await InvokeAsync(StateHasChanged);
     }
@@ -63,6 +66,22 @@ public partial class Index
         if (result.IsSuccess)
         {
             _permissions = result.Obj;
+        }
+    }
+
+    private async Task LoadDataResultStatusType()
+    {
+        if (!_resultStatusTypeState.IsLoaded)
+        {
+            await _resultStatusTypeInvoker.Get(_token);
+        }
+    }
+
+    private async Task LoadDataStatustype()
+    {
+        if (!_statusTypeState.IsLoaded)
+        {
+            await _statusTypeInvoker.Get(_token);
         }
     }
 
