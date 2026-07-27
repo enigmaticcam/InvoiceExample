@@ -24,6 +24,7 @@ public partial class Index
 
     protected override void OnInitialized()
     {
+        _token.OnRunning += x => InvokeAsync(StateHasChanged);
         _standBy.RegisterControl(_controls.ControlAll, _token);
     }
 
@@ -36,7 +37,6 @@ public partial class Index
             LoadDataResultStatusType(),
             LoadDataStatustype()
         );
-        await InvokeAsync(StateHasChanged);
     }
 
     private async Task LoadDataHeader()
@@ -126,7 +126,6 @@ public partial class Index
                 _invoiceHeader = new DTO_InvoiceHeader(result.Obj);
                 _permissions = null;
                 await LoadDataPermissions();
-                await InvokeAsync(StateHasChanged);
             }
         }
     }
