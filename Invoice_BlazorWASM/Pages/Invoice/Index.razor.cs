@@ -11,12 +11,15 @@ public partial class Index
     private BroadcastToken _token = new();
     private StandByControls _standBy = new();
     private Controls _controls = new();
+    private ResponseMessage? _message;
     private DTO_InvoiceHeader? _invoiceHeader;
     private DTO_InvoiceSummary _summary = new();
     private InvoicePermissionsDTO? _permissions;
 
     public bool CanEdit => _permissions?.CanEdit ?? false;
     public bool CanDelete => _permissions?.CanDelete ?? false;
+    public bool CanChangeStatus => _permissions?.StatusChanges.Count > 0;
+    public List<int> StatusChanges => _permissions?.StatusChanges ?? new List<int>();
     public string StatusText => _statusTypeState.GetText(_invoiceHeader?.StatusTypeId ?? -1);
 
     protected override void OnInitialized()
@@ -100,6 +103,31 @@ public partial class Index
         if (result.IsSuccess)
         {
             _navigation.NavigateTo("/");
+        }
+    }
+
+    private async Task OnChangeStatus(int statusId)
+    {
+        var status = _statusTypeState.Get(statusId);
+        bool? request = await _dialog.ShowMessageBoxAsync(
+            title: "Warning",
+            message: $"Are you sure you want to change status to {status.StatusTypeDesc}?",
+            yesText: "Yes",
+            cancelText: "No");
+        if (request.HasValue && request.Value)
+        {
+            var result = await _invoiceHeaderInvoker.Update(_token, id, statusId);
+            if (result.IsSuccess && result.Obj != null)
+            {
+                if (_message != null)
+                {
+                    _message.SendMessage($"Invoice status successfully changed to {status.StatusTypeDesc}", MudBlazor.Severity.Normal);
+                }
+                _invoiceHeader = new DTO_InvoiceHeader(result.Obj);
+                _permissions = null;
+                await LoadDataPermissions();
+                await InvokeAsync(StateHasChanged);
+            }
         }
     }
 

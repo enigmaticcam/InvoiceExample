@@ -9,6 +9,7 @@ public interface IInvoiceHeaderInvoker
     Task<BlazorResult> Get(BroadcastToken token, int headerId);
     Task<BlazorResult<InvoicePermissionsDTO>> GetPermissions(BroadcastToken token, int headerId);
     Task<BlazorResult> RefreshResults(BroadcastToken token, int headerId);
+    Task<BlazorResult<InvoiceHeaderEntity>> Update(BroadcastToken token, int headerId, int statusId);
 }
 
 public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
@@ -47,6 +48,12 @@ public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
     public Task<BlazorResult> RefreshResults(BroadcastToken token, int headerId)
     {
         var command = new InvoiceHeaderRefreshResults(_service, _detailState, headerId);
+        return _invoker.Perform(command, token);
+    }
+
+    public Task<BlazorResult<InvoiceHeaderEntity>> Update(BroadcastToken token, int headerId, int statusId)
+    {
+        var command = new InvoiceHeaderUpdateStatus(_service, _headerState, headerId, statusId);
         return _invoker.Perform(command, token);
     }
 }

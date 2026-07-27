@@ -18,4 +18,6 @@ public class InvoiceHeaderTypeApproved : InvoiceHeaderType
             }
         };
     }
+
+    protected override bool CanPerformUpdateStatus => true;
 }

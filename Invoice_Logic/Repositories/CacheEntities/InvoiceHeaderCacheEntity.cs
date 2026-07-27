@@ -12,6 +12,7 @@ public interface IInvoiceHeaderCacheEntity
     Task Delete(int id);
     Task<InvoiceHeaderEntity> Get(int id);
     Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter);
+    Task<LateLoader<InvoiceHeaderEntity>> Update(int id, int statusTypeId);
 }
 
 public class InvoiceHeaderCacheEntity : CacheEntity<int, InvoiceHeaderEntity>, IInvoiceHeaderCacheEntity
@@ -46,6 +47,13 @@ public class InvoiceHeaderCacheEntity : CacheEntity<int, InvoiceHeaderEntity>, I
     {
         var result = await _invoiceHeaderDbEntity.Get(filter);
         return await GetFromCache(result);
+    }
+
+    public async Task<LateLoader<InvoiceHeaderEntity>> Update(int id, int statusTypeId)
+    {
+        var result = await _invoiceHeaderDbEntity.Update(id, statusTypeId);
+        CacheQueueSet(() => result.LoadObject!);
+        return result;
     }
 
     protected override Task<List<InvoiceHeaderEntity>> GetFromEntity(IEnumerable<int> ids)

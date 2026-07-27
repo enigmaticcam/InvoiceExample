@@ -8,6 +8,7 @@ public class InvoiceHeaderTypeDraft : InvoiceHeaderType
 {
     protected override bool CanPerformDeleteOrUndelete => true;
     protected override bool CanPerformRefreshResults => true;
+    protected override bool CanPerformUpdateStatus => true;
 
     public override InvoicePermissionsDTO GetPermissions(InvoiceHeaderEntity header)
     {

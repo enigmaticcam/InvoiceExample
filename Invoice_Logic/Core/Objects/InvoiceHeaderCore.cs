@@ -96,6 +96,19 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         return _invoiceDetailCacheEntity.Create(headerId, creates);
     }
 
+    public async Task<InvoiceHeaderEntity> Update(int headerId, int statusTypeId)
+    {
+        await CanPerform(headerId, enumInvoiceActionType.UpdateStatus);
+        var statuses = await _factory.StatusTypeCore.Get();
+        if (!statuses.Any(x => x.StatusTypeId == statusTypeId))
+        {
+            _factory.UserLogging.ThrowStatusTypeNotFoundException(statusTypeId);
+        }
+        var result = await _invoiceHeaderCacheEntity.Update(headerId, statusTypeId);
+        await _factory.Repository.SaveChanges();
+        return result.LoadObject!;
+    }
+
     public async Task<List<InvoiceFullResultDTO>> UpdateRefreshResults(int headerId)
     {
         await CanPerform(headerId, enumInvoiceActionType.RefreshResults);

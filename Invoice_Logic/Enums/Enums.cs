@@ -3,7 +3,8 @@
 public enum enumInvoiceActionType
 {
     Delete,
-    RefreshResults
+    RefreshResults,
+    UpdateStatus
 }
 
 public enum enumnResultStatusType

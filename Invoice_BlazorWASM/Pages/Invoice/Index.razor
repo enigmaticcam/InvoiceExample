@@ -1,4 +1,5 @@
 ﻿@page "/invoice/{id:int}"
+@inject IDialogService _dialog
 @inject NavigationManager _navigation
 @inject IInvoiceDetailInvoker _invoiceDetailInvoker
 @inject IInvoiceDetailState _invoiceDetailState
@@ -9,7 +10,7 @@
 @inject IStatusTypeInvoker _statusTypeInvoker
 @inject IStatusTypeState _statusTypeState
 
-<ResponseMessage Token="_token" />
+<ResponseMessage Token="_token" @ref="_message" />
 
 <PageState LoadFunction="LoadData" Token="_token">
     @if (_invoiceHeader != null)
@@ -24,10 +25,10 @@
         @* Title *@
 
         <MudPaper Elevation="0" class="pa-4">
-            <MudText Typo="Typo.h6">@_invoiceHeader.Customer</MudText>
+            <MudText Typo="Typo.h6">Invoice</MudText>
         </MudPaper>
 
-        @* Title *@
+        @* Menu *@
 
         <MudPaper Elevation="0" Style="background-color: lightgray">
             <MudMenu Label="Actions" Disabled="Disabled()" Color="Color.Primary" Size="Size.Small" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.KeyboardArrowDown">
@@ -38,6 +39,13 @@
                         <MudMenuItem Label="Delete" OnClick="OnDelete" />
                     }
                     <MudMenuItem Label="Refresh Results" OnClick="OnRefreshResults" />
+                }
+                @if (CanChangeStatus)
+                {
+                    @foreach (var status in StatusChanges)
+                    {
+                        <MudMenuItem OnClick="() => OnChangeStatus(status)" Disabled="Disabled()">Change Status to @_statusTypeState.GetText(status)</MudMenuItem>
+                    }
                 }
             </MudMenu>
         </MudPaper>

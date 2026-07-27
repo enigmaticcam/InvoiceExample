@@ -10,6 +10,7 @@ public abstract class InvoiceHeaderType
     public abstract InvoicePermissionsDTO GetPermissions(InvoiceHeaderEntity header);
     protected virtual bool CanPerformDeleteOrUndelete { get; } = false;
     protected virtual bool CanPerformRefreshResults { get; } = false;
+    protected virtual bool CanPerformUpdateStatus { get; } = false;
     public void CanPerformAction(enumInvoiceActionType actionType, IUserLogging userLogging)
     {
         if (!GetCanPerformAction(actionType))
@@ -23,6 +24,7 @@ public abstract class InvoiceHeaderType
         {
             enumInvoiceActionType.Delete => CanPerformDeleteOrUndelete,
             enumInvoiceActionType.RefreshResults => CanPerformRefreshResults,
+            enumInvoiceActionType.UpdateStatus => CanPerformUpdateStatus,
             _ => throw new NotImplementedException($"{actionType} not implemented")
         };
 }

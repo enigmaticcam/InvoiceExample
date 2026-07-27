@@ -9,6 +9,7 @@ public static class APIMapper
     public static void ConfigureApi(this WebApplication app)
     {
         app.MapGet("/api/invoiceheader/{id:int}", InvoiceHeader_Get);
+        app.MapPut("/api/invoiceheader/{id:int}", InvoiceHeader_Update);
         app.MapDelete("/api/invoiceheader/{id:int}", InvoiceHeader_Delete);
         app.MapGet("/api/invoiceheader/{id:int}/results", InvoiceHeader_GetResults);
         app.MapPut("/api/invoiceheader/{id:int}/results", InvoiceHeader_RefreshResults);
@@ -54,6 +55,12 @@ public static class APIMapper
     private static async Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int id, IAPICaller caller)
     {
         var result = await caller.InvoiceHeader_RefreshResults(id);
+        return result;
+    }
+
+    private static async Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int id, int statusTypeId, IAPICaller caller)
+    {
+        var result = await caller.InvoiceHeader_Update(id, statusTypeId);
         return result;
     }
 

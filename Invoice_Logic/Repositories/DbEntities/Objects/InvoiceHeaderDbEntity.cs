@@ -34,8 +34,8 @@ public class InvoiceHeaderDbEntity : IInvoiceHeaderDbEntity
 
     public async Task Delete(int id)
     {
-        var header = await GetFromDb(new List<int>() { id });
-        _context.Remove(header.First());
+        var header = await GetFromDb(id);
+        _context.Remove(header);
     }
 
     public async Task<List<InvoiceHeaderEntity>> Get(IEnumerable<int> ids)
@@ -57,6 +57,19 @@ public class InvoiceHeaderDbEntity : IInvoiceHeaderDbEntity
             .Take(100)
             .ToListAsync();
         return list;
+    }
+
+    public async Task<LateLoader<InvoiceHeaderEntity>> Update(int headerId, int statusTypeId)
+    {
+        var header = await GetFromDb(headerId);
+        header.StatusTypeId = statusTypeId;
+        return _lateLoaderCollection.Add(() => Task.FromResult(Mapper.FromEf(header)));
+    }
+
+    private async Task<InvoiceHeader> GetFromDb(int id)
+    {
+        var result = await GetFromDb(new List<int>() { id });
+        return result.First();
     }
 
     private async Task<List<InvoiceHeader>> GetFromDb(IEnumerable<int> ids)

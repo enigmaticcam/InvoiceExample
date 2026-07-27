@@ -10,4 +10,5 @@ public interface IInvoiceHeaderDbEntity
     Task Delete(int id);
     Task<List<InvoiceHeaderEntity>> Get(IEnumerable<int> ids);
     Task<List<int>> Get(InvoiceFilterDTO filter);
+    Task<LateLoader<InvoiceHeaderEntity>> Update(int headerId, int statusTypeId);
 }
