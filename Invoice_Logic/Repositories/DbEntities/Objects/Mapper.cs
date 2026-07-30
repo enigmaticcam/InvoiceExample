@@ -1,11 +1,17 @@
 ﻿using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Data.EF;
 
 namespace Invoice_Logic.Repositories.DbEntities.Objects;
 
 public static class Mapper
 {
+    public static void Copy(InvoiceDetailUpdateDTO source, InvoiceDetail target)
+    {
+        target.ApprovedRate = source.ApprovedRate;
+    }
+
     public static InvoiceDetail ToEf(InvoiceDetailCreateDTO source)
     {
         return new InvoiceDetail()

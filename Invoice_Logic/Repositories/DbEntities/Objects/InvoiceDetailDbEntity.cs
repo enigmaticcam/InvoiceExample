@@ -1,6 +1,7 @@
 ﻿using Invoice_Logic.API;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Data.EF;
 using Invoice_Logic.Repositories.DbEntities.Interfaces;
 using Invoice_Logic.Repositories.ItemCollections;
@@ -58,7 +59,18 @@ public class InvoiceDetailDbEntity : IInvoiceDetailDbEntity
             .ToList();
     }
 
-    private async Task<List<InvoiceDetail>> GetFromDb(IEnumerable<int> ids)
+    public async Task Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates)
+    {
+        var lines = await GetFromDb(updates.Select(x => x.InvoiceDetailId), headerId);
+        var hash = lines.ToDictionary(x => x.InvoiceDetailId, x => x);
+        foreach (var update in updates)
+        {
+            var updated = hash[update.InvoiceDetailId];
+            Mapper.Copy(update, updated);
+        }
+    }
+
+    private async Task<List<InvoiceDetail>> GetFromDb(IEnumerable<int> ids, int? headerId = null)
     {
         var result = await _context.InvoiceDetails
             .Where(x => ids.Contains(x.InvoiceDetailId))
@@ -67,6 +79,10 @@ public class InvoiceDetailDbEntity : IInvoiceDetailDbEntity
         if (diff.Count() > 0)
         {
             _userLogging.ThrowInvoiceDetailNotFoundException(diff);
+        }
+        if (headerId != null && result.Any(x => x.InvoiceHeaderId != headerId.Value))
+        {
+            _userLogging.ThrowInvoiceDetailNotInHeaderException(headerId.Value);
         }
         return result;
     }

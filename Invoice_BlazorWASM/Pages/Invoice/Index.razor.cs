@@ -2,6 +2,7 @@ using Invoice_BlazorWASM.Data;
 using Invoice_BlazorWASM.Services;
 using Invoice_BlazorWASM.Services.Core;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace Invoice_BlazorWASM.Pages.Invoice;
 
@@ -15,6 +16,7 @@ public partial class Index
     private DTO_InvoiceHeader? _invoiceHeader;
     private DTO_InvoiceSummary _summary = new();
     private InvoicePermissionsDTO? _permissions;
+    private bool _isEditing;
 
     public bool CanEdit => _permissions?.CanEdit ?? false;
     public bool CanDelete => _permissions?.CanDelete ?? false;
@@ -128,6 +130,57 @@ public partial class Index
                 await LoadDataPermissions();
             }
         }
+    }
+
+    private async Task OnCancelUpdate()
+    {
+        _invoiceDetailState.Reset();
+        await _invoiceDetailUpdateState.Clear();
+        _isEditing = false;
+    }
+
+    private async Task OnUpdateLines()
+    {
+        if (_invoiceHeader != null)
+        {
+            var result = await _invoiceDetailInvoker.Update(_token, id, _invoiceDetailUpdateState.Updates);
+            if (result.IsSuccess)
+            {
+                _message?.SendMessage("Update successful", MudBlazor.Severity.Normal);
+            }
+            await _invoiceDetailUpdateState.Clear();
+            _isEditing = false;
+        }
+    }
+
+    private async Task OnPayLine(DTO_InvoiceDetail line)
+    {
+        line.ApprovedRate = line.CustomerRate;
+        _summary.Calc(_invoiceDetailState.Items);
+        await OnCommitedChanged(line);
+
+    }
+
+    private async Task OnRemovePayLine(DTO_InvoiceDetail line)
+    {
+        line.ApprovedRate = 0;
+        _summary.Calc(_invoiceDetailState.Items);
+        await OnCommitedChanged(line);
+    }
+
+    private Task<DataGridEditFormAction> OnCommitedChanged(DTO_InvoiceDetail line)
+    {
+        _invoiceDetailUpdateState.Add(line.Id, new InvoiceDetailUpdateDTO()
+        {
+            ApprovedRate = line.ApprovedRate,
+            InvoiceDetailId = line.InvoiceDetailId
+        });
+        return Task.FromResult(DataGridEditFormAction.Close);
+    }
+
+    private bool CanPay(DTO_InvoiceDetail line)
+    {
+        return line.ApprovedRate == 0;
     }
 
     private bool Disabled()

@@ -1,6 +1,7 @@
 ﻿using Invoice_Logic.Caching;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Repositories.DbEntities.Interfaces;
 
 namespace Invoice_Logic.Repositories.CacheEntities;
@@ -11,6 +12,7 @@ public interface IInvoiceDetailCacheEntity
     Task Create(int headerId, IEnumerable<InvoiceDetailCreateDTO> creates);
     Task Delete(int headerId);
     Task<List<InvoiceDetailEntity>> Get(int headerId);
+    Task Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates);
 }
 
 public class InvoiceDetailCacheEntity : CacheEntity<int, InvoiceDetailEntity>, IInvoiceDetailCacheEntity
@@ -56,5 +58,11 @@ public class InvoiceDetailCacheEntity : CacheEntity<int, InvoiceDetailEntity>, I
         var result = await _invoiceDetailDbEntity.Delete(headerId);
         CacheQueueClear(result);
         await CacheClearList(ListKey_ByHeader(headerId));
+    }
+
+    public async Task Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates)
+    {
+        await _invoiceDetailDbEntity.Update(headerId, updates);
+        CacheQueueClear(updates.Select(x => x.InvoiceDetailId));
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Repositories;
 
 namespace Invoice_Logic.Core.Interfaces;
@@ -16,5 +17,6 @@ public interface IInvoiceHeaderCore
     Task<LateLoader<int, InvoiceHeaderEntity>> QueueCreate(InvoiceHeaderCreateDTO create);
     Task QueueCreate(int headerId, IEnumerable<InvoiceDetailCreateDTO> creates);
     Task<InvoiceHeaderEntity> Update(int headerId, int statusTypeId);
+    Task<List<InvoiceFullResultDTO>> Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates);
     Task<List<InvoiceFullResultDTO>> UpdateRefreshResults(int headerId);
 }

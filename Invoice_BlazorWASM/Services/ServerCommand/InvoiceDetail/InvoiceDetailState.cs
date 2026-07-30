@@ -14,4 +14,8 @@ public class InvoiceDetailState : EntityState<int, DTO_InvoiceDetail>, IInvoiceD
     }
 
     public override string EntityName => "InvoiceDetailState";
+    public override IEnumerable<DTO_InvoiceDetail> Alter(IEnumerable<DTO_InvoiceDetail> items)
+    {
+        return items.OrderBy(x => x.InvoiceDetailId);
+    }
 }

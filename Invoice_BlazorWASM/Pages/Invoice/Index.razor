@@ -3,6 +3,7 @@
 @inject NavigationManager _navigation
 @inject IInvoiceDetailInvoker _invoiceDetailInvoker
 @inject IInvoiceDetailState _invoiceDetailState
+@inject IInvoiceDetailUpdateState _invoiceDetailUpdateState
 @inject IInvoiceHeaderInvoker _invoiceHeaderInvoker
 @inject IInvoiceHeaderState _invoiceHeaderState
 @inject IResultStatusTypeInvoker _resultStatusTypeInvoker
@@ -109,12 +110,50 @@
                 @* Detail *@
 
                 <MudExpansionPanel Text="Detail">
+
+                    @* Edit button *@
+
+                    @if (CanEdit)
+                    {
+                        if (_isEditing)
+                        {
+                            <MudIconButton OnClick="OnCancelUpdate" Disabled="Disabled()" Icon="@Icons.Material.Filled.Cancel" />
+                            <MudIconButton OnClick="OnUpdateLines" Disabled="Disabled()" Color="Color.Primary" Icon="@Icons.Material.Filled.Save" />
+                        }
+                        else
+                        {
+                            <MudIconButton onclick="() => _isEditing = !_isEditing" Disabled="Disabled()" Icon="@Icons.Material.Filled.Edit" />
+                        }
+                    }
+
+                    @* Detail Grid *@
+
                     <MudChip T="string" Style="@LineColor(false, true)">Case Failure</MudChip>
                     <MudChip T="string" Style="@LineColor(true, false)">Rate Failure</MudChip>
                     <MudChip T="string" Style="@LineColor(true, true)">Case and Rate Failure</MudChip>
                     <MudDataGrid T="DTO_InvoiceDetail" Items="_invoiceDetailState.Items" Height="600px" FixedHeader="true" Filterable="true" FilterMode="DataGridFilterMode.Simple"
-                                 SortMode="SortMode.Single" FixedFooter="true" EditMode="DataGridEditMode.Cell" ReadOnly="!CanEdit" RowStyleFunc="RowStyle" Dense="true">
+                                 SortMode="SortMode.Single" FixedFooter="true" EditMode="DataGridEditMode.Cell" ReadOnly="!CanEdit || !_isEditing" RowStyleFunc="RowStyle" Dense="true"
+                                 CommittedItemChanged="OnCommitedChanged">
                         <Columns>
+                            <TemplateColumn Editable="false">
+                                <CellTemplate>
+                                    @if (_isEditing)
+                                    {
+                                        if (CanPay(context.Item))
+                                        {
+                                            <MudTooltip Text="Pay">
+                                                <MudIconButton OnClick="() => OnPayLine(context.Item)" Disabled="Disabled()" Icon="@Icons.Material.Filled.AttachMoney" />
+                                            </MudTooltip>
+                                        }
+                                        else
+                                        {
+                                            <MudTooltip Text="Unpay">
+                                                <MudIconButton OnClick="() => OnRemovePayLine(context.Item)" Disabled="Disabled()" Icon="@Icons.Material.Filled.MoneyOff" />
+                                            </MudTooltip>
+                                        }
+                                    }
+                                </CellTemplate>
+                            </TemplateColumn>
                             <PropertyColumn Property="x => x.InvoiceDetailId" Title="Id" Editable="false" />
                             <PropertyColumn Property="x => x.CustItemCode" Title="Cust Item Code" Editable="false" />
                             <PropertyColumn Property="x => x.CustItemDesc" Title="Cust Item Desc" Editable="false" />

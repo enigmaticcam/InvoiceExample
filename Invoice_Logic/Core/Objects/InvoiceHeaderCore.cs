@@ -2,6 +2,7 @@
 using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Enums;
 using Invoice_Logic.Factories;
 using Invoice_Logic.Repositories;
@@ -107,6 +108,13 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         var result = await _invoiceHeaderCacheEntity.Update(headerId, statusTypeId);
         await _factory.Repository.SaveChanges();
         return result.LoadObject!;
+    }
+
+    public async Task<List<InvoiceFullResultDTO>> Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates)
+    {
+        await _invoiceDetailCacheEntity.Update(headerId, updates);
+        await _factory.Repository.SaveChanges();
+        return await GetResults(headerId);
     }
 
     public async Task<List<InvoiceFullResultDTO>> UpdateRefreshResults(int headerId)

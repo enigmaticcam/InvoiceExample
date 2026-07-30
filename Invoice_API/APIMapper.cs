@@ -1,6 +1,8 @@
 ﻿using Invoice_Logic.API;
 using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Invoice_API;
 
@@ -13,6 +15,7 @@ public static class APIMapper
         app.MapDelete("/api/invoiceheader/{id:int}", InvoiceHeader_Delete);
         app.MapGet("/api/invoiceheader/{id:int}/results", InvoiceHeader_GetResults);
         app.MapPut("/api/invoiceheader/{id:int}/results", InvoiceHeader_RefreshResults);
+        app.MapPut("/api/invoiceheader/{id:int}/detail", InvoiceHeader_UpdateDetail);
         app.MapGet("/api/invoiceheader/{id:int}/permissions", InvoiceHeader_GetPermissions);
 
         app.MapGet("/api/invoicesearch", InvoiceSearch_Get);
@@ -61,6 +64,12 @@ public static class APIMapper
     private static async Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int id, int statusTypeId, IAPICaller caller)
     {
         var result = await caller.InvoiceHeader_Update(id, statusTypeId);
+        return result;
+    }
+
+    private static async Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_UpdateDetail(int id, [FromBody] IEnumerable<InvoiceDetailUpdateDTO> updates, IAPICaller caller)
+    {
+        var result = await caller.InvoiceHeader_Update(id, updates);
         return result;
     }
 

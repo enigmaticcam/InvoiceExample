@@ -1,5 +1,6 @@
 ﻿using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Factories;
 
 namespace Invoice_Logic.API;
@@ -12,6 +13,7 @@ public interface IAPICaller
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id);
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int id);
     Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int id, int statusTypeId);
+    Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_Update(int id, IEnumerable<InvoiceDetailUpdateDTO> updates);
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
     Task<APIResult<List<InvoiceHeaderEntity>>> InvoiceUploader_Get();
@@ -71,6 +73,13 @@ public class APICaller : IAPICaller
     {
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceHeaderCore.Update(id, statusTypeId),
+            actionName: "InvoiceHeader_Update");
+    }
+
+    public Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_Update(int id, IEnumerable<InvoiceDetailUpdateDTO> updates)
+    {
+        return _factory.Pipeline.Perform(
+            action: () => _factory.InvoiceHeaderCore.Update(id, updates),
             actionName: "InvoiceHeader_Update");
     }
 
