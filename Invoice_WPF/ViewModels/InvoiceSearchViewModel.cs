@@ -1,10 +1,10 @@
-﻿using Invoice_WPF.Models;
+﻿using CommunityToolkit.Mvvm.Input;
+using Invoice_WPF.Models;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace Invoice_WPF.ViewModels;
 
-public class InvoiceSearchViewModel : ViewModelBase
+public partial class InvoiceSearchViewModel : ViewModelBase
 {
     public InvoiceSearchViewModel()
     {
@@ -25,6 +25,7 @@ public class InvoiceSearchViewModel : ViewModelBase
             InvoiceHeaderId = 2,
             StatusTypeId = 2
         });
+        SearchCommand = new AsyncRelayCommand(Search);
     }
 
     private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
@@ -60,6 +61,7 @@ public class InvoiceSearchViewModel : ViewModelBase
         {
             _customer = value;
             OnPropertyChanged(nameof(Customer));
+            ByCustomer = true;
         }
     }
 
@@ -71,8 +73,13 @@ public class InvoiceSearchViewModel : ViewModelBase
         {
             _headerId = value;
             OnPropertyChanged(nameof(HeaderId));
+            ByHeader = true;
         }
     }
 
-    public ICommand SearchCommand { get; }
+    public IAsyncRelayCommand SearchCommand { get; }
+    private async Task Search()
+    {
+        await Task.Delay(3000);
+    }
 }
