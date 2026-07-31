@@ -11,6 +11,6 @@
         MaxWidth="600"
         FontSize="14">
     <Grid Margin="20 10">
-        <views:InvoiceSearchView />
+        <views:InvoiceSearchView DataContext="{Binding CurrentViewModel}" />
     </Grid>
 </Window>

@@ -37,10 +37,12 @@
                 </Grid.ColumnDefinitions>
                 <CheckBox 
                     Grid.Row="0"
-                    Grid.Column="0" />
+                    Grid.Column="0"
+                    IsChecked="{Binding Path=ByHeader, Mode=TwoWay}"/>
                 <TextBox 
                     Grid.Row="0"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    Text="{Binding HeaderId, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
         <Grid Grid.Row="2" Margin="0 10 0 0">
@@ -59,26 +61,27 @@
                 </Grid.ColumnDefinitions>
                 <CheckBox 
                     Grid.Row="0"
-                    Grid.Column="0" />
+                    Grid.Column="0"
+                    IsChecked="{Binding Path=ByCustomer, Mode=TwoWay}"/>
                 <TextBox 
                     Grid.Row="0"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    Text="{Binding Customer, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Grid>
         <StackPanel Grid.Row="3" Margin="0 10 0 0" Orientation="Horizontal">
-            <Button Content="Search" />
+            <Button Content="Search" Command="{Binding SearchCommand}" />
         </StackPanel>
         <Separator Grid.Row="4" Margin="0 5"  />
-        <ListView Grid.Row="5">
-            <ListViewItem />
-            <ListViewItem />
-            <ListViewItem />
+        <ListView 
+            Grid.Row="5"
+            ItemsSource="{Binding Invoices}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Padding="0 0 20 0" Text="12"/>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding InvoiceHeaderId}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -86,7 +89,7 @@
                     <GridViewColumn Header="Customer">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Padding="0 0 20 0" Text="123456"/>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding Customer}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -94,7 +97,7 @@
                     <GridViewColumn Header="Status">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Padding="0 0 20 0" Text="Draft"/>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding StatusTypeId}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -102,7 +105,15 @@
                     <GridViewColumn Header="Date">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Padding="0 0 20 0" Text="12/10/2026"/>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding InvoiceDate}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Description">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding Description}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
