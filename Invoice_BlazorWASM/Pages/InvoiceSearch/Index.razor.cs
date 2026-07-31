@@ -15,6 +15,7 @@ public partial class Index
 
     protected override void OnInitialized()
     {
+        _token.OnRunning += x => InvokeAsync(StateHasChanged);
         _standBy.RegisterControl(_controls.ControlAll, _token);
     }
 
@@ -28,11 +29,27 @@ public partial class Index
 
     private async Task LoadData()
     {
+        await Task.WhenAll(
+            LoadDataSearch(),
+            LoadDataStatusType()
+        );
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task LoadDataSearch()
+    {
         var result = await _invoiceSearchInvoker.Get(_token);
         if (result.IsSuccess && result.Obj != null)
         {
             _search = result.Obj;
-            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task LoadDataStatusType()
+    {
+        if (!_statusTypeState.IsLoaded)
+        {
+            await _statusTypeInvoker.Get(_token);
         }
     }
 

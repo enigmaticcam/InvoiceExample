@@ -1,5 +1,7 @@
 ﻿@page "/search/"
 @inject IInvoiceSearchInvoker _invoiceSearchInvoker
+@inject IStatusTypeInvoker _statusTypeInvoker
+@inject IStatusTypeState _statusTypeState
 
 <ResponseMessage Token="_token" />
 
@@ -71,7 +73,7 @@ else
             }
             <MudTd DataLabel="Header Id"><MudLink Href="@link">@context.InvoiceHeaderId</MudLink></MudTd>
             <MudTd DataLabel="Customer">@context.Customer</MudTd>
-            <MudTd DataLabel="Status"></MudTd>
+            <MudTd DataLabel="Status">@_statusTypeState.GetText(context.StatusTypeId)</MudTd>
             <MudTd DataLabel="Invoice Date">@context.InvoiceDate.ToString("yyyy-MM-dd")</MudTd>
             <MudTd DataLabel="Description">@context.Description</MudTd>
         </RowTemplate>
