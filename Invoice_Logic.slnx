@@ -6,4 +6,5 @@
     <Build />
     <Deploy />
   </Project>
+  <Project Path="Invoice_WPF/Invoice_WPF.csproj" Id="88d0f938-3e19-4b49-b62f-e135515b48b4" />
 </Solution>
