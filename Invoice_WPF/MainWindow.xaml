@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Invoice_WPF" xmlns:views="clr-namespace:Invoice_WPF.Views"
+        xmlns:vms="clr-namespace:Invoice_WPF.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="450" 
@@ -11,6 +12,11 @@
         MaxWidth="600"
         FontSize="14">
     <Grid Margin="20 10">
-        <views:InvoiceSearchView DataContext="{Binding CurrentViewModel}" />
+        <Grid.Resources>
+            <DataTemplate DataType="{x:Type vms:InvoiceSearchViewModel}">
+                <views:InvoiceSearchView />
+            </DataTemplate>
+        </Grid.Resources>
+        <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>
 </Window>

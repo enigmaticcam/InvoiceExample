@@ -1,11 +1,14 @@
-﻿namespace Invoice_WPF.ViewModels;
+﻿using Invoice_WPF.Stores;
+
+namespace Invoice_WPF.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public MainViewModel()
+    private readonly NavigationStore _navigationStore;
+    public MainViewModel(NavigationStore navigationStore)
     {
-        CurrentViewModel = new InvoiceSearchViewModel();
+        _navigationStore = navigationStore;
     }
 
-    public ViewModelBase CurrentViewModel { get; }
+    public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
 }
