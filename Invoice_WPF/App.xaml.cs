@@ -1,4 +1,5 @@
-﻿using Invoice_WPF.Stores;
+﻿using Invoice_WPF.Services;
+using Invoice_WPF.Stores;
 using Invoice_WPF.ViewModels;
 using System.Windows;
 
@@ -17,7 +18,8 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        _navigationStore.CurrentViewModel = new InvoiceSearchViewModel();
+        var factory = new Factory();
+        _navigationStore.CurrentViewModel = new InvoiceSearchViewModel(factory);
         MainWindow = new MainWindow()
         {
             DataContext = new MainViewModel(_navigationStore)

@@ -1,31 +1,26 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Models;
+using Invoice_WPF.Services;
+using Invoice_WPF.Services.Commands;
 using System.Collections.ObjectModel;
 
 namespace Invoice_WPF.ViewModels;
 
-public partial class InvoiceSearchViewModel : ViewModelBase
+public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 {
-    public InvoiceSearchViewModel()
+    private IFactory _factory;
+    public InvoiceSearchViewModel(IFactory factory)
     {
+        _factory = factory;
         _invoices = new();
-        _invoices.Add(new InvoiceHeaderModel()
-        {
-            Customer = 111222,
-            Description = "Description 1",
-            InvoiceDate = DateOnly.FromDayNumber(100),
-            InvoiceHeaderId = 1,
-            StatusTypeId = 1
-        });
-        _invoices.Add(new InvoiceHeaderModel()
-        {
-            Customer = 222333,
-            Description = "Description 2",
-            InvoiceDate = DateOnly.FromDayNumber(200),
-            InvoiceHeaderId = 2,
-            StatusTypeId = 2
-        });
         SearchCommand = new AsyncRelayCommand(Search);
+        _factory.InvoiceSearchState.OnChanged += LoadDataAsync;
+        LoadData();
+    }
+
+    public void Dispose()
+    {
+        _factory.InvoiceSearchState.OnChanged -= LoadDataAsync;
     }
 
     private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
@@ -80,6 +75,32 @@ public partial class InvoiceSearchViewModel : ViewModelBase
     public IAsyncRelayCommand SearchCommand { get; }
     private async Task Search()
     {
-        await Task.Delay(3000);
+        var command = new InvoiceSearchGetCommand(_factory.ServiceWrapper, _factory.InvoiceSearchState);
+        await command.Perform(new Services.Core.InvoiceFilterDTO()
+        {
+            ByCustomer = _byCustomer,
+            ByHeader = _byHeader,
+            ByMonth = false,
+            Customer = _customer,
+            HeaderId = _headerId
+        });
+    }
+
+    private Task LoadDataAsync()
+    {
+        LoadData();
+        return Task.CompletedTask;
+    }
+
+    private void LoadData()
+    {
+        if (_factory.InvoiceSearchState.Item != null)
+        {
+            _invoices.Clear();
+            foreach (var invoice in _factory.InvoiceSearchState.Item.Invoices)
+            {
+                _invoices.Add(new InvoiceHeaderModel(invoice));
+            }
+        }
     }
 }
