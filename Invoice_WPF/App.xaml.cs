@@ -19,7 +19,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         var factory = new Factory();
-        _navigationStore.CurrentViewModel = new InvoiceSearchViewModel(factory);
+        _navigationStore.NavigateTo(new MainMenuViewModel(_navigationStore, factory));
         MainWindow = new MainWindow()
         {
             DataContext = new MainViewModel(_navigationStore)

@@ -8,7 +8,14 @@ public class MainViewModel : ViewModelBase
     public MainViewModel(NavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
+        _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
     }
 
-    public ViewModelBase CurrentViewModel => _navigationStore.CurrentViewModel;
+    public ViewModelBase? CurrentViewModel => _navigationStore.CurrentViewModel;
+
+    public Task OnCurrentViewModelChanged()
+    {
+        OnPropertyChanged(nameof(CurrentViewModel));
+        return Task.CompletedTask;
+    }
 }

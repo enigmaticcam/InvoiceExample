@@ -8,6 +8,27 @@ public class NavigationStore
     public ViewModelBase? CurrentViewModel
     {
         get => _currentViewModel;
-        set => _currentViewModel = value;
+        private set => _currentViewModel = value;
+    }
+    public Func<Task>? CurrentViewModelChanged { get; set; }
+
+    public async Task NavigateToAsync(ViewModelBase viewModel)
+    {
+        await viewModel.LoadData();
+        CurrentViewModel = viewModel;
+        await OnCurrentViewModelChanged();
+    }
+
+    public void NavigateTo(ViewModelBase viewModel)
+    {
+        CurrentViewModel = viewModel;
+    }
+
+    public async Task OnCurrentViewModelChanged()
+    {
+        if (CurrentViewModelChanged != null)
+        {
+            await CurrentViewModelChanged();
+        }
     }
 }

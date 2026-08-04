@@ -2,9 +2,13 @@
 
 namespace Invoice_WPF.ViewModels;
 
-public class ViewModelBase : INotifyPropertyChanged
+public abstract class ViewModelBase : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
+    public virtual Task LoadData()
+    {
+        return Task.CompletedTask;
+    }
 
     protected void OnPropertyChanged(string propertyName)
     {
