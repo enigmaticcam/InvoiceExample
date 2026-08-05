@@ -18,9 +18,9 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         _invoices = new();
         SearchCommand = new AsyncRelayCommand(Search);
         CloseCommand = new AsyncRelayCommand(Close);
+        OpenCommand = new AsyncRelayCommand<InvoiceHeaderModel>(x => OpenInvoice(x));
         _factory.InvoiceSearchState.OnChanged += LoadDataAsync;
         _navigationStore = navigationStore;
-        //Load();
     }
 
     public void Dispose()
@@ -79,6 +79,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 
     public IAsyncRelayCommand SearchCommand { get; }
     public IAsyncRelayCommand CloseCommand { get; }
+    public IAsyncRelayCommand<InvoiceHeaderModel> OpenCommand { get; }
     private async Task Search()
     {
         var command = new InvoiceSearchGetCommand(_factory.ServiceWrapper, _factory.InvoiceSearchState);
@@ -97,13 +98,21 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         await _navigationStore.NavigateToMainMenuAsync();
     }
 
+    private async Task OpenInvoice(InvoiceHeaderModel? header)
+    {
+        if (header != null)
+        {
+            await _navigationStore.NavigateToInvoiceView(header.InvoiceHeaderId);
+        }
+    }
+
     private Task LoadDataAsync()
     {
         Load();
         return Task.CompletedTask;
     }
 
-    public override async Task LoadData()
+    public async Task LoadData()
     {
         var command = new InvoiceSearchGetCommand(_factory.ServiceWrapper, _factory.InvoiceSearchState);
         await command.Perform();

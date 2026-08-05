@@ -72,11 +72,14 @@
         <StackPanel Grid.Row="3" Margin="0 10 0 0" Orientation="Horizontal">
             <Button Content="Search" Command="{Binding SearchCommand}" />
             <Button Content="Close" Command="{Binding CloseCommand}" />
+            <Button Content="Open" Command="{Binding OpenCommand}" CommandParameter="{Binding SelectedItem, ElementName=listbox}"/>
         </StackPanel>
         <Separator Grid.Row="4" Margin="0 5"  />
         <ListView 
+            Name="listbox"
             Grid.Row="5"
-            ItemsSource="{Binding Invoices}">
+            ItemsSource="{Binding Invoices}"
+            SelectionMode="Single">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id">

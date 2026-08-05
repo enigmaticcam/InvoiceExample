@@ -7,6 +7,7 @@ public interface INavigationStore
 {
     ViewModelBase? CurrentViewModel { get; }
     Func<Task>? CurrentViewModelChanged { get; set; }
+    Task NavigateToInvoiceView(int headerId);
     Task NavigateToInvoiceSearchView();
     void NavigateToMainMenu();
     Task NavigateToMainMenuAsync();
@@ -59,6 +60,19 @@ public class NavigationStore : INavigationStore
     public async Task NavigateToMainMenuAsync()
     {
         var model = new MainMenuViewModel(this, _factory);
+        CurrentViewModel = model;
+        await OnCurrentViewModelChanged();
+    }
+
+    public async Task NavigateToInvoiceView(int headerId)
+    {
+        var model = new InvoiceViewModel(
+            serviceWrapper: _factory.ServiceWrapper,
+            invoiceHeaderState: _factory.InvoiceHeaderState,
+            resultStatusTypeState: _factory.ResultStatusTypeState,
+            statusTypeState: _factory.StatusTypeState
+        );
+        await model.LoadData(headerId);
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
     }

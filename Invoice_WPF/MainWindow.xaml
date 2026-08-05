@@ -19,6 +19,9 @@
             <DataTemplate DataType="{x:Type vms:MainMenuViewModel}">
                 <views:MainMenuView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vms:InvoiceViewModel}">
+                <views:InvoiceView />
+            </DataTemplate>
         </Grid.Resources>
         <ContentControl Content="{Binding CurrentViewModel}"/>
     </Grid>
