@@ -4,8 +4,8 @@ namespace Invoice_WPF.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private readonly NavigationStore _navigationStore;
-    public MainViewModel(NavigationStore navigationStore)
+    private readonly INavigationStore _navigationStore;
+    public MainViewModel(INavigationStore navigationStore)
     {
         _navigationStore = navigationStore;
         _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;

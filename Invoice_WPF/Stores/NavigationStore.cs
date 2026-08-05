@@ -1,23 +1,33 @@
-﻿using Invoice_WPF.ViewModels;
+﻿using Invoice_WPF.Services;
+using Invoice_WPF.ViewModels;
 
 namespace Invoice_WPF.Stores;
 
-public class NavigationStore
+public interface INavigationStore
 {
+    ViewModelBase? CurrentViewModel { get; }
+    Func<Task>? CurrentViewModelChanged { get; set; }
+    Task NavigateToInvoiceSearchView();
+    void NavigateToMainMenu();
+    Task NavigateToMainMenuAsync();
+}
+
+public class NavigationStore : INavigationStore
+{
+    private IFactory _factory;
     private ViewModelBase? _currentViewModel;
+
+    public NavigationStore(IFactory factory)
+    {
+        _factory = factory;
+    }
+
     public ViewModelBase? CurrentViewModel
     {
         get => _currentViewModel;
         private set => _currentViewModel = value;
     }
     public Func<Task>? CurrentViewModelChanged { get; set; }
-
-    public async Task NavigateToAsync(ViewModelBase viewModel)
-    {
-        await viewModel.LoadData();
-        CurrentViewModel = viewModel;
-        await OnCurrentViewModelChanged();
-    }
 
     public void NavigateTo(ViewModelBase viewModel)
     {
@@ -30,5 +40,26 @@ public class NavigationStore
         {
             await CurrentViewModelChanged();
         }
+    }
+
+    public async Task NavigateToInvoiceSearchView()
+    {
+        var model = new InvoiceSearchViewModel(_factory, this);
+        await model.LoadData();
+        CurrentViewModel = model;
+        await OnCurrentViewModelChanged();
+    }
+
+    public void NavigateToMainMenu()
+    {
+        var model = new MainMenuViewModel(this, _factory);
+        CurrentViewModel = model;
+    }
+
+    public async Task NavigateToMainMenuAsync()
+    {
+        var model = new MainMenuViewModel(this, _factory);
+        CurrentViewModel = model;
+        await OnCurrentViewModelChanged();
     }
 }

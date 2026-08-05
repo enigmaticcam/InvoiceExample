@@ -9,17 +9,13 @@ namespace Invoice_WPF;
 /// </summary>
 public partial class App : Application
 {
-    private readonly NavigationStore _navigationStore;
-
-    public App()
-    {
-        _navigationStore = new();
-    }
+    private INavigationStore? _navigationStore;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         var factory = new Factory();
-        _navigationStore.NavigateTo(new MainMenuViewModel(_navigationStore, factory));
+        _navigationStore = new NavigationStore(factory);
+        _navigationStore.NavigateToMainMenu();
         MainWindow = new MainWindow()
         {
             DataContext = new MainViewModel(_navigationStore)

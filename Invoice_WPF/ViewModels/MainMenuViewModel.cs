@@ -17,6 +17,6 @@ public class MainMenuViewModel : ViewModelBase
     public IAsyncRelayCommand OpenInvoiceSearchCommand { get; }
     public async Task OpenInvoiceSearch()
     {
-        await _navigationStore.NavigateToAsync(new InvoiceSearchViewModel(_factory, _navigationStore));
+        await _navigationStore.NavigateToInvoiceSearchView();
     }
 }

@@ -94,7 +94,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 
     private async Task Close()
     {
-        await _navigationStore.NavigateToAsync(new MainMenuViewModel(_navigationStore, _factory));
+        await _navigationStore.NavigateToMainMenuAsync();
     }
 
     private Task LoadDataAsync()
