@@ -15,15 +15,64 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
             <TextBlock
                 Grid.Row="0"
                 FontSize="20"
                 Text="Header" />
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <TextBlock Text="Header Id"/>
-                <TextBox Text="{Binding Header.InvoiceHeaderId}" />
-            </StackPanel>
+            <TextBlock
+                Grid.Column="0"
+                Grid.Row="1"
+                Text="Header Id"/>
+            <TextBox 
+                Grid.Column="1"
+                Grid.Row="1"
+                Text="{Binding Header.InvoiceHeaderId}"
+                IsReadOnly="true"/>
+            <TextBlock
+                Grid.Column="0"
+                Grid.Row="2"
+                Text="Customer" />
+            <TextBox 
+                Grid.Column="1"
+                Grid.Row="2"
+                Text="{Binding Header.Customer}"
+                IsReadOnly="true"/>
+            <TextBlock 
+                Grid.Column="0"
+                Grid.Row="3"
+                Text="Invoice date" />
+            <TextBox 
+                Grid.Column="1"
+                Grid.Row="3"
+                Text="{Binding Header.InvoiceDate}"
+                IsReadOnly="true"/>
+            <TextBlock 
+                Grid.Column="0"
+                Grid.Row="4"
+                Text="Status Type" />
+            <TextBox 
+                Grid.Column="1"
+                Grid.Row="4"
+                Text="{Binding StatusTypeText, Mode=OneWay}"
+                IsReadOnly="true"/>
+            <TextBlock 
+                Grid.Column="0"
+                Grid.Row="5"
+                Text="Description" />
+            <TextBox 
+                Grid.Column="1"
+                Grid.Row="5"
+                Text="{Binding Header.Description}"
+                IsReadOnly="true"/>
         </Grid>
     </Grid>
 </UserControl>

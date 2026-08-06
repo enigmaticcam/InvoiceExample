@@ -8,6 +8,7 @@ namespace Invoice_WPF.Services
     public interface IFactory
     {
         IClient Client { get; }
+        IInvoiceDetailState InvoiceDetailState { get; }
         IInvoiceHeaderState InvoiceHeaderState { get; }
         IInvoiceSearchState InvoiceSearchState { get; }
         IResultStatusTypeState ResultStatusTypeState { get; }
@@ -20,6 +21,7 @@ namespace Invoice_WPF.Services
     {
         private HttpClient _httpClient;
         private Lazy<IClient> _client;
+        private Lazy<IInvoiceDetailState> _invoiceDetailState;
         private Lazy<IInvoiceHeaderState> _invoiceHeaderState;
         private Lazy<IInvoiceSearchState> _invoiceSearchState;
         private Lazy<IResultStatusTypeState> _resultStatusTypeState;
@@ -30,6 +32,7 @@ namespace Invoice_WPF.Services
         {
             _httpClient = new HttpClient() { BaseAddress = new Uri("https://localhost:7206") };
             _client = new Lazy<IClient>(() => new Client(_httpClient));
+            _invoiceDetailState = new Lazy<IInvoiceDetailState>(() => new InvoiceDetailState());
             _invoiceHeaderState = new Lazy<IInvoiceHeaderState>(() => new InvoiceHeaderState());
             _invoiceSearchState = new Lazy<IInvoiceSearchState>(() => new InvoiceSearchState());
             _resultStatusTypeState = new Lazy<IResultStatusTypeState>(() => new ResultStatusTypeState());
@@ -38,6 +41,7 @@ namespace Invoice_WPF.Services
         }
 
         public IClient Client => _client.Value;
+        public IInvoiceDetailState InvoiceDetailState => _invoiceDetailState.Value;
         public IInvoiceHeaderState InvoiceHeaderState => _invoiceHeaderState.Value;
         public IInvoiceSearchState InvoiceSearchState => _invoiceSearchState.Value;
         public IResultStatusTypeState ResultStatusTypeState => _resultStatusTypeState.Value;

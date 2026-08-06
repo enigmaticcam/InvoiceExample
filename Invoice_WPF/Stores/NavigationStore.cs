@@ -69,6 +69,7 @@ public class NavigationStore : INavigationStore
         var model = new InvoiceViewModel(
             serviceWrapper: _factory.ServiceWrapper,
             invoiceHeaderState: _factory.InvoiceHeaderState,
+            invoiceDetailState: _factory.InvoiceDetailState,
             resultStatusTypeState: _factory.ResultStatusTypeState,
             statusTypeState: _factory.StatusTypeState
         );

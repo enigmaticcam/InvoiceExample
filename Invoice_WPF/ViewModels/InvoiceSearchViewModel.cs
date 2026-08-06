@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Models;
 using Invoice_WPF.Services;
-using Invoice_WPF.Services.Commands;
+using Invoice_WPF.Services.Commands.InvoiceSearch;
 using Invoice_WPF.Stores;
 using System.Collections.ObjectModel;
 
