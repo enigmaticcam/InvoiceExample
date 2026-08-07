@@ -1,14 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Services;
-using Invoice_WPF.Stores;
 
 namespace Invoice_WPF.ViewModels;
 
 public class MainMenuViewModel : ViewModelBase
 {
-    private NavigationStore _navigationStore;
+    private INavigation _navigationStore;
     private IFactory _factory;
-    public MainMenuViewModel(NavigationStore navigationStore, IFactory factory)
+    public MainMenuViewModel(INavigation navigationStore, IFactory factory)
     {
         OpenInvoiceSearchCommand = new AsyncRelayCommand(OpenInvoiceSearch);
         _navigationStore = navigationStore;

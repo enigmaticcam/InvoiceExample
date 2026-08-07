@@ -1,9 +1,8 @@
-﻿using Invoice_WPF.Services;
-using Invoice_WPF.ViewModels;
+﻿using Invoice_WPF.ViewModels;
 
-namespace Invoice_WPF.Stores;
+namespace Invoice_WPF.Services;
 
-public interface INavigationStore
+public interface INavigation
 {
     ViewModelBase? CurrentViewModel { get; }
     Func<Task>? CurrentViewModelChanged { get; set; }
@@ -13,12 +12,12 @@ public interface INavigationStore
     Task NavigateToMainMenuAsync();
 }
 
-public class NavigationStore : INavigationStore
+public class Navigation : INavigation
 {
     private IFactory _factory;
     private ViewModelBase? _currentViewModel;
 
-    public NavigationStore(IFactory factory)
+    public Navigation(IFactory factory)
     {
         _factory = factory;
     }

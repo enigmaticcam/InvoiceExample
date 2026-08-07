@@ -2,7 +2,6 @@
 using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceSearch;
-using Invoice_WPF.Stores;
 using System.Collections.ObjectModel;
 
 namespace Invoice_WPF.ViewModels;
@@ -10,9 +9,9 @@ namespace Invoice_WPF.ViewModels;
 public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 {
     private IFactory _factory;
-    private NavigationStore _navigationStore;
+    private INavigation _navigationStore;
 
-    public InvoiceSearchViewModel(IFactory factory, NavigationStore navigationStore)
+    public InvoiceSearchViewModel(IFactory factory, INavigation navigationStore)
     {
         _factory = factory;
         _invoices = new();
