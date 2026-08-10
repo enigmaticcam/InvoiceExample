@@ -3,7 +3,7 @@ using Invoice_WPF.Services.States;
 
 namespace Invoice_WPF.Services.Commands.StatusType;
 
-public class StatusTypeGetCommand
+public class StatusTypeGetCommand : IServerCommand<WPFResult>
 {
     private IServiceWrapper _service;
     private IStatusTypeState _state;
@@ -14,7 +14,7 @@ public class StatusTypeGetCommand
         _state = state;
     }
 
-    public async Task<WPFResult> Perform()
+    public async Task<WPFResult> Execute()
     {
         var result = await _service.StatusType_Get();
         if (result.IsSuccess && result.Obj != null)
@@ -23,4 +23,5 @@ public class StatusTypeGetCommand
         }
         return result;
     }
+
 }

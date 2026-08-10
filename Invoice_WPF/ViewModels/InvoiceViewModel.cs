@@ -4,7 +4,7 @@ using Invoice_WPF.Services.Commands.InvoiceDetail;
 using Invoice_WPF.Services.Commands.InvoiceHeader;
 using Invoice_WPF.Services.Commands.ResultStatusType;
 using Invoice_WPF.Services.Commands.StatusType;
-using Invoice_WPF.Services.Core;
+using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
 using System.Collections.ObjectModel;
 
@@ -12,19 +12,26 @@ namespace Invoice_WPF.ViewModels;
 
 public partial class InvoiceViewModel : ViewModelBase
 {
-    private IServiceWrapper _serviceWrapper;
+    private IInvoiceHeaderInvoker _invoiceHeaderInvoker;
     private IInvoiceHeaderState _invoiceHeaderState;
+    private IInvoiceDetailInvoker _invoiceDetailInvoker;
     private IInvoiceDetailState _invoiceDetailState;
+    private IResultStatusInvoker _resultStatusInvoker;
     private IResultStatusTypeState _resultStatusTypeState;
+    private IStatusTypeInvoker _statusTypeInvoker;
     private IStatusTypeState _statusTypeState;
+    private InvokerToken _token = new();
     private ObservableCollection<InvoiceResultObservable> _detail = new();
 
-    public InvoiceViewModel(IServiceWrapper serviceWrapper, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailState invoiceDetailState, IResultStatusTypeState resultStatusTypeState, IStatusTypeState statusTypeState)
+    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState)
     {
-        _serviceWrapper = serviceWrapper;
+        _invoiceHeaderInvoker = invoiceHeaderInvoker;
         _invoiceHeaderState = invoiceHeaderState;
+        _invoiceDetailInvoker = invoiceDetailInvoker;
         _invoiceDetailState = invoiceDetailState;
+        _resultStatusInvoker = resultStatusInvoker;
         _resultStatusTypeState = resultStatusTypeState;
+        _statusTypeInvoker = statusTypeInvoker;
         _statusTypeState = statusTypeState;
     }
 
@@ -50,8 +57,7 @@ public partial class InvoiceViewModel : ViewModelBase
     {
         if (!_invoiceHeaderState.IsLoaded || !_invoiceHeaderState.Contains(id))
         {
-            var command = new InvoiceHeaderGetCommand(_serviceWrapper, _invoiceHeaderState);
-            await command.Perform(id);
+            await _invoiceHeaderInvoker.Get(_token, id);
         }
         if (_invoiceHeaderState.Contains(id))
         {
@@ -61,8 +67,7 @@ public partial class InvoiceViewModel : ViewModelBase
 
     private async Task LoadDataDetail(int id)
     {
-        var command = new InvoiceDetailGetCommand(_serviceWrapper, _invoiceDetailState);
-        var result = await command.Perform(id);
+        var result = await _invoiceDetailInvoker.Get(_token, id);
         if (result.IsSuccess)
         {
             foreach (var line in _invoiceDetailState.Items)
@@ -76,8 +81,7 @@ public partial class InvoiceViewModel : ViewModelBase
     {
         if (!_resultStatusTypeState.IsLoaded)
         {
-            var command = new ResultStatusTypeGetCommand(_serviceWrapper, _resultStatusTypeState);
-            await command.Perform();
+            await _resultStatusInvoker.Get(_token);
         }
     }
 
@@ -85,8 +89,7 @@ public partial class InvoiceViewModel : ViewModelBase
     {
         if (!_statusTypeState.IsLoaded)
         {
-            var command = new StatusTypeGetCommand(_serviceWrapper, _statusTypeState);
-            await command.Perform();
+            await _statusTypeInvoker.Get(_token);
         }
     }
 }

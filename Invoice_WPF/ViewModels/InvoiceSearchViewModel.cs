@@ -2,29 +2,36 @@
 using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceSearch;
+using Invoice_WPF.Services.Core;
+using Invoice_WPF.Services.Entities;
+using Invoice_WPF.Services.Invoking;
 using System.Collections.ObjectModel;
 
 namespace Invoice_WPF.ViewModels;
 
 public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 {
-    private IFactory _factory;
-    private INavigation _navigationStore;
+    private IInvoiceSearchInvoker _invoiceSearchInvoker;
+    private IInvoiceSearchState _invoiceSearchState;
+    private INavigation _navigation;
+    private InvokerToken _token;
 
-    public InvoiceSearchViewModel(IFactory factory, INavigation navigationStore)
+    public InvoiceSearchViewModel(IInvoiceSearchInvoker invoiceSearchInvoker, IInvoiceSearchState invoiceSearchState, INavigation navigation)
     {
-        _factory = factory;
+        _invoiceSearchInvoker = invoiceSearchInvoker;
+        _invoiceSearchState = invoiceSearchState;
+        _navigation = navigation;
+        _token = new();
         _invoices = new();
         SearchCommand = new AsyncRelayCommand(Search);
         CloseCommand = new AsyncRelayCommand(Close);
         OpenCommand = new AsyncRelayCommand<InvoiceHeaderModel>(x => OpenInvoice(x));
-        _factory.InvoiceSearchState.OnChanged += LoadDataAsync;
-        _navigationStore = navigationStore;
+        _invoiceSearchState.OnChanged += LoadDataAsync;
     }
 
     public void Dispose()
     {
-        _factory.InvoiceSearchState.OnChanged -= LoadDataAsync;
+        _invoiceSearchState.OnChanged -= LoadDataAsync;
     }
 
     private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
@@ -81,8 +88,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
     public IAsyncRelayCommand<InvoiceHeaderModel> OpenCommand { get; }
     private async Task Search()
     {
-        var command = new InvoiceSearchGetCommand(_factory.ServiceWrapper, _factory.InvoiceSearchState);
-        await command.Perform(new Services.Core.InvoiceFilterDTO()
+        await _invoiceSearchInvoker.Search(_token, new InvoiceFilterDTO()
         {
             ByCustomer = _byCustomer,
             ByHeader = _byHeader,
@@ -94,14 +100,14 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 
     private async Task Close()
     {
-        await _navigationStore.NavigateToMainMenuAsync();
+        await _navigation.NavigateToMainMenuAsync();
     }
 
     private async Task OpenInvoice(InvoiceHeaderModel? header)
     {
         if (header != null)
         {
-            await _navigationStore.NavigateToInvoiceView(header.InvoiceHeaderId);
+            await _navigation.NavigateToInvoiceView(header.InvoiceHeaderId);
         }
     }
 
@@ -113,15 +119,14 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 
     public async Task LoadData()
     {
-        var command = new InvoiceSearchGetCommand(_factory.ServiceWrapper, _factory.InvoiceSearchState);
-        await command.Perform();
+        await _invoiceSearchInvoker.Search(_token);
     }
 
     private void Load()
     {
-        if (_factory.InvoiceSearchState.Item != null)
+        if (_invoiceSearchState.Item != null)
         {
-            var item = _factory.InvoiceSearchState.Item;
+            var item = _invoiceSearchState.Item;
             _invoices.Clear();
             foreach (var invoice in item.Invoices)
             {

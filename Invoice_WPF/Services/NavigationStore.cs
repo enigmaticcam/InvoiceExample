@@ -44,7 +44,10 @@ public class Navigation : INavigation
 
     public async Task NavigateToInvoiceSearchView()
     {
-        var model = new InvoiceSearchViewModel(_factory, this);
+        var model = new InvoiceSearchViewModel(
+            invoiceSearchInvoker: _factory.InvoiceSearchInvoker,
+            invoiceSearchState: _factory.InvoiceSearchState,
+            navigation: this);
         await model.LoadData();
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
@@ -66,10 +69,13 @@ public class Navigation : INavigation
     public async Task NavigateToInvoiceView(int headerId)
     {
         var model = new InvoiceViewModel(
-            serviceWrapper: _factory.ServiceWrapper,
+            invoiceHeaderInvoker: _factory.InvoiceHeaderInvoker,
             invoiceHeaderState: _factory.InvoiceHeaderState,
+            invoiceDetailInvoker: _factory.InvoiceDetailInvoker,
             invoiceDetailState: _factory.InvoiceDetailState,
+            resultStatusInvoker: _factory.ResultStatusInvoker,
             resultStatusTypeState: _factory.ResultStatusTypeState,
+            statusTypeInvoker: _factory.StatusTypeInvoker,
             statusTypeState: _factory.StatusTypeState
         );
         await model.LoadData(headerId);
