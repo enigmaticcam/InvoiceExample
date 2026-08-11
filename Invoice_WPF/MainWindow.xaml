@@ -7,9 +7,8 @@
         xmlns:vms="clr-namespace:Invoice_WPF.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" 
-        Height="450" 
+        Height="600" 
         Width="800"
-        MaxWidth="600"
         FontSize="14">
     <Grid Margin="20 10">
         <Grid.Resources>

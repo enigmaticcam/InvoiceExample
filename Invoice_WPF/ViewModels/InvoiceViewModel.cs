@@ -38,6 +38,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
 
     [ObservableProperty]
     public partial InvoiceHeaderObservable? Header { get; set; }
+    public InvoiceSummaryObservable Summary { get; set; } = new();
 
     public string? StatusTypeText
     {
@@ -75,6 +76,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             {
                 _detail.Add(new InvoiceResultObservable(line));
             }
+            Summary.Calc(_detail);
         }
     }
 

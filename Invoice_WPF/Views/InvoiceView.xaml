@@ -9,9 +9,17 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid 
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="5 5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -73,6 +81,53 @@
                 Grid.Row="5"
                 Text="{Binding Header.Description}"
                 IsReadOnly="true"/>
+        </Grid>
+        <Grid 
+            Grid.Row="0"
+            Grid.Column="1"
+            Margin="5 5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                FontSize="20"
+                Text="Sumary" />
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="0"
+                Text="{Binding Summary.TotalRequestedDollars, StringFormat=C}"
+                IsReadOnly="true"/>
+            <Label 
+                Grid.Row="1"
+                Grid.Column="1"
+                Content="Total Requested Dollars"/>
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="0"
+                Text="{Binding Summary.TotalExceptionDollars, StringFormat=C}"
+                IsReadOnly="true"/>
+            <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Content="Total Exception Dollars"/>
+            <TextBox
+                Grid.Row="3"
+                Grid.Column="0"
+                Text="{Binding Summary.TotalAgreedDollars, StringFormat=C}"
+                IsReadOnly="true"/>
+            <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                Content="Total Agreed Dollars"/>
         </Grid>
     </Grid>
 </UserControl>
