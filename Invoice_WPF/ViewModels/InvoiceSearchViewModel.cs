@@ -16,12 +16,12 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
     private INavigation _navigation;
     private InvokerToken _token;
 
-    public InvoiceSearchViewModel(IInvoiceSearchInvoker invoiceSearchInvoker, IInvoiceSearchState invoiceSearchState, INavigation navigation)
+    public InvoiceSearchViewModel(IInvoiceSearchInvoker invoiceSearchInvoker, IInvoiceSearchState invoiceSearchState, INavigation navigation, InvokerToken token)
     {
         _invoiceSearchInvoker = invoiceSearchInvoker;
         _invoiceSearchState = invoiceSearchState;
         _navigation = navigation;
-        _token = new();
+        _token = token;
         _invoices = new();
         SearchCommand = new AsyncRelayCommand(Search);
         CloseCommand = new AsyncRelayCommand(Close);

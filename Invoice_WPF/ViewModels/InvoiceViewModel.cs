@@ -20,10 +20,10 @@ public partial class InvoiceViewModel : ViewModelBase
     private IResultStatusTypeState _resultStatusTypeState;
     private IStatusTypeInvoker _statusTypeInvoker;
     private IStatusTypeState _statusTypeState;
-    private InvokerToken _token = new();
+    private InvokerToken _token;
     private ObservableCollection<InvoiceResultObservable> _detail = new();
 
-    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState)
+    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState, InvokerToken token)
     {
         _invoiceHeaderInvoker = invoiceHeaderInvoker;
         _invoiceHeaderState = invoiceHeaderState;
@@ -33,6 +33,7 @@ public partial class InvoiceViewModel : ViewModelBase
         _resultStatusTypeState = resultStatusTypeState;
         _statusTypeInvoker = statusTypeInvoker;
         _statusTypeState = statusTypeState;
+        _token = token;
     }
 
     [ObservableProperty]
@@ -43,21 +44,21 @@ public partial class InvoiceViewModel : ViewModelBase
         get => _statusTypeState.GetText(Header?.StatusTypeId);
     }
 
-    public async Task LoadData(int id, InvokerToken token)
+    public async Task LoadData(int id)
     {
         await Task.WhenAll(
-            LoadDataHeader(id, token),
-            LoadDataDetail(id, token),
-            LoadDataResultStatusType(token),
-            LoadDataStatusType(token)
+            LoadDataHeader(id),
+            LoadDataDetail(id),
+            LoadDataResultStatusType(),
+            LoadDataStatusType()
         );
     }
 
-    private async Task LoadDataHeader(int id, InvokerToken token)
+    private async Task LoadDataHeader(int id)
     {
         if (!_invoiceHeaderState.IsLoaded || !_invoiceHeaderState.Contains(id))
         {
-            await _invoiceHeaderInvoker.Get(token, id);
+            await _invoiceHeaderInvoker.Get(_token, id);
         }
         if (_invoiceHeaderState.Contains(id))
         {
@@ -65,9 +66,9 @@ public partial class InvoiceViewModel : ViewModelBase
         }
     }
 
-    private async Task LoadDataDetail(int id, InvokerToken token)
+    private async Task LoadDataDetail(int id)
     {
-        var result = await _invoiceDetailInvoker.Get(token, id);
+        var result = await _invoiceDetailInvoker.Get(_token, id);
         if (result.IsSuccess)
         {
             foreach (var line in _invoiceDetailState.Items)
@@ -77,19 +78,19 @@ public partial class InvoiceViewModel : ViewModelBase
         }
     }
 
-    private async Task LoadDataResultStatusType(InvokerToken token)
+    private async Task LoadDataResultStatusType()
     {
         if (!_resultStatusTypeState.IsLoaded)
         {
-            await _resultStatusInvoker.Get(token);
+            await _resultStatusInvoker.Get(_token);
         }
     }
 
-    private async Task LoadDataStatusType(InvokerToken token)
+    private async Task LoadDataStatusType()
     {
         if (!_statusTypeState.IsLoaded)
         {
-            await _statusTypeInvoker.Get(token);
+            await _statusTypeInvoker.Get(_token);
         }
     }
 }

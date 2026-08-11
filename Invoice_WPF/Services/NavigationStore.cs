@@ -17,6 +17,7 @@ public class Navigation : INavigation
 {
     private IFactory _factory;
     private ViewModelBase? _currentViewModel;
+    private InvokerToken _token = new();
 
     public Navigation(IFactory factory)
     {
@@ -48,7 +49,8 @@ public class Navigation : INavigation
         var model = new InvoiceSearchViewModel(
             invoiceSearchInvoker: _factory.InvoiceSearchInvoker,
             invoiceSearchState: _factory.InvoiceSearchState,
-            navigation: this);
+            navigation: this,
+            token: _token);
         await model.LoadData();
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
@@ -56,13 +58,13 @@ public class Navigation : INavigation
 
     public void NavigateToMainMenu()
     {
-        var model = new MainMenuViewModel(this, _factory);
+        var model = new MainMenuViewModel(this);
         CurrentViewModel = model;
     }
 
     public async Task NavigateToMainMenuAsync()
     {
-        var model = new MainMenuViewModel(this, _factory);
+        var model = new MainMenuViewModel(this);
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
     }
@@ -77,9 +79,10 @@ public class Navigation : INavigation
             resultStatusInvoker: _factory.ResultStatusInvoker,
             resultStatusTypeState: _factory.ResultStatusTypeState,
             statusTypeInvoker: _factory.StatusTypeInvoker,
-            statusTypeState: _factory.StatusTypeState
+            statusTypeState: _factory.StatusTypeState,
+            token: _token
         );
-        await model.LoadData(headerId, token);
+        await model.LoadData(headerId);
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
     }
