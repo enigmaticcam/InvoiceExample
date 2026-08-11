@@ -43,21 +43,21 @@ public partial class InvoiceViewModel : ViewModelBase
         get => _statusTypeState.GetText(Header?.StatusTypeId);
     }
 
-    public async Task LoadData(int id)
+    public async Task LoadData(int id, InvokerToken token)
     {
         await Task.WhenAll(
-            LoadDataHeader(id),
-            LoadDataDetail(id),
-            LoadDataResultStatusType(),
-            LoadDataStatusType()
+            LoadDataHeader(id, token),
+            LoadDataDetail(id, token),
+            LoadDataResultStatusType(token),
+            LoadDataStatusType(token)
         );
     }
 
-    private async Task LoadDataHeader(int id)
+    private async Task LoadDataHeader(int id, InvokerToken token)
     {
         if (!_invoiceHeaderState.IsLoaded || !_invoiceHeaderState.Contains(id))
         {
-            await _invoiceHeaderInvoker.Get(_token, id);
+            await _invoiceHeaderInvoker.Get(token, id);
         }
         if (_invoiceHeaderState.Contains(id))
         {
@@ -65,9 +65,9 @@ public partial class InvoiceViewModel : ViewModelBase
         }
     }
 
-    private async Task LoadDataDetail(int id)
+    private async Task LoadDataDetail(int id, InvokerToken token)
     {
-        var result = await _invoiceDetailInvoker.Get(_token, id);
+        var result = await _invoiceDetailInvoker.Get(token, id);
         if (result.IsSuccess)
         {
             foreach (var line in _invoiceDetailState.Items)
@@ -77,19 +77,19 @@ public partial class InvoiceViewModel : ViewModelBase
         }
     }
 
-    private async Task LoadDataResultStatusType()
+    private async Task LoadDataResultStatusType(InvokerToken token)
     {
         if (!_resultStatusTypeState.IsLoaded)
         {
-            await _resultStatusInvoker.Get(_token);
+            await _resultStatusInvoker.Get(token);
         }
     }
 
-    private async Task LoadDataStatusType()
+    private async Task LoadDataStatusType(InvokerToken token)
     {
         if (!_statusTypeState.IsLoaded)
         {
-            await _statusTypeInvoker.Get(_token);
+            await _statusTypeInvoker.Get(token);
         }
     }
 }

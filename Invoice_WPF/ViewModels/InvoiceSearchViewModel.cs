@@ -25,8 +25,9 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         _invoices = new();
         SearchCommand = new AsyncRelayCommand(Search);
         CloseCommand = new AsyncRelayCommand(Close);
-        OpenCommand = new AsyncRelayCommand<InvoiceHeaderModel>(x => OpenInvoice(x));
+        OpenCommand = new AsyncRelayCommand<InvoiceHeaderModel>(OpenInvoice);
         _invoiceSearchState.OnChanged += LoadDataAsync;
+        _token.OnRunning += SetIsOnRunning;
     }
 
     public void Dispose()
@@ -83,6 +84,35 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         }
     }
 
+    private bool _notIsRunning;
+    public bool NotIsRunning
+    {
+        get => _notIsRunning;
+        set
+        {
+            _notIsRunning = value;
+            OnPropertyChanged(nameof(NotIsRunning));
+        }
+    }
+
+    private bool _isRunning;
+    public bool IsRunning
+    {
+        get => _isRunning;
+        set
+        {
+            _isRunning = value;
+            OnPropertyChanged(nameof(IsRunning));
+        }
+    }
+
+    private Task SetIsOnRunning(bool isRunning)
+    {
+        NotIsRunning = !isRunning;
+        IsRunning = IsRunning;
+        return Task.CompletedTask;
+    }
+
     public IAsyncRelayCommand SearchCommand { get; }
     public IAsyncRelayCommand CloseCommand { get; }
     public IAsyncRelayCommand<InvoiceHeaderModel> OpenCommand { get; }
@@ -107,7 +137,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
     {
         if (header != null)
         {
-            await _navigation.NavigateToInvoiceView(header.InvoiceHeaderId);
+            await _navigation.NavigateToInvoiceView(_token, header.InvoiceHeaderId);
         }
     }
 
@@ -128,7 +158,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         {
             var item = _invoiceSearchState.Item;
             _invoices.Clear();
-            foreach (var invoice in item.Invoices)
+            foreach (var invoice in item.Invoices.OrderByDescending(x => x.InvoiceHeaderId))
             {
                 _invoices.Add(new InvoiceHeaderModel(invoice));
             }

@@ -1,4 +1,5 @@
-﻿using Invoice_WPF.ViewModels;
+﻿using Invoice_WPF.Services.Invoking;
+using Invoice_WPF.ViewModels;
 
 namespace Invoice_WPF.Services;
 
@@ -6,7 +7,7 @@ public interface INavigation
 {
     ViewModelBase? CurrentViewModel { get; }
     Func<Task>? CurrentViewModelChanged { get; set; }
-    Task NavigateToInvoiceView(int headerId);
+    Task NavigateToInvoiceView(InvokerToken token, int headerId);
     Task NavigateToInvoiceSearchView();
     void NavigateToMainMenu();
     Task NavigateToMainMenuAsync();
@@ -66,7 +67,7 @@ public class Navigation : INavigation
         await OnCurrentViewModelChanged();
     }
 
-    public async Task NavigateToInvoiceView(int headerId)
+    public async Task NavigateToInvoiceView(InvokerToken token, int headerId)
     {
         var model = new InvoiceViewModel(
             invoiceHeaderInvoker: _factory.InvoiceHeaderInvoker,
@@ -78,7 +79,7 @@ public class Navigation : INavigation
             statusTypeInvoker: _factory.StatusTypeInvoker,
             statusTypeState: _factory.StatusTypeState
         );
-        await model.LoadData(headerId);
+        await model.LoadData(headerId, token);
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
     }
