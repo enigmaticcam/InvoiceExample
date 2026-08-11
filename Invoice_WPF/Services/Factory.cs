@@ -20,7 +20,6 @@ namespace Invoice_WPF.Services
         IInvoiceHeaderState InvoiceHeaderState { get; }
         IInvoiceSearchInvoker InvoiceSearchInvoker { get; }
         IInvoiceSearchState InvoiceSearchState { get; }
-        INavigation Navigation { get; }
         IResultStatusInvoker ResultStatusInvoker { get; }
         IResultStatusTypeState ResultStatusTypeState { get; }
         IServiceWrapper ServiceWrapper { get; }
@@ -39,7 +38,6 @@ namespace Invoice_WPF.Services
         private Lazy<IInvoiceHeaderState> _invoiceHeaderState;
         private Lazy<IInvoiceSearchInvoker> _invoiceSearchInvoker;
         private Lazy<IInvoiceSearchState> _invoiceSearchState;
-        private Lazy<INavigation> _navigation;
         private Lazy<IResultStatusInvoker> _resultStatusInvoker;
         private Lazy<IResultStatusTypeState> _resultStatusTypeState;
         private Lazy<IServerInvoker> _serverInvoker;
@@ -58,7 +56,6 @@ namespace Invoice_WPF.Services
             _invoiceHeaderState = new Lazy<IInvoiceHeaderState>(() => new InvoiceHeaderState());
             _invoiceSearchInvoker = new Lazy<IInvoiceSearchInvoker>(() => new InvoiceSearchInvoker(ServerInvoker, ServiceWrapper, InvoiceSearchState));
             _invoiceSearchState = new Lazy<IInvoiceSearchState>(() => new InvoiceSearchState());
-            _navigation = new Lazy<INavigation>(() => new Navigation(this));
             _resultStatusInvoker = new Lazy<IResultStatusInvoker>(() => new ResultStatusInvoker(ServerInvoker, ServiceWrapper, ResultStatusTypeState));
             _resultStatusTypeState = new Lazy<IResultStatusTypeState>(() => new ResultStatusTypeState());
             _serverInvoker = new Lazy<IServerInvoker>(() => new ServerInvoker(ServerStatus));
@@ -75,7 +72,6 @@ namespace Invoice_WPF.Services
         public IInvoiceHeaderState InvoiceHeaderState => _invoiceHeaderState.Value;
         public IInvoiceSearchInvoker InvoiceSearchInvoker => _invoiceSearchInvoker.Value;
         public IInvoiceSearchState InvoiceSearchState => _invoiceSearchState.Value;
-        public INavigation Navigation => _navigation.Value;
         public IResultStatusInvoker ResultStatusInvoker => _resultStatusInvoker.Value;
         public IResultStatusTypeState ResultStatusTypeState => _resultStatusTypeState.Value;
         public IStatusTypeInvoker StatusTypeInvoker => _statusTypeInvoker.Value;

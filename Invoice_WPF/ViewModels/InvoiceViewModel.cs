@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 
 namespace Invoice_WPF.ViewModels;
 
-public partial class InvoiceViewModel : ViewModelBase
+public partial class InvoiceViewModel : ViewModelBase, IDisposable
 {
     private IInvoiceHeaderInvoker _invoiceHeaderInvoker;
     private IInvoiceHeaderState _invoiceHeaderState;
@@ -92,5 +92,10 @@ public partial class InvoiceViewModel : ViewModelBase
         {
             await _statusTypeInvoker.Get(_token);
         }
+    }
+
+    public void Dispose()
+    {
+
     }
 }

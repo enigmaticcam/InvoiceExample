@@ -6,7 +6,5 @@
              xmlns:local="clr-namespace:Invoice_WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical">
-        <Button Content="Invoice Search" Command="{Binding OpenInvoiceSearchCommand}" />
-    </StackPanel>
+    
 </UserControl>

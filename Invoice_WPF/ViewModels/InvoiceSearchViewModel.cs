@@ -33,6 +33,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
     public void Dispose()
     {
         _invoiceSearchState.OnChanged -= LoadDataAsync;
+        _token.OnRunning -= SetIsOnRunning;
     }
 
     private readonly ObservableCollection<InvoiceHeaderModel> _invoices;

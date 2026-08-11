@@ -1,5 +1,5 @@
 ﻿using Invoice_WPF.Services;
-using Invoice_WPF.Services;
+using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.ViewModels;
 using System.Windows;
 
@@ -13,12 +13,13 @@ public partial class App : Application
 
     protected override void OnStartup(StartupEventArgs e)
     {
+        var token = new InvokerToken();
         var factory = new Factory();
-        _navigationStore = new Navigation(factory);
+        _navigationStore = new Navigation(factory, token);
         _navigationStore.NavigateToMainMenu();
         MainWindow = new MainWindow()
         {
-            DataContext = new MainViewModel(_navigationStore)
+            DataContext = new MainViewModel(_navigationStore, token)
         };
         MainWindow.Show();
         base.OnStartup(e);

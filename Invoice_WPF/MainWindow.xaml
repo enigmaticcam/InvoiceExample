@@ -23,6 +23,22 @@
                 <views:InvoiceView />
             </DataTemplate>
         </Grid.Resources>
-        <ContentControl Content="{Binding CurrentViewModel}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="125"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel 
+            Grid.Column="0"
+            Orientation="Vertical">
+            <Button 
+                Content="Invoice Search" 
+                Command="{Binding OpenInvoiceSearchCommand}"
+                IsEnabled="{Binding IsNotRunning}"
+                />
+        </StackPanel>
+        <ContentControl
+            Margin="20 0"
+            Grid.Column="1"
+            Content="{Binding CurrentViewModel}"/>
     </Grid>
 </Window>

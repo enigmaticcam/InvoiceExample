@@ -17,11 +17,12 @@ public class Navigation : INavigation
 {
     private IFactory _factory;
     private ViewModelBase? _currentViewModel;
-    private InvokerToken _token = new();
+    private InvokerToken _token;
 
-    public Navigation(IFactory factory)
+    public Navigation(IFactory factory, InvokerToken token)
     {
         _factory = factory;
+        _token = token;
     }
 
     public ViewModelBase? CurrentViewModel
