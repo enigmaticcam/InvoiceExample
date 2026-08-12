@@ -9,125 +9,198 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="400"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
 
-        <Grid 
-            Grid.Row="0"
-            Grid.Column="0"
-            Margin="5 5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock
+            <Grid 
                 Grid.Row="0"
-                FontSize="20"
-                Text="Header" />
-            <TextBlock
                 Grid.Column="0"
-                Grid.Row="1"
-                Text="Header Id"/>
-            <TextBox 
+                Margin="5 5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    FontSize="20"
+                    Text="Header" />
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Text="Header Id"/>
+                <TextBox 
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Text="{Binding Header.InvoiceHeaderId}"
+                    IsReadOnly="true"/>
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.Row="2"
+                    Text="Customer" />
+                <TextBox 
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    Text="{Binding Header.Customer}"
+                    IsReadOnly="true"/>
+                <TextBlock 
+                    Grid.Column="0"
+                    Grid.Row="3"
+                    Text="Invoice date" />
+                <TextBox 
+                    Grid.Column="1"
+                    Grid.Row="3"
+                    Text="{Binding Header.InvoiceDate}"
+                    IsReadOnly="true"/>
+                <TextBlock 
+                    Grid.Column="0"
+                    Grid.Row="4"
+                    Text="Status Type" />
+                <TextBox 
+                    Grid.Column="1"
+                    Grid.Row="4"
+                    Text="{Binding StatusTypeText, Mode=OneWay}"
+                    IsReadOnly="true"/>
+                <TextBlock 
+                    Grid.Column="0"
+                    Grid.Row="5"
+                    Text="Description" />
+                <TextBox 
+                    Grid.Column="1"
+                    Grid.Row="5"
+                    Text="{Binding Header.Description}"
+                    IsReadOnly="true"/>
+            </Grid>
+            <Grid 
+                Grid.Row="0"
                 Grid.Column="1"
-                Grid.Row="1"
-                Text="{Binding Header.InvoiceHeaderId}"
-                IsReadOnly="true"/>
-            <TextBlock
-                Grid.Column="0"
-                Grid.Row="2"
-                Text="Customer" />
-            <TextBox 
-                Grid.Column="1"
-                Grid.Row="2"
-                Text="{Binding Header.Customer}"
-                IsReadOnly="true"/>
-            <TextBlock 
-                Grid.Column="0"
-                Grid.Row="3"
-                Text="Invoice date" />
-            <TextBox 
-                Grid.Column="1"
-                Grid.Row="3"
-                Text="{Binding Header.InvoiceDate}"
-                IsReadOnly="true"/>
-            <TextBlock 
-                Grid.Column="0"
-                Grid.Row="4"
-                Text="Status Type" />
-            <TextBox 
-                Grid.Column="1"
-                Grid.Row="4"
-                Text="{Binding StatusTypeText, Mode=OneWay}"
-                IsReadOnly="true"/>
-            <TextBlock 
-                Grid.Column="0"
-                Grid.Row="5"
-                Text="Description" />
-            <TextBox 
-                Grid.Column="1"
-                Grid.Row="5"
-                Text="{Binding Header.Description}"
-                IsReadOnly="true"/>
+                Margin="5 5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    FontSize="20"
+                    Text="Sumary" />
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="{Binding Summary.TotalRequestedDollars, StringFormat=C}"
+                    IsReadOnly="true"/>
+                <Label 
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Content="Total Requested Dollars"/>
+                <TextBox
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Text="{Binding Summary.TotalExceptionDollars, StringFormat=C}"
+                    IsReadOnly="true"/>
+                <Label
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Content="Total Exception Dollars"/>
+                <TextBox
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Text="{Binding Summary.TotalAgreedDollars, StringFormat=C}"
+                    IsReadOnly="true"/>
+                <Label
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Content="Total Agreed Dollars"/>
+            </Grid>
         </Grid>
-        <Grid 
-            Grid.Row="0"
-            Grid.Column="1"
-            Margin="5 5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                Grid.Row="0"
-                Grid.Column="0"
-                FontSize="20"
-                Text="Sumary" />
-            <TextBox
-                Grid.Row="1"
-                Grid.Column="0"
-                Text="{Binding Summary.TotalRequestedDollars, StringFormat=C}"
-                IsReadOnly="true"/>
-            <Label 
-                Grid.Row="1"
-                Grid.Column="1"
-                Content="Total Requested Dollars"/>
-            <TextBox
-                Grid.Row="2"
-                Grid.Column="0"
-                Text="{Binding Summary.TotalExceptionDollars, StringFormat=C}"
-                IsReadOnly="true"/>
-            <Label
-                Grid.Row="2"
-                Grid.Column="1"
-                Content="Total Exception Dollars"/>
-            <TextBox
-                Grid.Row="3"
-                Grid.Column="0"
-                Text="{Binding Summary.TotalAgreedDollars, StringFormat=C}"
-                IsReadOnly="true"/>
-            <Label
-                Grid.Row="3"
-                Grid.Column="1"
-                Content="Total Agreed Dollars"/>
+        <Grid Grid.Row="1">
+            <ListView
+                ItemsSource="{Binding DetailCollectionView}"
+                SelectionMode="Single"
+                ScrollViewer.VerticalScrollBarVisibility="Visible"
+                ScrollViewer.CanContentScroll="True">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Id">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding InvoiceDetailId}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Cust Item Code">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding CustItemCode}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Cust Item Desc">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding CustItemDesc}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Customer Rate">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding CustomerRate}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Approved Rate">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding ApprovedRate}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Cases">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding Cases}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Our Item Code">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding OurItemCode}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Cases Remaining">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Padding="0 0 20 0" Text="{Binding CasesRemaining}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>

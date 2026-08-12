@@ -7,6 +7,8 @@ using Invoice_WPF.Services.Commands.StatusType;
 using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace Invoice_WPF.ViewModels;
 
@@ -39,6 +41,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     [ObservableProperty]
     public partial InvoiceHeaderObservable? Header { get; set; }
     public InvoiceSummaryObservable Summary { get; set; } = new();
+    public ICollectionView? DetailCollectionView { get; private set; }
 
     public string? StatusTypeText
     {
@@ -76,6 +79,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             {
                 _detail.Add(new InvoiceResultObservable(line));
             }
+            DetailCollectionView = CollectionViewSource.GetDefaultView(_detail);
             Summary.Calc(_detail);
         }
     }
