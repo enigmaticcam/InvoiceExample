@@ -4,8 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Invoice_WPF.Views"
+             xmlns:conv="clr-namespace:Invoice_WPF.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="675">
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -173,27 +177,34 @@
                         <GridViewColumn Header="Approved Rate">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBox
-                                            Name="ApprovedRate"
-                                            Padding="0 0 20 0"
-                                            Text="{Binding ApprovedRate}"/>
-                                        <Button 
-                                            Command="{Binding Pay}"
-                                            Visibility="{Binding CanPay}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Source="/Images/dollar.png"/>
-                                                <TextBlock>Pay</TextBlock>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button 
-                                            Command="{Binding RemovePay}"
-                                            Visibility="{Binding CanRemovePay}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Source="/Images/dollar.png"/>
-                                                <TextBlock>Remove Pay</TextBlock>
-                                            </StackPanel>
-                                        </Button>
+                                    <StackPanel>
+                                        <TextBlock
+                                            Text="{Binding ApprovedRate}"
+                                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.CannotEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                        <StackPanel 
+                                            Orientation="Horizontal"
+                                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.CanEdit, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <TextBox
+                                                Name="ApprovedRate"
+                                                Padding="0 0 20 0"
+                                                Text="{Binding ApprovedRate}"/>
+                                            <Button 
+                                                Command="{Binding Pay}"
+                                                Visibility="{Binding CanPay}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Images/dollar.png"/>
+                                                    <TextBlock>Pay</TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button 
+                                                Command="{Binding RemovePay}"
+                                                Visibility="{Binding CanRemovePay}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="/Images/dollar.png"/>
+                                                    <TextBlock>Remove Pay</TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
                                     </StackPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
