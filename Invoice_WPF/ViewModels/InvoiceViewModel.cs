@@ -57,7 +57,6 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     public InvoiceSummaryObservable Summary { get; set; } = new();
     public ICollectionView? DetailCollectionView { get; private set; }
     public bool CanEdit => _permissions?.CanEdit ?? false;
-    public bool CannotEdit => !CanEdit;
 
     public string? StatusTypeText
     {

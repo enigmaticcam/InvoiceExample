@@ -13,6 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="400"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -138,7 +139,13 @@
                     Content="Total Agreed Dollars"/>
             </Grid>
         </Grid>
-        <Grid Grid.Row="1">
+        <CheckBox
+            Grid.Row="1"
+            Content="Edit"
+            IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=IsEditing}"
+            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.CanEdit, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+        <Grid Grid.Row="2">
             <ListView
                 ItemsSource="{Binding DetailCollectionView}"
                 SelectionMode="Single"
@@ -180,10 +187,10 @@
                                     <StackPanel>
                                         <TextBlock
                                             Text="{Binding ApprovedRate}"
-                                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.CannotEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=IsNotEditing, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         <StackPanel 
                                             Orientation="Horizontal"
-                                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.CanEdit, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=IsEditing, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBox
                                                 Name="ApprovedRate"
                                                 Padding="0 0 20 0"
