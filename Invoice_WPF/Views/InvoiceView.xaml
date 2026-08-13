@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Invoice_WPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="675">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -173,7 +173,28 @@
                         <GridViewColumn Header="Approved Rate">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Padding="0 0 20 0" Text="{Binding ApprovedRate}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBox
+                                            Name="ApprovedRate"
+                                            Padding="0 0 20 0"
+                                            Text="{Binding ApprovedRate}"/>
+                                        <Button 
+                                            Command="{Binding Pay}"
+                                            Visibility="{Binding CanPay}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Images/dollar.png"/>
+                                                <TextBlock>Pay</TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button 
+                                            Command="{Binding RemovePay}"
+                                            Visibility="{Binding CanRemovePay}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Source="/Images/dollar.png"/>
+                                                <TextBlock>Remove Pay</TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

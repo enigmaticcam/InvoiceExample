@@ -4,6 +4,7 @@ using Invoice_WPF.Services.Commands.InvoiceDetail;
 using Invoice_WPF.Services.Commands.InvoiceHeader;
 using Invoice_WPF.Services.Commands.ResultStatusType;
 using Invoice_WPF.Services.Commands.StatusType;
+using Invoice_WPF.Services.Core;
 using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
 using System.Collections.ObjectModel;
@@ -18,19 +19,32 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private IInvoiceHeaderState _invoiceHeaderState;
     private IInvoiceDetailInvoker _invoiceDetailInvoker;
     private IInvoiceDetailState _invoiceDetailState;
+    private IInvoiceDetailUpdateState _invoiceDetailUpdateState;
     private IResultStatusInvoker _resultStatusInvoker;
     private IResultStatusTypeState _resultStatusTypeState;
     private IStatusTypeInvoker _statusTypeInvoker;
     private IStatusTypeState _statusTypeState;
     private InvokerToken _token;
+    private InvoicePermissionsDTO? _permissions;
     private ObservableCollection<InvoiceResultObservable> _detail = new();
 
-    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState, InvokerToken token)
+    public InvoiceViewModel(
+        IInvoiceHeaderInvoker invoiceHeaderInvoker,
+        IInvoiceHeaderState invoiceHeaderState,
+        IInvoiceDetailInvoker invoiceDetailInvoker,
+        IInvoiceDetailState invoiceDetailState,
+        IInvoiceDetailUpdateState invoiceDetailUpdateState,
+        IResultStatusInvoker resultStatusInvoker,
+        IResultStatusTypeState resultStatusTypeState,
+        IStatusTypeInvoker statusTypeInvoker,
+        IStatusTypeState statusTypeState,
+        InvokerToken token)
     {
         _invoiceHeaderInvoker = invoiceHeaderInvoker;
         _invoiceHeaderState = invoiceHeaderState;
         _invoiceDetailInvoker = invoiceDetailInvoker;
         _invoiceDetailState = invoiceDetailState;
+        _invoiceDetailUpdateState = invoiceDetailUpdateState;
         _resultStatusInvoker = resultStatusInvoker;
         _resultStatusTypeState = resultStatusTypeState;
         _statusTypeInvoker = statusTypeInvoker;
@@ -54,7 +68,8 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             LoadDataHeader(id),
             LoadDataDetail(id),
             LoadDataResultStatusType(),
-            LoadDataStatusType()
+            LoadDataStatusType(),
+            LoadDataPermissions(id)
         );
     }
 
@@ -97,6 +112,15 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         if (!_statusTypeState.IsLoaded)
         {
             await _statusTypeInvoker.Get(_token);
+        }
+    }
+
+    private async Task LoadDataPermissions(int id)
+    {
+        var result = await _invoiceHeaderInvoker.GetPermissions(_token, id);
+        if (result.IsSuccess)
+        {
+            _permissions = result.Obj;
         }
     }
 
