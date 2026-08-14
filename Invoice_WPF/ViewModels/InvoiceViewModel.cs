@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Observables;
 using Invoice_WPF.Services.Commands.InvoiceDetail;
 using Invoice_WPF.Services.Commands.InvoiceHeader;
@@ -25,8 +26,8 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private IStatusTypeInvoker _statusTypeInvoker;
     private IStatusTypeState _statusTypeState;
     private InvokerToken _token;
-    private InvoicePermissionsDTO? _permissions;
     private ObservableCollection<InvoiceResultObservable> _detail = new();
+    private int _headerId;
 
     public InvoiceViewModel(
         IInvoiceHeaderInvoker invoiceHeaderInvoker,
@@ -56,7 +57,40 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     public partial InvoiceHeaderObservable? Header { get; set; }
     public InvoiceSummaryObservable Summary { get; set; } = new();
     public ICollectionView? DetailCollectionView { get; private set; }
+    private InvoicePermissionsDTO? _permissions;
+    public InvoicePermissionsDTO? Permissions
+    {
+        get => _permissions;
+        set
+        {
+            _permissions = value;
+            OnPropertyChanged(nameof(StatusChanges));
+            OnPropertyChanged(nameof(CanEdit));
+            OnPropertyChanged(nameof(CanDelete));
+        }
+    }
     public bool CanEdit => _permissions?.CanEdit ?? false;
+    public bool CanDelete => _permissions?.CanDelete ?? false;
+    public bool CanChangeStatus => _permissions?.StatusChanges.Count > 0;
+
+    public ObservableCollection<DynamicButton> StatusChanges
+    {
+        get
+        {
+            var list = new ObservableCollection<DynamicButton>();
+            if (_permissions?.StatusChanges != null)
+            {
+                foreach (var status in _permissions.StatusChanges)
+                {
+                    if (_statusTypeState.Contains(status))
+                    {
+                        list.Add(new DynamicButton(_statusTypeState.GetText(status), new AsyncRelayCommand(() => ChangeStatus(status))));
+                    }
+                }
+            }
+            return list;
+        }
+    }
 
     public string? StatusTypeText
     {
@@ -65,6 +99,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
 
     public async Task LoadData(int id)
     {
+        _headerId = id;
         await Task.WhenAll(
             LoadDataHeader(id),
             LoadDataDetail(id),
@@ -121,7 +156,17 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         var result = await _invoiceHeaderInvoker.GetPermissions(_token, id);
         if (result.IsSuccess)
         {
-            _permissions = result.Obj;
+            Permissions = result.Obj;
+        }
+    }
+
+    private async Task ChangeStatus(int statusId)
+    {
+        var result = await _invoiceHeaderInvoker.Update(_token, _headerId, statusId);
+        if (result.IsSuccess)
+        {
+            Header = new(_invoiceHeaderState.Get(_headerId));
+            await LoadDataPermissions(_headerId);
         }
     }
 
