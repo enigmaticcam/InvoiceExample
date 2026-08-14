@@ -8,7 +8,7 @@ public interface IInvoiceHeaderInvoker
 {
     Task<WPFResult> Get(InvokerToken token, int headerId);
     Task<WPFResult<InvoicePermissionsDTO>> GetPermissions(InvokerToken token, int headerId);
-    Task<WPFResult> Update(InvokerToken token, int headerId, int statusTypeId);
+    Task<WPFResult<InvoiceUpdateResultDTO>> Update(InvokerToken token, int headerId, int statusTypeId);
 }
 
 public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
@@ -36,7 +36,7 @@ public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
         return _invoker.Perform(token, command);
     }
 
-    public Task<WPFResult> Update(InvokerToken token, int headerId, int statusTypeId)
+    public Task<WPFResult<InvoiceUpdateResultDTO>> Update(InvokerToken token, int headerId, int statusTypeId)
     {
         var command = new InvoiceHeaderChangeStatusCommand(_service, _state, headerId, statusTypeId);
         return _invoker.Perform(token, command);

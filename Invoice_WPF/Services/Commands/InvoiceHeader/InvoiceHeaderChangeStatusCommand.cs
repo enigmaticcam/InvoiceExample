@@ -3,7 +3,7 @@ using Invoice_WPF.Services.States;
 
 namespace Invoice_WPF.Services.Commands.InvoiceHeader;
 
-public class InvoiceHeaderChangeStatusCommand : IServerCommand<WPFResult>
+public class InvoiceHeaderChangeStatusCommand : IServerCommand<WPFResult<InvoiceUpdateResultDTO>>
 {
     private IServiceWrapper _service;
     private IInvoiceHeaderState _state;
@@ -18,12 +18,12 @@ public class InvoiceHeaderChangeStatusCommand : IServerCommand<WPFResult>
         _statusId = statusId;
     }
 
-    public async Task<WPFResult> Execute()
+    public async Task<WPFResult<InvoiceUpdateResultDTO>> Execute()
     {
         var result = await _service.InvoiceHeader_Update(_headerId, _statusId);
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Merge(result.Obj);
+            await _state.Merge(result.Obj.Invoice);
         }
         return result;
     }

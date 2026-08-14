@@ -42,16 +42,16 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId);
+        System.Threading.Tasks.Task<InvoiceUpdateResultDTOAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        InvoiceHeaderEntityAPIResult ApiInvoiceheaderPut(int id, int statusTypeId);
+        InvoiceUpdateResultDTOAPIResult ApiInvoiceheaderPut(int id, int statusTypeId);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<InvoiceUpdateResultDTOAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
@@ -347,14 +347,14 @@ namespace Invoice_BlazorWASM.Services.Core
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId)
+        public virtual System.Threading.Tasks.Task<InvoiceUpdateResultDTOAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId)
         {
             return ApiInvoiceheaderPutAsync(id, statusTypeId, System.Threading.CancellationToken.None);
         }
 
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual InvoiceHeaderEntityAPIResult ApiInvoiceheaderPut(int id, int statusTypeId)
+        public virtual InvoiceUpdateResultDTOAPIResult ApiInvoiceheaderPut(int id, int statusTypeId)
         {
             return System.Threading.Tasks.Task.Run(async () => await ApiInvoiceheaderPutAsync(id, statusTypeId, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
@@ -362,7 +362,7 @@ namespace Invoice_BlazorWASM.Services.Core
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>OK</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<InvoiceHeaderEntityAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<InvoiceUpdateResultDTOAPIResult> ApiInvoiceheaderPutAsync(int id, int statusTypeId, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -414,7 +414,7 @@ namespace Invoice_BlazorWASM.Services.Core
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceHeaderEntityAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<InvoiceUpdateResultDTOAPIResult>(response_, headers_, cancellationToken).ConfigureAwait(false);
                             if (objectResponse_.Object == null)
                             {
                                 throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
@@ -1951,6 +1951,36 @@ namespace Invoice_BlazorWASM.Services.Core
 
         [System.Text.Json.Serialization.JsonPropertyName("obj")]
         public InvoiceSearchDTO Obj { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceUpdateResultDTO
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("invoice")]
+        public InvoiceHeaderEntity Invoice { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("permissions")]
+        public InvoicePermissionsDTO Permissions { get; set; }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.7.1.0 (NJsonSchema v11.6.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class InvoiceUpdateResultDTOAPIResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("success")]
+        public bool Success { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        public string Message { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("time")]
+        public long Time { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("obj")]
+        public InvoiceUpdateResultDTO Obj { get; set; }
 
     }
 

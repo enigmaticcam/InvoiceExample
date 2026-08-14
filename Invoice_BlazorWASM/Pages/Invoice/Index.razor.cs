@@ -125,9 +125,8 @@ public partial class Index
                 {
                     _message.SendMessage($"Invoice status successfully changed to {status.StatusTypeDesc}", MudBlazor.Severity.Normal);
                 }
-                _invoiceHeader = new DTO_InvoiceHeader(result.Obj);
-                _permissions = null;
-                await LoadDataPermissions();
+                _invoiceHeader = new DTO_InvoiceHeader(result.Obj.Invoice);
+                _permissions = result.Obj.Permissions;
             }
         }
     }

@@ -12,7 +12,7 @@ public interface IAPICaller
     Task<APIResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int id);
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int id);
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int id);
-    Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int id, int statusTypeId);
+    Task<APIResult<InvoiceUpdateResultDTO>> InvoiceHeader_Update(int id, int statusTypeId);
     Task<APIResult<List<InvoiceFullResultDTO>>> InvoiceHeader_Update(int id, IEnumerable<InvoiceDetailUpdateDTO> updates);
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<APIResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
@@ -69,7 +69,7 @@ public class APICaller : IAPICaller
             actionName: "InvoiceHeader_RefreshResults");
     }
 
-    public Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int id, int statusTypeId)
+    public Task<APIResult<InvoiceUpdateResultDTO>> InvoiceHeader_Update(int id, int statusTypeId)
     {
         return _factory.Pipeline.Perform(
             action: () => _factory.InvoiceHeaderCore.Update(id, statusTypeId),

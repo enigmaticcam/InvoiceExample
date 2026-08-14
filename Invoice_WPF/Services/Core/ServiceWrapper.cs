@@ -7,7 +7,7 @@ public interface IServiceWrapper
     Task<WPFResult<InvoicePermissionsDTO>> InvoiceHeader_GetPermissions(int headerId);
     Task<WPFResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int headerId);
     Task<WPFResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int headerId);
-    Task<WPFResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int headerId, int statusTypeId);
+    Task<WPFResult<InvoiceUpdateResultDTO>> InvoiceHeader_Update(int headerId, int statusTypeId);
     Task<WPFResult<List<InvoiceFullResultDTO>>> InvoiceHeader_Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates);
     Task<WPFResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<WPFResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
@@ -158,10 +158,10 @@ public class ServiceWrapper : IServiceWrapper
         };
     }
 
-    public async Task<WPFResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int headerId, int statusTypeId)
+    public async Task<WPFResult<InvoiceUpdateResultDTO>> InvoiceHeader_Update(int headerId, int statusTypeId)
     {
         var result = await _client.ApiInvoiceheaderPutAsync(headerId, statusTypeId);
-        return new WPFResult<InvoiceHeaderEntity>()
+        return new WPFResult<InvoiceUpdateResultDTO>()
         {
             IsSuccess = result.Success,
             Message = result.Message,

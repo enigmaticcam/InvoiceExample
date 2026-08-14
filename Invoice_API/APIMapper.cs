@@ -61,7 +61,7 @@ public static class APIMapper
         return result;
     }
 
-    private static async Task<APIResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int id, int statusTypeId, IAPICaller caller)
+    private static async Task<APIResult<InvoiceUpdateResultDTO>> InvoiceHeader_Update(int id, int statusTypeId, IAPICaller caller)
     {
         var result = await caller.InvoiceHeader_Update(id, statusTypeId);
         return result;

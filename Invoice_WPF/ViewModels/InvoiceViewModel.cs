@@ -166,7 +166,10 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         if (result.IsSuccess)
         {
             Header = new(_invoiceHeaderState.Get(_headerId));
-            await LoadDataPermissions(_headerId);
+            if (result.Obj != null && result.Obj.Permissions != null)
+            {
+                Permissions = result.Obj.Permissions;
+            }
         }
     }
 

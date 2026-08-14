@@ -3,7 +3,7 @@ using Invoice_BlazorWASM.Services.Core;
 
 namespace Invoice_BlazorWASM.Services.ServerCommand.InvoiceHeader;
 
-public class InvoiceHeaderUpdateStatus : IServerCommand<BlazorResult<InvoiceHeaderEntity>>
+public class InvoiceHeaderUpdateStatus : IServerCommand<BlazorResult<InvoiceUpdateResultDTO>>
 {
     private IServiceWrapper _service;
     private IInvoiceHeaderState _state;
@@ -18,12 +18,12 @@ public class InvoiceHeaderUpdateStatus : IServerCommand<BlazorResult<InvoiceHead
         _statusTypeId = statusTypeId;
     }
 
-    public async Task<BlazorResult<InvoiceHeaderEntity>> Execute()
+    public async Task<BlazorResult<InvoiceUpdateResultDTO>> Execute()
     {
         var result = await _service.InvoiceHeader_Update(_headerId, _statusTypeId);
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Merge(new DTO_InvoiceHeader(result.Obj));
+            await _state.Merge(new DTO_InvoiceHeader(result.Obj.Invoice));
         }
         return result;
     }

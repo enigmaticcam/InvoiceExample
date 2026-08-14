@@ -97,7 +97,7 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         return _invoiceDetailCacheEntity.Create(headerId, creates);
     }
 
-    public async Task<InvoiceHeaderEntity> Update(int headerId, int statusTypeId)
+    public async Task<InvoiceUpdateResultDTO> Update(int headerId, int statusTypeId)
     {
         await CanPerform(headerId, enumInvoiceActionType.UpdateStatus);
         var statuses = await _factory.StatusTypeCore.Get();
@@ -107,7 +107,8 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         }
         var result = await _invoiceHeaderCacheEntity.Update(headerId, statusTypeId);
         await _factory.Repository.SaveChanges();
-        return result.LoadObject!;
+        var permissions = await GetPermissions(headerId);
+        return new InvoiceUpdateResultDTO(result.LoadObject!, permissions);
     }
 
     public async Task<List<InvoiceFullResultDTO>> Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates)
