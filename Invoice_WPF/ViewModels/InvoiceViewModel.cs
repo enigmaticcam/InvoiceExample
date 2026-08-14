@@ -67,11 +67,24 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             OnPropertyChanged(nameof(StatusChanges));
             OnPropertyChanged(nameof(CanEdit));
             OnPropertyChanged(nameof(CanDelete));
+            IsEditing = false;
         }
     }
     public bool CanEdit => _permissions?.CanEdit ?? false;
     public bool CanDelete => _permissions?.CanDelete ?? false;
     public bool CanChangeStatus => _permissions?.StatusChanges.Count > 0;
+    private bool _isEditing;
+    public bool IsEditing
+    {
+        get => _isEditing;
+        set
+        {
+            _isEditing = value;
+            OnPropertyChanged(nameof(IsEditing));
+            OnPropertyChanged(nameof(IsNotEditing));
+        }
+    }
+    public bool IsNotEditing => !IsEditing;
 
     public ObservableCollection<DynamicButton> StatusChanges
     {
@@ -178,3 +191,6 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
 
     }
 }
+
+
+
