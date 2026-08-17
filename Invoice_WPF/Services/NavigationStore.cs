@@ -78,6 +78,7 @@ public class Navigation : INavigation
             invoiceDetailInvoker: _factory.InvoiceDetailInvoker,
             invoiceDetailState: _factory.InvoiceDetailState,
             invoiceDetailUpdateState: _factory.InvoiceDetailUpdateState,
+            navigation: this,
             resultStatusInvoker: _factory.ResultStatusInvoker,
             resultStatusTypeState: _factory.ResultStatusTypeState,
             statusTypeInvoker: _factory.StatusTypeInvoker,

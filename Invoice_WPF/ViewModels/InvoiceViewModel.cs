@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Observables;
+using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceDetail;
 using Invoice_WPF.Services.Commands.InvoiceHeader;
 using Invoice_WPF.Services.Commands.ResultStatusType;
@@ -21,6 +22,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private IInvoiceDetailInvoker _invoiceDetailInvoker;
     private IInvoiceDetailState _invoiceDetailState;
     private IInvoiceDetailUpdateState _invoiceDetailUpdateState;
+    private INavigation _navigation;
     private IResultStatusInvoker _resultStatusInvoker;
     private IResultStatusTypeState _resultStatusTypeState;
     private IStatusTypeInvoker _statusTypeInvoker;
@@ -28,30 +30,6 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private InvokerToken _token;
     private ObservableCollection<InvoiceResultObservable> _detail = new();
     private int _headerId;
-
-    public InvoiceViewModel(
-        IInvoiceHeaderInvoker invoiceHeaderInvoker,
-        IInvoiceHeaderState invoiceHeaderState,
-        IInvoiceDetailInvoker invoiceDetailInvoker,
-        IInvoiceDetailState invoiceDetailState,
-        IInvoiceDetailUpdateState invoiceDetailUpdateState,
-        IResultStatusInvoker resultStatusInvoker,
-        IResultStatusTypeState resultStatusTypeState,
-        IStatusTypeInvoker statusTypeInvoker,
-        IStatusTypeState statusTypeState,
-        InvokerToken token)
-    {
-        _invoiceHeaderInvoker = invoiceHeaderInvoker;
-        _invoiceHeaderState = invoiceHeaderState;
-        _invoiceDetailInvoker = invoiceDetailInvoker;
-        _invoiceDetailState = invoiceDetailState;
-        _invoiceDetailUpdateState = invoiceDetailUpdateState;
-        _resultStatusInvoker = resultStatusInvoker;
-        _resultStatusTypeState = resultStatusTypeState;
-        _statusTypeInvoker = statusTypeInvoker;
-        _statusTypeState = statusTypeState;
-        _token = token;
-    }
 
     [ObservableProperty]
     public partial InvoiceHeaderObservable? Header { get; set; }
@@ -74,6 +52,22 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     public bool CanDelete => _permissions?.CanDelete ?? false;
     public bool CanChangeStatus => _permissions?.StatusChanges.Count > 0;
     private bool _isEditing;
+
+    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IInvoiceDetailUpdateState invoiceDetailUpdateState, INavigation navigation, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState, InvokerToken token)
+    {
+        _invoiceHeaderInvoker = invoiceHeaderInvoker;
+        _invoiceHeaderState = invoiceHeaderState;
+        _invoiceDetailInvoker = invoiceDetailInvoker;
+        _invoiceDetailState = invoiceDetailState;
+        _invoiceDetailUpdateState = invoiceDetailUpdateState;
+        _navigation = navigation;
+        _resultStatusInvoker = resultStatusInvoker;
+        _resultStatusTypeState = resultStatusTypeState;
+        _statusTypeInvoker = statusTypeInvoker;
+        _statusTypeState = statusTypeState;
+        _token = token;
+    }
+
     public bool IsEditing
     {
         get => _isEditing;
@@ -183,6 +177,15 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             {
                 Permissions = result.Obj.Permissions;
             }
+        }
+    }
+
+    public async Task Delete()
+    {
+        var result = await _invoiceHeaderInvoker.Delete(_token, _headerId);
+        if (result.IsSuccess)
+        {
+            await _navigation.NavigateToInvoiceSearchView();
         }
     }
 

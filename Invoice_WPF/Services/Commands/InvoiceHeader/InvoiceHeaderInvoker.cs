@@ -6,6 +6,7 @@ namespace Invoice_WPF.Services.Commands.InvoiceHeader;
 
 public interface IInvoiceHeaderInvoker
 {
+    Task<WPFResult> Delete(InvokerToken token, int headerId);
     Task<WPFResult> Get(InvokerToken token, int headerId);
     Task<WPFResult<InvoicePermissionsDTO>> GetPermissions(InvokerToken token, int headerId);
     Task<WPFResult<InvoiceUpdateResultDTO>> Update(InvokerToken token, int headerId, int statusTypeId);
@@ -22,6 +23,12 @@ public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
         _invoker = invoker;
         _service = service;
         _state = state;
+    }
+
+    public Task<WPFResult> Delete(InvokerToken token, int headerId)
+    {
+        var command = new InvoiceHeaderDeleteCommand(_service, _state, headerId);
+        return _invoker.Perform(token, command);
     }
 
     public Task<WPFResult> Get(InvokerToken token, int headerId)

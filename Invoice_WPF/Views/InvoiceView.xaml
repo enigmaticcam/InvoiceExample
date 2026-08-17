@@ -20,8 +20,10 @@
         <ToolBarTray Grid.Row="0">
             <ToolBar>
                 <Button 
+                    Name="DeleteButton"
                     Content="Delete"
                     Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"
+                    Click="DeleteButton_Click"
                     />
             </ToolBar>
             <ToolBar ItemsSource="{Binding StatusChanges}">

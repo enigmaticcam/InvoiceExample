@@ -13,6 +13,9 @@ public interface IEntityState<TId, TObject> : IEntityState
     TObject Get(TId id);
     Task Merge(TObject item);
     Task Merge(IEnumerable<TObject> items);
+    Task Remove(IEnumerable<TObject> items);
+    Task Remove(TId item);
+    Task Remove(IEnumerable<TId> items);
     Task Set(TObject item);
     Task Set(IEnumerable<TObject> items);
 }
@@ -50,6 +53,42 @@ public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> whe
         {
             var id = GetId(item);
             _items[id] = item;
+        }
+        if (OnChanged != null)
+        {
+            await OnChanged();
+        }
+    }
+
+    public Task Remove(TId item)
+    {
+        return Remove(new List<TId>() { item });
+    }
+
+    public async Task Remove(IEnumerable<TId> items)
+    {
+        foreach (var item in items)
+        {
+            if (_items.ContainsKey(item))
+            {
+                _items.Remove(item);
+            }
+        }
+        if (OnChanged != null)
+        {
+            await OnChanged();
+        }
+    }
+
+    public async Task Remove(IEnumerable<TObject> items)
+    {
+        foreach (var item in items)
+        {
+            var id = GetId(item);
+            if (_items.ContainsKey(id))
+            {
+                _items.Remove(id);
+            }
         }
         if (OnChanged != null)
         {
