@@ -4,18 +4,83 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Invoice_WPF.Views"
+             xmlns:conv="clr-namespace:Invoice_WPF.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel Orientation="Vertical">
-        <Button
-            Name="DownloadButton"
-            Content="Download"
-            Click="DownloadButton_Click"
-            Visibility="{Binding NotIsRunning}"/>
-        <Button
-            Name="UploadButton"
-            Content="Upload"
-            Click="UploadButton_Click"
-            Visibility="{Binding NotIsRunning}"/>
-    </StackPanel>
+    <UserControl.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel 
+            Grid.Row="0"
+            Orientation="Vertical">
+            <Button
+                Name="DownloadButton"
+                Content="Download"
+                Click="DownloadButton_Click"
+                Visibility="{Binding NotIsRunning}"/>
+            <Button
+                Name="UploadButton"
+                Content="Upload"
+                Click="UploadButton_Click"
+                Visibility="{Binding NotIsRunning}"/>
+        </StackPanel>
+        <TextBlock
+            Grid.Row="1"
+            Text="No invoices found"
+            Visibility="{Binding NoData, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <ListView
+            Grid.Row="1"
+            ItemsSource="{Binding Invoices}"
+            SelectionMode="Single"
+            Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding InvoiceHeaderId}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Customer">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding Customer}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Status">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding StatusTypeId}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Date">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding InvoiceDate}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Description">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding Description}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
 </UserControl>

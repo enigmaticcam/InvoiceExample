@@ -3,7 +3,7 @@ using Invoice_WPF.Services.States;
 
 namespace Invoice_WPF.Services.Commands.InvoiceUploader;
 
-public class InvoiceUploaderGetCommand : IServerCommand<WPFResult>
+public class InvoiceUploaderGetCommand : IServerCommand<WPFResult<List<InvoiceHeaderEntity>>>
 {
     private IServiceWrapper _service;
     private IInvoiceUploaderState _state;
@@ -14,7 +14,7 @@ public class InvoiceUploaderGetCommand : IServerCommand<WPFResult>
         _state = state;
     }
 
-    public async Task<WPFResult> Execute()
+    public async Task<WPFResult<List<InvoiceHeaderEntity>>> Execute()
     {
         var result = await _service.InvoiceUploader_Get();
         if (result.IsSuccess && result.Obj != null)

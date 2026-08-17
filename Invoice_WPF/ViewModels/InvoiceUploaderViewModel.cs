@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceUploader;
 using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
+using System.Collections.ObjectModel;
 
 namespace Invoice_WPF.ViewModels;
 
@@ -22,9 +24,15 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         _invoiceUploaderState = invoiceUploaderState;
         _navigation = navigation;
         _token = token;
+        _invoices = new();
         CloseCommand = new AsyncRelayCommand(Close);
         _token.OnRunning += SetIsOnRunning;
     }
+
+    private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
+    public IEnumerable<InvoiceHeaderModel> Invoices => _invoices;
+    public bool HasData => _invoices.Count > 0;
+    public bool NoData => _invoices.Count == 0;
 
     [ObservableProperty]
     public partial bool NotIsRunning { get; set; }
@@ -37,7 +45,18 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     public IAsyncRelayCommand CloseCommand { get; }
     public async Task LoadData()
     {
-        await _invoiceUploaderInvoker.Get(_token);
+        var result = await _invoiceUploaderInvoker.Get(_token);
+        if (result.IsSuccess && result.Obj != null)
+        {
+            _invoices.Clear();
+            foreach (var item in result.Obj)
+            {
+                _invoices.Add(new InvoiceHeaderModel(item));
+            }
+            OnPropertyChanged(nameof(HasData));
+            OnPropertyChanged(nameof(NoData));
+        }
+
     }
 
     public async Task Download(string location)

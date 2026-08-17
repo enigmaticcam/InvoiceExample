@@ -6,7 +6,7 @@ namespace Invoice_WPF.Services.Commands.InvoiceUploader;
 
 public interface IInvoiceUploaderInvoker
 {
-    Task<WPFResult> Get(InvokerToken token);
+    Task<WPFResult<List<InvoiceHeaderEntity>>> Get(InvokerToken token);
 }
 
 public class InvoiceUploaderInvoker : IInvoiceUploaderInvoker
@@ -22,7 +22,7 @@ public class InvoiceUploaderInvoker : IInvoiceUploaderInvoker
         _state = state;
     }
 
-    public Task<WPFResult> Get(InvokerToken token)
+    public Task<WPFResult<List<InvoiceHeaderEntity>>> Get(InvokerToken token)
     {
         var command = new InvoiceUploaderGetCommand(_service, _state);
         return _invoker.Perform(token, command);
