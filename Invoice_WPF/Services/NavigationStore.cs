@@ -9,6 +9,7 @@ public interface INavigation
     Func<Task>? CurrentViewModelChanged { get; set; }
     Task NavigateToInvoiceView(InvokerToken token, int headerId);
     Task NavigateToInvoiceSearchView();
+    Task NavigateToInvoiceUploaderView();
     void NavigateToMainMenu();
     Task NavigateToMainMenuAsync();
 }
@@ -86,6 +87,19 @@ public class Navigation : INavigation
             token: _token
         );
         await model.LoadData(headerId);
+        CurrentViewModel = model;
+        await OnCurrentViewModelChanged();
+    }
+
+    public async Task NavigateToInvoiceUploaderView()
+    {
+        var model = new InvoiceUploaderViewModel(
+            client: _factory.HClient,
+            invoiceUploaderInvoker: _factory.InvoiceUploaderInvoker,
+            invoiceUploaderState: _factory.InvoiceUploaderState,
+            navigation: this,
+            token: _token);
+        await model.LoadData();
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
     }

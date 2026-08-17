@@ -15,6 +15,7 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         _token = token;
         _navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         OpenInvoiceSearchCommand = new AsyncRelayCommand(OpenInvoiceSearch);
+        OpenInvoiceUploaderCommand = new AsyncRelayCommand(OpenInvoiceUploader);
         _token.OnRunning += SetIsOnRunning;
     }
 
@@ -28,9 +29,14 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         return Task.CompletedTask;
     }
     public IAsyncRelayCommand OpenInvoiceSearchCommand { get; }
+    public IAsyncRelayCommand OpenInvoiceUploaderCommand { get; }
     public async Task OpenInvoiceSearch()
     {
         await _navigationStore.NavigateToInvoiceSearchView();
+    }
+    public async Task OpenInvoiceUploader()
+    {
+        await _navigationStore.NavigateToInvoiceUploaderView();
     }
 
     private Task SetIsOnRunning(bool isRunning)

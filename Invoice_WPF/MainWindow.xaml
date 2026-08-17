@@ -21,6 +21,9 @@
             <DataTemplate DataType="{x:Type vms:InvoiceViewModel}">
                 <views:InvoiceView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vms:InvoiceUploaderViewModel}">
+                <views:InvoiceUploaderView />
+            </DataTemplate>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="125"/>
@@ -32,6 +35,11 @@
             <Button 
                 Content="Invoice Search" 
                 Command="{Binding OpenInvoiceSearchCommand}"
+                IsEnabled="{Binding IsNotRunning}"
+                />
+            <Button 
+                Content="Invoice Uploader" 
+                Command="{Binding OpenInvoiceUploaderCommand}"
                 IsEnabled="{Binding IsNotRunning}"
                 />
         </StackPanel>

@@ -1,6 +1,7 @@
 ﻿using Invoice_WPF.Services.Commands.InvoiceDetail;
 using Invoice_WPF.Services.Commands.InvoiceHeader;
 using Invoice_WPF.Services.Commands.InvoiceSearch;
+using Invoice_WPF.Services.Commands.InvoiceUploader;
 using Invoice_WPF.Services.Commands.ResultStatusType;
 using Invoice_WPF.Services.Commands.StatusType;
 using Invoice_WPF.Services.Core;
@@ -14,6 +15,7 @@ namespace Invoice_WPF.Services
     public interface IFactory
     {
         IClient Client { get; }
+        HttpClient HClient { get; }
         IInvoiceDetailInvoker InvoiceDetailInvoker { get; }
         IInvoiceDetailState InvoiceDetailState { get; }
         IInvoiceDetailUpdateState InvoiceDetailUpdateState { get; }
@@ -21,6 +23,8 @@ namespace Invoice_WPF.Services
         IInvoiceHeaderState InvoiceHeaderState { get; }
         IInvoiceSearchInvoker InvoiceSearchInvoker { get; }
         IInvoiceSearchState InvoiceSearchState { get; }
+        IInvoiceUploaderInvoker InvoiceUploaderInvoker { get; }
+        IInvoiceUploaderState InvoiceUploaderState { get; }
         IResultStatusInvoker ResultStatusInvoker { get; }
         IResultStatusTypeState ResultStatusTypeState { get; }
         IServiceWrapper ServiceWrapper { get; }
@@ -38,6 +42,8 @@ namespace Invoice_WPF.Services
         private Lazy<IInvoiceDetailUpdateState> _invoiceDetailUpdateState;
         private Lazy<IInvoiceHeaderInvoker> _invoiceHeaderInvoker;
         private Lazy<IInvoiceHeaderState> _invoiceHeaderState;
+        private Lazy<IInvoiceUploaderInvoker> _invoiceUploaderInvoker;
+        private Lazy<IInvoiceUploaderState> _invoiceUploaderState;
         private Lazy<IInvoiceSearchInvoker> _invoiceSearchInvoker;
         private Lazy<IInvoiceSearchState> _invoiceSearchState;
         private Lazy<IResultStatusInvoker> _resultStatusInvoker;
@@ -59,6 +65,8 @@ namespace Invoice_WPF.Services
             _invoiceHeaderState = new Lazy<IInvoiceHeaderState>(() => new InvoiceHeaderState());
             _invoiceSearchInvoker = new Lazy<IInvoiceSearchInvoker>(() => new InvoiceSearchInvoker(ServerInvoker, ServiceWrapper, InvoiceSearchState));
             _invoiceSearchState = new Lazy<IInvoiceSearchState>(() => new InvoiceSearchState());
+            _invoiceUploaderInvoker = new Lazy<IInvoiceUploaderInvoker>(() => new InvoiceUploaderInvoker(ServerInvoker, ServiceWrapper, InvoiceUploaderState));
+            _invoiceUploaderState = new Lazy<IInvoiceUploaderState>(() => new InvoiceUploaderState());
             _resultStatusInvoker = new Lazy<IResultStatusInvoker>(() => new ResultStatusInvoker(ServerInvoker, ServiceWrapper, ResultStatusTypeState));
             _resultStatusTypeState = new Lazy<IResultStatusTypeState>(() => new ResultStatusTypeState());
             _serverInvoker = new Lazy<IServerInvoker>(() => new ServerInvoker(ServerStatus));
@@ -67,6 +75,7 @@ namespace Invoice_WPF.Services
             _statusTypeInvoker = new Lazy<IStatusTypeInvoker>(() => new StatusTypeInvoker(ServerInvoker, ServiceWrapper, StatusTypeState));
             _statusTypeState = new Lazy<IStatusTypeState>(() => new StatusTypeState());
         }
+        public HttpClient HClient => _httpClient;
 
         public IClient Client => _client.Value;
         public IInvoiceDetailInvoker InvoiceDetailInvoker => _invoiceDetailInvoker.Value;
@@ -76,6 +85,8 @@ namespace Invoice_WPF.Services
         public IInvoiceHeaderState InvoiceHeaderState => _invoiceHeaderState.Value;
         public IInvoiceSearchInvoker InvoiceSearchInvoker => _invoiceSearchInvoker.Value;
         public IInvoiceSearchState InvoiceSearchState => _invoiceSearchState.Value;
+        public IInvoiceUploaderInvoker InvoiceUploaderInvoker => _invoiceUploaderInvoker.Value;
+        public IInvoiceUploaderState InvoiceUploaderState => _invoiceUploaderState.Value;
         public IResultStatusInvoker ResultStatusInvoker => _resultStatusInvoker.Value;
         public IResultStatusTypeState ResultStatusTypeState => _resultStatusTypeState.Value;
         public IStatusTypeInvoker StatusTypeInvoker => _statusTypeInvoker.Value;
