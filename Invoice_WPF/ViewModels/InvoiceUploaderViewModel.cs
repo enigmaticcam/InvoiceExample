@@ -4,23 +4,20 @@ using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceUploader;
 using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
-using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
 
 namespace Invoice_WPF.ViewModels;
 
 public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
 {
-    private HttpClient _client;
+    private IFileDownload _fileDownload;
     private IInvoiceUploaderInvoker _invoiceUploaderInvoker;
     private IInvoiceUploaderState _invoiceUploaderState;
     private INavigation _navigation;
     private InvokerToken _token;
 
-    public InvoiceUploaderViewModel(HttpClient client, IInvoiceUploaderInvoker invoiceUploaderInvoker, IInvoiceUploaderState invoiceUploaderState, INavigation navigation, InvokerToken token)
+    public InvoiceUploaderViewModel(IFileDownload fileDownload, IInvoiceUploaderInvoker invoiceUploaderInvoker, IInvoiceUploaderState invoiceUploaderState, INavigation navigation, InvokerToken token)
     {
-        _client = client;
+        _fileDownload = fileDownload;
         _invoiceUploaderInvoker = invoiceUploaderInvoker;
         _invoiceUploaderState = invoiceUploaderState;
         _navigation = navigation;
@@ -45,16 +42,10 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
 
     public async Task Download(string location)
     {
-        var fullUri = _client.BaseAddress?.ToString() + "api/invoiceuploader/template";
-        using var stream = await _client.GetStreamAsync(fullUri);
-        using var target = new FileStream(location, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: true);
-        await stream.CopyToAsync(target);
-        var process = new ProcessStartInfo
-        {
-            FileName = location,
-            UseShellExecute = true
-        };
-        Process.Start(process);
+        await _fileDownload.Download(
+            uri: "api/invoiceuploader/template",
+            location: location,
+            openAfterDownload: true);
     }
 
     public async Task Upload(string file)

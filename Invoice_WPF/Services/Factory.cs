@@ -16,6 +16,7 @@ namespace Invoice_WPF.Services
     {
         IClient Client { get; }
         HttpClient HClient { get; }
+        IFileDownload FileDownload { get; }
         IInvoiceDetailInvoker InvoiceDetailInvoker { get; }
         IInvoiceDetailState InvoiceDetailState { get; }
         IInvoiceDetailUpdateState InvoiceDetailUpdateState { get; }
@@ -37,6 +38,7 @@ namespace Invoice_WPF.Services
     {
         private HttpClient _httpClient;
         private Lazy<IClient> _client;
+        private Lazy<IFileDownload> _fileDownload;
         private Lazy<IInvoiceDetailInvoker> _invoiceDetailInvoker;
         private Lazy<IInvoiceDetailState> _invoiceDetailState;
         private Lazy<IInvoiceDetailUpdateState> _invoiceDetailUpdateState;
@@ -58,6 +60,7 @@ namespace Invoice_WPF.Services
         {
             _httpClient = new HttpClient() { BaseAddress = new Uri("https://localhost:7206") };
             _client = new Lazy<IClient>(() => new Client(_httpClient));
+            _fileDownload = new Lazy<IFileDownload>(() => new FileDownload(_httpClient));
             _invoiceDetailInvoker = new Lazy<IInvoiceDetailInvoker>(() => new InvoiceDetailInvoker(ServerInvoker, ServiceWrapper, InvoiceDetailState));
             _invoiceDetailState = new Lazy<IInvoiceDetailState>(() => new InvoiceDetailState());
             _invoiceDetailUpdateState = new Lazy<IInvoiceDetailUpdateState>(() => new InvoiceDetailUpdateState(InvoiceDetailState));
@@ -78,6 +81,7 @@ namespace Invoice_WPF.Services
         public HttpClient HClient => _httpClient;
 
         public IClient Client => _client.Value;
+        public IFileDownload FileDownload => _fileDownload.Value;
         public IInvoiceDetailInvoker InvoiceDetailInvoker => _invoiceDetailInvoker.Value;
         public IInvoiceDetailState InvoiceDetailState => _invoiceDetailState.Value;
         public IInvoiceDetailUpdateState InvoiceDetailUpdateState => _invoiceDetailUpdateState.Value;

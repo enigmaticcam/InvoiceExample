@@ -94,7 +94,7 @@ public class Navigation : INavigation
     public async Task NavigateToInvoiceUploaderView()
     {
         var model = new InvoiceUploaderViewModel(
-            client: _factory.HClient,
+            fileDownload: _factory.FileDownload,
             invoiceUploaderInvoker: _factory.InvoiceUploaderInvoker,
             invoiceUploaderState: _factory.InvoiceUploaderState,
             navigation: this,
