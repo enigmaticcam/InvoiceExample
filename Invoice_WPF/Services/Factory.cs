@@ -26,6 +26,7 @@ namespace Invoice_WPF.Services
         IInvoiceSearchState InvoiceSearchState { get; }
         IInvoiceUploaderInvoker InvoiceUploaderInvoker { get; }
         IInvoiceUploaderState InvoiceUploaderState { get; }
+        IModalNavigation ModalNavigation { get; }
         IResultStatusInvoker ResultStatusInvoker { get; }
         IResultStatusTypeState ResultStatusTypeState { get; }
         IServiceWrapper ServiceWrapper { get; }
@@ -48,6 +49,7 @@ namespace Invoice_WPF.Services
         private Lazy<IInvoiceUploaderState> _invoiceUploaderState;
         private Lazy<IInvoiceSearchInvoker> _invoiceSearchInvoker;
         private Lazy<IInvoiceSearchState> _invoiceSearchState;
+        private Lazy<IModalNavigation> _modalNavigation;
         private Lazy<IResultStatusInvoker> _resultStatusInvoker;
         private Lazy<IResultStatusTypeState> _resultStatusTypeState;
         private Lazy<IServerInvoker> _serverInvoker;
@@ -70,6 +72,7 @@ namespace Invoice_WPF.Services
             _invoiceSearchState = new Lazy<IInvoiceSearchState>(() => new InvoiceSearchState());
             _invoiceUploaderInvoker = new Lazy<IInvoiceUploaderInvoker>(() => new InvoiceUploaderInvoker(ServerInvoker, ServiceWrapper, InvoiceUploaderState));
             _invoiceUploaderState = new Lazy<IInvoiceUploaderState>(() => new InvoiceUploaderState());
+            _modalNavigation = new Lazy<IModalNavigation>(() => new ModalNavigation());
             _resultStatusInvoker = new Lazy<IResultStatusInvoker>(() => new ResultStatusInvoker(ServerInvoker, ServiceWrapper, ResultStatusTypeState));
             _resultStatusTypeState = new Lazy<IResultStatusTypeState>(() => new ResultStatusTypeState());
             _serverInvoker = new Lazy<IServerInvoker>(() => new ServerInvoker(ServerStatus));
@@ -91,6 +94,7 @@ namespace Invoice_WPF.Services
         public IInvoiceSearchState InvoiceSearchState => _invoiceSearchState.Value;
         public IInvoiceUploaderInvoker InvoiceUploaderInvoker => _invoiceUploaderInvoker.Value;
         public IInvoiceUploaderState InvoiceUploaderState => _invoiceUploaderState.Value;
+        public IModalNavigation ModalNavigation => _modalNavigation.Value;
         public IResultStatusInvoker ResultStatusInvoker => _resultStatusInvoker.Value;
         public IResultStatusTypeState ResultStatusTypeState => _resultStatusTypeState.Value;
         public IStatusTypeInvoker StatusTypeInvoker => _statusTypeInvoker.Value;

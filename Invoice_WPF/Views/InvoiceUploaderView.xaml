@@ -28,6 +28,9 @@
                 Content="Upload"
                 Click="UploadButton_Click"
                 Visibility="{Binding NotIsRunning}"/>
+            <Button
+                Content="Random"
+                Command="{Binding ShowRandomModalCommand}"/>
         </StackPanel>
         <TextBlock
             Grid.Row="1"

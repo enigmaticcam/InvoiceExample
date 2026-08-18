@@ -38,7 +38,7 @@ public class Navigation : INavigation
         CurrentViewModel = viewModel;
     }
 
-    public async Task OnCurrentViewModelChanged()
+    private async Task OnCurrentViewModelChanged()
     {
         if (CurrentViewModelChanged != null)
         {
@@ -98,6 +98,7 @@ public class Navigation : INavigation
             invoiceUploaderInvoker: _factory.InvoiceUploaderInvoker,
             invoiceUploaderState: _factory.InvoiceUploaderState,
             navigation: this,
+            modalNavigation: _factory.ModalNavigation,
             token: _token);
         await model.LoadData();
         CurrentViewModel = model;

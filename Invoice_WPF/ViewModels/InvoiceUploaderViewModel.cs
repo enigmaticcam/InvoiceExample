@@ -15,21 +15,25 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     private IInvoiceUploaderInvoker _invoiceUploaderInvoker;
     private IInvoiceUploaderState _invoiceUploaderState;
     private INavigation _navigation;
+    private IModalNavigation _modalNavigation;
     private InvokerToken _token;
 
-    public InvoiceUploaderViewModel(IFileDownload fileDownload, IInvoiceUploaderInvoker invoiceUploaderInvoker, IInvoiceUploaderState invoiceUploaderState, INavigation navigation, InvokerToken token)
+    private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
+
+    public InvoiceUploaderViewModel(IFileDownload fileDownload, IInvoiceUploaderInvoker invoiceUploaderInvoker, IInvoiceUploaderState invoiceUploaderState, INavigation navigation, IModalNavigation modalNavigation, InvokerToken token)
     {
         _fileDownload = fileDownload;
         _invoiceUploaderInvoker = invoiceUploaderInvoker;
         _invoiceUploaderState = invoiceUploaderState;
         _navigation = navigation;
+        _modalNavigation = modalNavigation;
         _token = token;
         _invoices = new();
         CloseCommand = new AsyncRelayCommand(Close);
+        ShowRandomModalCommand = new AsyncRelayCommand(ShowRandomModal);
         _token.OnRunning += SetIsOnRunning;
     }
 
-    private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
     public IEnumerable<InvoiceHeaderModel> Invoices => _invoices;
     public bool HasData => _invoices.Count > 0;
     public bool NoData => _invoices.Count == 0;
@@ -43,6 +47,7 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     }
 
     public IAsyncRelayCommand CloseCommand { get; }
+    public IAsyncRelayCommand ShowRandomModalCommand { get; }
     public async Task LoadData()
     {
         var result = await _invoiceUploaderInvoker.Get(_token);
@@ -81,5 +86,10 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     {
         NotIsRunning = !isRunning;
         return Task.CompletedTask;
+    }
+
+    public async Task ShowRandomModal()
+    {
+        await _modalNavigation.ShowInvoiceRandomDialog();
     }
 }

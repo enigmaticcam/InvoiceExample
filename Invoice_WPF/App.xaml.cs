@@ -9,17 +9,17 @@ namespace Invoice_WPF;
 /// </summary>
 public partial class App : Application
 {
-    private INavigation? _navigationStore;
+    private INavigation? _navigation;
 
     protected override void OnStartup(StartupEventArgs e)
     {
         var token = new InvokerToken();
         var factory = new Factory();
-        _navigationStore = new Navigation(factory, token);
-        _navigationStore.NavigateToMainMenu();
+        _navigation = new Navigation(factory, token);
+        _navigation.NavigateToMainMenu();
         MainWindow = new MainWindow()
         {
-            DataContext = new MainViewModel(_navigationStore, token)
+            DataContext = new MainViewModel(_navigation, token, factory.ModalNavigation)
         };
         MainWindow.Show();
         base.OnStartup(e);
