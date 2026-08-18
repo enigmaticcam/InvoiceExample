@@ -7,9 +7,50 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <TextBlock>Riddle me this</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Generate Random Invoice"/>
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="0"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"/>
         <Button
-            Content="Close"
-            Command="{Binding CloseCommand}"/>
+            Grid.Row="1"
+            Grid.Column="1">
+            <Image Source="/Images/content_copy.png"/>
+        </Button>
+        <TextBox
+            Grid.Row="2"
+            Grid.Column="0"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+        <Button
+            Grid.Row="2"
+            Grid.Column="1">
+            <Image Source="/Images/content_copy.png"/>
+        </Button>
+        <StackPanel
+            Grid.Row="3"
+            Grid.Column="1"
+            Orientation="Horizontal">
+            <Button
+                Content="Close"
+                Command="{Binding CloseCommand}"/>
+            <Button
+                Content="Go"/>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

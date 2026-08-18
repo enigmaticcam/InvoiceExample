@@ -9,14 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
+    <None Remove="Images\content_copy.png" />
+    <None Remove="Images\dollar.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Images\dollar.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Content Include="Images\content_copy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\dollar.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="SimpleModal.WPF" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
