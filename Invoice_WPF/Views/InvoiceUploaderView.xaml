@@ -22,15 +22,18 @@
                 Name="DownloadButton"
                 Content="Download"
                 Click="DownloadButton_Click"
-                Visibility="{Binding NotIsRunning}"/>
+                Visibility="{Binding NotIsRunning}"
+                IsEnabled="{Binding IsNotRunning}"/>
             <Button
                 Name="UploadButton"
                 Content="Upload"
                 Click="UploadButton_Click"
-                Visibility="{Binding NotIsRunning}"/>
+                Visibility="{Binding NotIsRunning}"
+                IsEnabled="{Binding IsNotRunning}"/>
             <Button
                 Content="Random"
-                Command="{Binding ShowRandomModalCommand}"/>
+                Command="{Binding ShowRandomModalCommand}"
+                IsEnabled="{Binding IsNotRunning}"/>
         </StackPanel>
         <TextBlock
             Grid.Row="1"

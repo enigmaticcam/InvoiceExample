@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceUploader;
+using Invoice_WPF.Services.Core;
 using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
 using System.Collections.ObjectModel;
@@ -39,7 +40,7 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     public bool NoData => _invoices.Count == 0;
 
     [ObservableProperty]
-    public partial bool NotIsRunning { get; set; }
+    public partial bool IsNotRunning { get; set; }
 
     public void Dispose()
     {
@@ -50,18 +51,25 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     public IAsyncRelayCommand ShowRandomModalCommand { get; }
     public async Task LoadData()
     {
-        var result = await _invoiceUploaderInvoker.Get(_token);
-        if (result.IsSuccess && result.Obj != null)
+        if (!_invoiceUploaderState.IsLoaded)
         {
-            _invoices.Clear();
-            foreach (var item in result.Obj)
+            var result = await _invoiceUploaderInvoker.Get(_token);
+            if (result.IsSuccess && result.Obj != null)
             {
-                _invoices.Add(new InvoiceHeaderModel(item));
+                LoadData(result.Obj);
             }
-            OnPropertyChanged(nameof(HasData));
-            OnPropertyChanged(nameof(NoData));
         }
+    }
 
+    private void LoadData(IEnumerable<InvoiceHeaderEntity> items)
+    {
+        _invoices.Clear();
+        foreach (var item in items)
+        {
+            _invoices.Add(new InvoiceHeaderModel(item));
+        }
+        OnPropertyChanged(nameof(HasData));
+        OnPropertyChanged(nameof(NoData));
     }
 
     public async Task Download(string location)
@@ -74,7 +82,11 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
 
     public async Task Upload(string file)
     {
-
+        var result = await _invoiceUploaderInvoker.Upload(_token, file);
+        if (result.IsSuccess)
+        {
+            LoadData(_invoiceUploaderState.Items);
+        }
     }
 
     private async Task Close()
@@ -84,7 +96,7 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
 
     private Task SetIsOnRunning(bool isRunning)
     {
-        NotIsRunning = !isRunning;
+        IsNotRunning = !isRunning;
         return Task.CompletedTask;
     }
 
