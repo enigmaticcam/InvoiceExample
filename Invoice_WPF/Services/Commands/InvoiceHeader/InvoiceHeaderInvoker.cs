@@ -9,6 +9,7 @@ public interface IInvoiceHeaderInvoker
     Task<WPFResult> Delete(InvokerToken token, int headerId);
     Task<WPFResult> Get(InvokerToken token, int headerId);
     Task<WPFResult<InvoicePermissionsDTO>> GetPermissions(InvokerToken token, int headerId);
+    Task<WPFResult<RandomInvoiceDTO>> GetRandom(InvokerToken token);
     Task<WPFResult<InvoiceUpdateResultDTO>> Update(InvokerToken token, int headerId, int statusTypeId);
 }
 
@@ -40,6 +41,12 @@ public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
     public Task<WPFResult<InvoicePermissionsDTO>> GetPermissions(InvokerToken token, int headerId)
     {
         var command = new InvoiceHeaderGetPermissionsCommand(_service, headerId);
+        return _invoker.Perform(token, command);
+    }
+
+    public Task<WPFResult<RandomInvoiceDTO>> GetRandom(InvokerToken token)
+    {
+        var command = new InvoiceHeaderGetRandomCommand(_service);
         return _invoker.Perform(token, command);
     }
 

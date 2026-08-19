@@ -14,7 +14,7 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         var token = new InvokerToken();
-        var factory = new Factory();
+        var factory = new Factory(token);
         _navigation = new Navigation(factory, token);
         _navigation.NavigateToMainMenu();
         MainWindow = new MainWindow()

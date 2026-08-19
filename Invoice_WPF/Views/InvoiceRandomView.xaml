@@ -6,51 +6,67 @@
              xmlns:local="clr-namespace:Invoice_WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock
-            Grid.Row="0"
-            Grid.Column="0"
-            Text="Generate Random Invoice"/>
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="0"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-        <Button
-            Grid.Row="1"
-            Grid.Column="1">
-            <Image Source="/Images/content_copy.png"/>
-        </Button>
-        <TextBox
-            Grid.Row="2"
-            Grid.Column="0"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Auto"/>
-        <Button
-            Grid.Row="2"
-            Grid.Column="1">
-            <Image Source="/Images/content_copy.png"/>
-        </Button>
+    <StackPanel Orientation="Vertical">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                Grid.Column="0"
+                Text="Generate Random Invoice"/>
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="0"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                Text="{Binding InvoiceHeader}"/>
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                Name="CopyHeaderButton"
+                Click="CopyHeaderButton_Click"
+                IsEnabled="{Binding IsNotRunning}">
+                <Image Source="/Images/content_copy.png"/>
+            </Button>
+            <TextBox
+                Grid.Row="2"
+                Grid.Column="0"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                Text="{Binding InvoiceDetail}"
+                AcceptsReturn="true"
+                TextWrapping="Wrap"
+                MaxHeight="100"/>
+            <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Name="CopyDetailButton"
+                Click="CopyDetailButton_Click"
+                IsEnabled="{Binding IsNotRunning}">
+                <Image Source="/Images/content_copy.png"/>
+            </Button>
+        </Grid>
         <StackPanel
-            Grid.Row="3"
-            Grid.Column="1"
-            Orientation="Horizontal">
+                Grid.Row="3"
+                Grid.Column="1"
+                Orientation="Horizontal"
+            HorizontalAlignment="Right">
             <Button
-                Content="Close"
-                Command="{Binding CloseCommand}"/>
+                    Content="Close"
+                    Command="{Binding CloseCommand}"
+                    IsEnabled="{Binding IsNotRunning}"/>
             <Button
-                Content="Go"/>
+                    Content="Go"
+                    Command="{Binding GetRandomInvoiceCommand}"
+                    IsEnabled="{Binding IsNotRunning}"/>
         </StackPanel>
-        
-    </Grid>
+    </StackPanel>
 </UserControl>

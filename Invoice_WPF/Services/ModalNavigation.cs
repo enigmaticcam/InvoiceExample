@@ -1,4 +1,5 @@
-﻿using Invoice_WPF.ViewModels;
+﻿using Invoice_WPF.Services.Invoking;
+using Invoice_WPF.ViewModels;
 
 namespace Invoice_WPF.Services;
 
@@ -13,7 +14,15 @@ public interface IModalNavigation
 
 public class ModalNavigation : IModalNavigation
 {
+    private IFactory _factory;
+    private InvokerToken _token;
     private ViewModelBase? _currentViewModel;
+
+    public ModalNavigation(IFactory factory, InvokerToken token)
+    {
+        _factory = factory;
+        _token = token;
+    }
 
     public ViewModelBase? CurrentViewModel
     {
@@ -31,7 +40,7 @@ public class ModalNavigation : IModalNavigation
 
     public async Task ShowInvoiceRandomDialog()
     {
-        var model = new InvoiceRandomViewModel(this);
+        var model = new InvoiceRandomViewModel(this, _factory.InvoiceHeaderInvoker, _token);
         CurrentViewModel = model;
         await OnCurrentViewModelChanged();
     }

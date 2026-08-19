@@ -58,7 +58,7 @@ namespace Invoice_WPF.Services
         private Lazy<IStatusTypeInvoker> _statusTypeInvoker;
         private Lazy<IStatusTypeState> _statusTypeState;
 
-        public Factory()
+        public Factory(InvokerToken token)
         {
             _httpClient = new HttpClient() { BaseAddress = new Uri("https://localhost:7206") };
             _client = new Lazy<IClient>(() => new Client(_httpClient));
@@ -72,7 +72,7 @@ namespace Invoice_WPF.Services
             _invoiceSearchState = new Lazy<IInvoiceSearchState>(() => new InvoiceSearchState());
             _invoiceUploaderInvoker = new Lazy<IInvoiceUploaderInvoker>(() => new InvoiceUploaderInvoker(ServerInvoker, ServiceWrapper, InvoiceUploaderState));
             _invoiceUploaderState = new Lazy<IInvoiceUploaderState>(() => new InvoiceUploaderState());
-            _modalNavigation = new Lazy<IModalNavigation>(() => new ModalNavigation());
+            _modalNavigation = new Lazy<IModalNavigation>(() => new ModalNavigation(this, token));
             _resultStatusInvoker = new Lazy<IResultStatusInvoker>(() => new ResultStatusInvoker(ServerInvoker, ServiceWrapper, ResultStatusTypeState));
             _resultStatusTypeState = new Lazy<IResultStatusTypeState>(() => new ResultStatusTypeState());
             _serverInvoker = new Lazy<IServerInvoker>(() => new ServerInvoker(ServerStatus));
