@@ -85,7 +85,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private bool _notIsRunning;
+    private bool _notIsRunning = true;
     public bool NotIsRunning
     {
         get => _notIsRunning;
@@ -93,6 +93,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         {
             _notIsRunning = value;
             OnPropertyChanged(nameof(NotIsRunning));
+            OnPropertyChanged(nameof(CanOpenInvoice));
         }
     }
 
@@ -106,6 +107,20 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
             OnPropertyChanged(nameof(IsRunning));
         }
     }
+
+    private InvoiceHeaderModel? _selectedInvoice;
+    public InvoiceHeaderModel? SelectedInvoice
+    {
+        get => _selectedInvoice;
+        set
+        {
+            _selectedInvoice = value;
+            OnPropertyChanged(nameof(SelectedInvoice));
+            OnPropertyChanged(nameof(CanOpenInvoice));
+        }
+    }
+
+    public bool CanOpenInvoice => SelectedInvoice != null && NotIsRunning;
 
     private Task SetIsOnRunning(bool isRunning)
     {

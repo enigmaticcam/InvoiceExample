@@ -82,14 +82,15 @@
                 Content="Open" 
                 Command="{Binding OpenCommand}" 
                 CommandParameter="{Binding SelectedItem, ElementName=listbox}"
-                IsEnabled="{Binding NotIsRunning}" />
+                IsEnabled="{Binding CanOpenInvoice}" />
         </StackPanel>
         <Separator Grid.Row="4" Margin="0 5"  />
         <ListView 
             Name="listbox"
             Grid.Row="5"
             ItemsSource="{Binding Invoices}"
-            SelectionMode="Single">
+            SelectionMode="Single"
+            SelectedItem="{Binding SelectedInvoice}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id">
