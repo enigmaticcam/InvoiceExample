@@ -2,6 +2,7 @@
 using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceUploader;
+using Invoice_WPF.Services.Commands.StatusType;
 using Invoice_WPF.Services.Core;
 using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
@@ -16,11 +17,13 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     private IInvoiceUploaderState _invoiceUploaderState;
     private INavigation _navigation;
     private IModalNavigation _modalNavigation;
+    private IStatusTypeInvoker _statusTypeInvoker;
+    private IStatusTypeState _statusTypeState;
     private InvokerToken _token;
 
     private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
 
-    public InvoiceUploaderViewModel(IFileDownload fileDownload, IInvoiceUploaderInvoker invoiceUploaderInvoker, IInvoiceUploaderState invoiceUploaderState, INavigation navigation, IModalNavigation modalNavigation, InvokerToken token)
+    public InvoiceUploaderViewModel(IFileDownload fileDownload, IInvoiceUploaderInvoker invoiceUploaderInvoker, IInvoiceUploaderState invoiceUploaderState, INavigation navigation, IModalNavigation modalNavigation, InvokerToken token, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState)
     {
         _fileDownload = fileDownload;
         _invoiceUploaderInvoker = invoiceUploaderInvoker;
@@ -28,6 +31,8 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         _navigation = navigation;
         _modalNavigation = modalNavigation;
         _token = token;
+        _statusTypeInvoker = statusTypeInvoker;
+        _statusTypeState = statusTypeState;
         _invoices = new();
         CloseCommand = new AsyncRelayCommand(Close);
         ShowRandomModalCommand = new AsyncRelayCommand(ShowRandomModal);
@@ -73,6 +78,10 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     public IAsyncRelayCommand<InvoiceHeaderModel> OpenCommand { get; }
     public async Task LoadData()
     {
+        if (!_statusTypeState.IsLoaded)
+        {
+            await _statusTypeInvoker.Get(_token);
+        }
         if (!_invoiceUploaderState.IsLoaded)
         {
             await _invoiceUploaderInvoker.Get(_token);
@@ -88,7 +97,7 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         _invoices.Clear();
         foreach (var item in items)
         {
-            _invoices.Add(new InvoiceHeaderModel(item));
+            _invoices.Add(new InvoiceHeaderModel(item, _statusTypeState));
         }
         OnPropertyChanged(nameof(HasData));
         OnPropertyChanged(nameof(NoData));

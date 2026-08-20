@@ -112,7 +112,7 @@
                     <GridViewColumn Header="Status">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Padding="0 0 20 0" Text="{Binding StatusTypeId}"/>
+                                <TextBlock Padding="0 0 20 0" Text="{Binding StatusType}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

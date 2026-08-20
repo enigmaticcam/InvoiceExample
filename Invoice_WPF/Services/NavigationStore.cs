@@ -52,6 +52,8 @@ public class Navigation : INavigation
             invoiceSearchInvoker: _factory.InvoiceSearchInvoker,
             invoiceSearchState: _factory.InvoiceSearchState,
             navigation: this,
+            statusTypeInvoker: _factory.StatusTypeInvoker,
+            statusTypeState: _factory.StatusTypeState,
             token: _token);
         await model.LoadData();
         CurrentViewModel = model;
@@ -98,6 +100,8 @@ public class Navigation : INavigation
             invoiceUploaderInvoker: _factory.InvoiceUploaderInvoker,
             invoiceUploaderState: _factory.InvoiceUploaderState,
             navigation: this,
+            statusTypeInvoker: _factory.StatusTypeInvoker,
+            statusTypeState: _factory.StatusTypeState,
             modalNavigation: _factory.ModalNavigation,
             token: _token);
         await model.LoadData();

@@ -2,9 +2,11 @@
 using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceSearch;
+using Invoice_WPF.Services.Commands.StatusType;
 using Invoice_WPF.Services.Core;
 using Invoice_WPF.Services.Entities;
 using Invoice_WPF.Services.Invoking;
+using Invoice_WPF.Services.States;
 using System.Collections.ObjectModel;
 
 namespace Invoice_WPF.ViewModels;
@@ -14,14 +16,18 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
     private IInvoiceSearchInvoker _invoiceSearchInvoker;
     private IInvoiceSearchState _invoiceSearchState;
     private INavigation _navigation;
+    private IStatusTypeInvoker _statusTypeInvoker;
+    private IStatusTypeState _statusTypeState;
     private InvokerToken _token;
 
-    public InvoiceSearchViewModel(IInvoiceSearchInvoker invoiceSearchInvoker, IInvoiceSearchState invoiceSearchState, INavigation navigation, InvokerToken token)
+    public InvoiceSearchViewModel(IInvoiceSearchInvoker invoiceSearchInvoker, IInvoiceSearchState invoiceSearchState, INavigation navigation, IStatusTypeState statusTypeState, InvokerToken token, IStatusTypeInvoker statusTypeInvoker)
     {
         _invoiceSearchInvoker = invoiceSearchInvoker;
         _invoiceSearchState = invoiceSearchState;
         _navigation = navigation;
+        _statusTypeState = statusTypeState;
         _token = token;
+        _statusTypeInvoker = statusTypeInvoker;
         _invoices = new();
         SearchCommand = new AsyncRelayCommand(Search);
         CloseCommand = new AsyncRelayCommand(Close);
@@ -109,6 +115,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
     }
 
     private InvoiceHeaderModel? _selectedInvoice;
+
     public InvoiceHeaderModel? SelectedInvoice
     {
         get => _selectedInvoice;
@@ -157,18 +164,28 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private Task LoadDataAsync()
+    private async Task LoadDataAsync()
     {
-        Load();
-        return Task.CompletedTask;
+        await Load();
     }
 
     public async Task LoadData()
     {
-        await _invoiceSearchInvoker.Search(_token);
+        await Task.WhenAll(
+            _invoiceSearchInvoker.Search(_token),
+            LoadStatusType()
+        );
     }
 
-    private void Load()
+    private async Task LoadStatusType()
+    {
+        if (!_statusTypeState.IsLoaded)
+        {
+            await _statusTypeInvoker.Get(_token);
+        }
+    }
+
+    private async Task Load()
     {
         if (_invoiceSearchState.Item != null)
         {
@@ -176,7 +193,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
             _invoices.Clear();
             foreach (var invoice in item.Invoices.OrderByDescending(x => x.InvoiceHeaderId))
             {
-                _invoices.Add(new InvoiceHeaderModel(invoice));
+                _invoices.Add(new InvoiceHeaderModel(invoice, _statusTypeState));
             }
             Customer = item.Filter.Customer;
             HeaderId = item.Filter.HeaderId;
