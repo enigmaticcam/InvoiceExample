@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceUploader;
@@ -32,15 +31,37 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         _invoices = new();
         CloseCommand = new AsyncRelayCommand(Close);
         ShowRandomModalCommand = new AsyncRelayCommand(ShowRandomModal);
+        OpenCommand = new AsyncRelayCommand<InvoiceHeaderModel>(Open);
         _token.OnRunning += SetIsOnRunning;
     }
 
     public IEnumerable<InvoiceHeaderModel> Invoices => _invoices;
     public bool HasData => _invoices.Count > 0;
     public bool NoData => _invoices.Count == 0;
+    private InvoiceHeaderModel? _selectedInvoice;
+    public InvoiceHeaderModel? SelectedInvoice
+    {
+        get => _selectedInvoice;
+        set
+        {
+            _selectedInvoice = value;
+            OnPropertyChanged(nameof(SelectedInvoice));
+            OnPropertyChanged(nameof(CanOpenInvoice));
+        }
+    }
+    public bool CanOpenInvoice => SelectedInvoice != null && IsNotRunning;
 
-    [ObservableProperty]
-    public partial bool IsNotRunning { get; set; }
+    private bool _isNotRunning = true;
+    public bool IsNotRunning
+    {
+        get => _isNotRunning;
+        set
+        {
+            _isNotRunning = value;
+            OnPropertyChanged(nameof(IsNotRunning));
+            OnPropertyChanged(nameof(CanOpenInvoice));
+        }
+    }
 
     public void Dispose()
     {
@@ -49,15 +70,16 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
 
     public IAsyncRelayCommand CloseCommand { get; }
     public IAsyncRelayCommand ShowRandomModalCommand { get; }
+    public IAsyncRelayCommand<InvoiceHeaderModel> OpenCommand { get; }
     public async Task LoadData()
     {
         if (!_invoiceUploaderState.IsLoaded)
         {
-            var result = await _invoiceUploaderInvoker.Get(_token);
-            if (result.IsSuccess && result.Obj != null)
-            {
-                LoadData(result.Obj);
-            }
+            await _invoiceUploaderInvoker.Get(_token);
+        }
+        if (_invoiceUploaderState.IsLoaded)
+        {
+            LoadData(_invoiceUploaderState.Items);
         }
     }
 
@@ -86,6 +108,14 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         if (result.IsSuccess)
         {
             LoadData(_invoiceUploaderState.Items);
+        }
+    }
+
+    private async Task Open(InvoiceHeaderModel? invoice)
+    {
+        if (invoice != null)
+        {
+            await _navigation.NavigateToInvoiceView(_token, invoice.InvoiceHeaderId);
         }
     }
 

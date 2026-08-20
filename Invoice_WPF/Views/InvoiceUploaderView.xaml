@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
         <StackPanel 
             Grid.Row="0"
-            Orientation="Vertical">
+            Orientation="Horizontal">
             <Button
                 Name="DownloadButton"
                 Content="Download"
@@ -34,16 +34,23 @@
                 Content="Random"
                 Command="{Binding ShowRandomModalCommand}"
                 IsEnabled="{Binding IsNotRunning}"/>
+            <Button
+                Content="Open"
+                Command="{Binding OpenCommand}"
+                CommandParameter="{Binding SelectedItem, ElementName=listview}"
+                IsEnabled="{Binding CanOpenInvoice}"/>
         </StackPanel>
         <TextBlock
             Grid.Row="1"
             Text="No invoices found"
             Visibility="{Binding NoData, Converter={StaticResource BoolToVisibilityConverter}}"/>
         <ListView
+            Name="listview"
             Grid.Row="1"
             ItemsSource="{Binding Invoices}"
             SelectionMode="Single"
-            Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}">
+            Visibility="{Binding HasData, Converter={StaticResource BoolToVisibilityConverter}}"
+            SelectedItem="{Binding SelectedInvoice}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Id">
