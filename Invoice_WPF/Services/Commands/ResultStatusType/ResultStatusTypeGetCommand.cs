@@ -19,7 +19,7 @@ public class ResultStatusTypeGetCommand : IServerCommand<WPFResult>
         var result = await _service.ResultStatusType_Get();
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Set(result.Obj);
+            await _state.Set(result.Obj.Select(x => new Models.ResultStatusTypeModel(x)));
         }
         return result;
     }

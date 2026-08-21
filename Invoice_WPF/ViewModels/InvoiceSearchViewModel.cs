@@ -31,7 +31,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         _invoices = new();
         SearchCommand = new AsyncRelayCommand(Search);
         CloseCommand = new AsyncRelayCommand(Close);
-        OpenCommand = new AsyncRelayCommand<InvoiceHeaderModel>(OpenInvoice);
+        OpenCommand = new AsyncRelayCommand<InvoiceHeaderDisplayModel>(OpenInvoice);
         _invoiceSearchState.OnChanged += LoadDataAsync;
         _token.OnRunning += SetIsOnRunning;
     }
@@ -42,8 +42,8 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         _token.OnRunning -= SetIsOnRunning;
     }
 
-    private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
-    public IEnumerable<InvoiceHeaderModel> Invoices => _invoices;
+    private readonly ObservableCollection<InvoiceHeaderDisplayModel> _invoices;
+    public IEnumerable<InvoiceHeaderDisplayModel> Invoices => _invoices;
 
     private bool _byCustomer;
     public bool ByCustomer
@@ -114,9 +114,9 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private InvoiceHeaderModel? _selectedInvoice;
+    private InvoiceHeaderDisplayModel? _selectedInvoice;
 
-    public InvoiceHeaderModel? SelectedInvoice
+    public InvoiceHeaderDisplayModel? SelectedInvoice
     {
         get => _selectedInvoice;
         set
@@ -138,7 +138,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
 
     public IAsyncRelayCommand SearchCommand { get; }
     public IAsyncRelayCommand CloseCommand { get; }
-    public IAsyncRelayCommand<InvoiceHeaderModel> OpenCommand { get; }
+    public IAsyncRelayCommand<InvoiceHeaderDisplayModel> OpenCommand { get; }
     private async Task Search()
     {
         await _invoiceSearchInvoker.Search(_token, new InvoiceFilterDTO()
@@ -156,7 +156,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
         await _navigation.NavigateToMainMenuAsync();
     }
 
-    private async Task OpenInvoice(InvoiceHeaderModel? header)
+    private async Task OpenInvoice(InvoiceHeaderDisplayModel? header)
     {
         if (header != null)
         {
@@ -193,7 +193,7 @@ public partial class InvoiceSearchViewModel : ViewModelBase, IDisposable
             _invoices.Clear();
             foreach (var invoice in item.Invoices.OrderByDescending(x => x.InvoiceHeaderId))
             {
-                _invoices.Add(new InvoiceHeaderModel(invoice, _statusTypeState));
+                _invoices.Add(new InvoiceHeaderDisplayModel(new InvoiceHeaderModel(invoice), _statusTypeState));
             }
             Customer = item.Filter.Customer;
             HeaderId = item.Filter.HeaderId;

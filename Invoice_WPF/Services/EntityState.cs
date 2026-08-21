@@ -16,13 +16,15 @@ public interface IEntityState<TId, TObject> : IEntityState
     Task Remove(IEnumerable<TObject> items);
     Task Remove(TId item);
     Task Remove(IEnumerable<TId> items);
+    void Reset();
     Task Set(TObject item);
     Task Set(IEnumerable<TObject> items);
 }
 
-public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> where TId : notnull
+public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> where TId : notnull where TObject : ICopy<TObject>
 {
     private Dictionary<TId, TObject> _items = new();
+    private Dictionary<TId, TObject> _oldValues = new();
 
     public IEnumerable<TObject> Items => _items.Values;
     public bool IsLoaded { get; private set; }
@@ -53,6 +55,7 @@ public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> whe
         {
             var id = GetId(item);
             _items[id] = item;
+            _oldValues[id] = (TObject)item.Copy();
         }
         if (OnChanged != null)
         {
@@ -65,13 +68,17 @@ public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> whe
         return Remove(new List<TId>() { item });
     }
 
-    public async Task Remove(IEnumerable<TId> items)
+    public async Task Remove(IEnumerable<TId> ids)
     {
-        foreach (var item in items)
+        foreach (var id in ids)
         {
-            if (_items.ContainsKey(item))
+            if (_items.ContainsKey(id))
             {
-                _items.Remove(item);
+                _items.Remove(id);
+            }
+            if (_oldValues.ContainsKey(id))
+            {
+                _oldValues.Remove(id);
             }
         }
         if (OnChanged != null)
@@ -89,10 +96,26 @@ public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> whe
             {
                 _items.Remove(id);
             }
+            if (_oldValues.ContainsKey(id))
+            {
+                _items.Remove(id);
+            }
         }
         if (OnChanged != null)
         {
             await OnChanged();
+        }
+    }
+
+    public void Reset()
+    {
+        foreach (var item in _oldValues.Values)
+        {
+            var id = GetId(item);
+            if (_items.ContainsKey(id))
+            {
+                _items[id] = (TObject)_oldValues[id].Copy();
+            }
         }
     }
 

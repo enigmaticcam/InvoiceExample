@@ -1,15 +1,15 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Invoice_WPF.Services.Core;
+using Invoice_WPF.Models;
 using System.Windows;
 
 namespace Invoice_WPF.Observables;
 
 public class InvoiceResultObservable : ObservableObject
 {
-    private InvoiceFullResultDTO _line;
+    private InvoiceFullResultModel _line;
 
-    public InvoiceResultObservable(InvoiceFullResultDTO line)
+    public InvoiceResultObservable(InvoiceFullResultModel line)
     {
         _line = line;
         Pay = new RelayCommand(() => ApprovedRate = CustomerRate);

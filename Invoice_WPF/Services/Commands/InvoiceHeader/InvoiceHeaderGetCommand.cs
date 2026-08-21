@@ -21,7 +21,7 @@ public class InvoiceHeaderGetCommand : IServerCommand<WPFResult>
         var result = await _service.InvoiceHeader_Get(_headerId);
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Merge(result.Obj);
+            await _state.Merge(new Models.InvoiceHeaderModel(result.Obj));
         }
         return result;
     }

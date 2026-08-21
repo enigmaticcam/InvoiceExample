@@ -1,14 +1,14 @@
-﻿using Invoice_WPF.Services.Core;
+﻿using Invoice_WPF.Models;
 using Invoice_WPF.Services.Entities;
 
 namespace Invoice_WPF.Services.States;
 
-public interface IStatusTypeState : IEntityState<int, StatusTypeEntity>
+public interface IStatusTypeState : IEntityState<int, StatusTypeModel>
 {
     string GetText(int? statusTypeId);
 }
 
-public class StatusTypeState : EntityState<int, StatusTypeEntity>, IStatusTypeState
+public class StatusTypeState : EntityState<int, StatusTypeModel>, IStatusTypeState
 {
     public string GetText(int? statusTypeId)
     {
@@ -19,7 +19,7 @@ public class StatusTypeState : EntityState<int, StatusTypeEntity>, IStatusTypeSt
         return "";
     }
 
-    protected override int GetId(StatusTypeEntity obj)
+    protected override int GetId(StatusTypeModel obj)
     {
         return obj.StatusTypeId;
     }

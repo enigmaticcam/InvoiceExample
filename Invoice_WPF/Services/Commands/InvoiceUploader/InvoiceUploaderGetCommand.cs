@@ -19,7 +19,7 @@ public class InvoiceUploaderGetCommand : IServerCommand<WPFResult<List<InvoiceHe
         var result = await _service.InvoiceUploader_Get();
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Set(result.Obj);
+            await _state.Set(result.Obj.Select(x => new Models.InvoiceHeaderModel(x)));
         }
         return result;
     }

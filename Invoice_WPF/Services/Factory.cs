@@ -19,7 +19,6 @@ namespace Invoice_WPF.Services
         IFileDownload FileDownload { get; }
         IInvoiceDetailInvoker InvoiceDetailInvoker { get; }
         IInvoiceDetailState InvoiceDetailState { get; }
-        IInvoiceDetailUpdateState InvoiceDetailUpdateState { get; }
         IInvoiceHeaderInvoker InvoiceHeaderInvoker { get; }
         IInvoiceHeaderState InvoiceHeaderState { get; }
         IInvoiceSearchInvoker InvoiceSearchInvoker { get; }
@@ -42,7 +41,6 @@ namespace Invoice_WPF.Services
         private Lazy<IFileDownload> _fileDownload;
         private Lazy<IInvoiceDetailInvoker> _invoiceDetailInvoker;
         private Lazy<IInvoiceDetailState> _invoiceDetailState;
-        private Lazy<IInvoiceDetailUpdateState> _invoiceDetailUpdateState;
         private Lazy<IInvoiceHeaderInvoker> _invoiceHeaderInvoker;
         private Lazy<IInvoiceHeaderState> _invoiceHeaderState;
         private Lazy<IInvoiceUploaderInvoker> _invoiceUploaderInvoker;
@@ -65,7 +63,6 @@ namespace Invoice_WPF.Services
             _fileDownload = new Lazy<IFileDownload>(() => new FileDownload(_httpClient));
             _invoiceDetailInvoker = new Lazy<IInvoiceDetailInvoker>(() => new InvoiceDetailInvoker(ServerInvoker, ServiceWrapper, InvoiceDetailState));
             _invoiceDetailState = new Lazy<IInvoiceDetailState>(() => new InvoiceDetailState());
-            _invoiceDetailUpdateState = new Lazy<IInvoiceDetailUpdateState>(() => new InvoiceDetailUpdateState(InvoiceDetailState));
             _invoiceHeaderInvoker = new Lazy<IInvoiceHeaderInvoker>(() => new InvoiceHeaderInvoker(ServerInvoker, ServiceWrapper, InvoiceHeaderState));
             _invoiceHeaderState = new Lazy<IInvoiceHeaderState>(() => new InvoiceHeaderState());
             _invoiceSearchInvoker = new Lazy<IInvoiceSearchInvoker>(() => new InvoiceSearchInvoker(ServerInvoker, ServiceWrapper, InvoiceSearchState));
@@ -87,7 +84,6 @@ namespace Invoice_WPF.Services
         public IFileDownload FileDownload => _fileDownload.Value;
         public IInvoiceDetailInvoker InvoiceDetailInvoker => _invoiceDetailInvoker.Value;
         public IInvoiceDetailState InvoiceDetailState => _invoiceDetailState.Value;
-        public IInvoiceDetailUpdateState InvoiceDetailUpdateState => _invoiceDetailUpdateState.Value;
         public IInvoiceHeaderInvoker InvoiceHeaderInvoker => _invoiceHeaderInvoker.Value;
         public IInvoiceHeaderState InvoiceHeaderState => _invoiceHeaderState.Value;
         public IInvoiceSearchInvoker InvoiceSearchInvoker => _invoiceSearchInvoker.Value;

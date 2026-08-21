@@ -3,7 +3,6 @@ using Invoice_WPF.Models;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceUploader;
 using Invoice_WPF.Services.Commands.StatusType;
-using Invoice_WPF.Services.Core;
 using Invoice_WPF.Services.Invoking;
 using Invoice_WPF.Services.States;
 using System.Collections.ObjectModel;
@@ -21,7 +20,7 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
     private IStatusTypeState _statusTypeState;
     private InvokerToken _token;
 
-    private readonly ObservableCollection<InvoiceHeaderModel> _invoices;
+    private readonly ObservableCollection<InvoiceHeaderDisplayModel> _invoices;
 
     public InvoiceUploaderViewModel(IFileDownload fileDownload, IInvoiceUploaderInvoker invoiceUploaderInvoker, IInvoiceUploaderState invoiceUploaderState, INavigation navigation, IModalNavigation modalNavigation, InvokerToken token, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState)
     {
@@ -36,15 +35,15 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         _invoices = new();
         CloseCommand = new AsyncRelayCommand(Close);
         ShowRandomModalCommand = new AsyncRelayCommand(ShowRandomModal);
-        OpenCommand = new AsyncRelayCommand<InvoiceHeaderModel>(Open);
+        OpenCommand = new AsyncRelayCommand<InvoiceHeaderDisplayModel>(Open);
         _token.OnRunning += SetIsOnRunning;
     }
 
-    public IEnumerable<InvoiceHeaderModel> Invoices => _invoices;
+    public IEnumerable<InvoiceHeaderDisplayModel> Invoices => _invoices;
     public bool HasData => _invoices.Count > 0;
     public bool NoData => _invoices.Count == 0;
-    private InvoiceHeaderModel? _selectedInvoice;
-    public InvoiceHeaderModel? SelectedInvoice
+    private InvoiceHeaderDisplayModel? _selectedInvoice;
+    public InvoiceHeaderDisplayModel? SelectedInvoice
     {
         get => _selectedInvoice;
         set
@@ -75,7 +74,7 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
 
     public IAsyncRelayCommand CloseCommand { get; }
     public IAsyncRelayCommand ShowRandomModalCommand { get; }
-    public IAsyncRelayCommand<InvoiceHeaderModel> OpenCommand { get; }
+    public IAsyncRelayCommand<InvoiceHeaderDisplayModel> OpenCommand { get; }
     public async Task LoadData()
     {
         if (!_statusTypeState.IsLoaded)
@@ -92,12 +91,12 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private void LoadData(IEnumerable<InvoiceHeaderEntity> items)
+    private void LoadData(IEnumerable<InvoiceHeaderModel> items)
     {
         _invoices.Clear();
         foreach (var item in items)
         {
-            _invoices.Add(new InvoiceHeaderModel(item, _statusTypeState));
+            _invoices.Add(new InvoiceHeaderDisplayModel(item, _statusTypeState));
         }
         OnPropertyChanged(nameof(HasData));
         OnPropertyChanged(nameof(NoData));
@@ -120,7 +119,7 @@ public partial class InvoiceUploaderViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private async Task Open(InvoiceHeaderModel? invoice)
+    private async Task Open(InvoiceHeaderDisplayModel? invoice)
     {
         if (invoice != null)
         {

@@ -23,7 +23,7 @@ public class InvoiceDetailUpdateCommand : IServerCommand<WPFResult>
         var result = await _service.InvoiceHeader_Update(_headerId, _updates);
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Merge(result.Obj);
+            await _state.Merge(result.Obj.Select(x => new Models.InvoiceFullResultModel(x)));
         }
         return result;
     }

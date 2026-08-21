@@ -21,7 +21,7 @@ public class InvoiceDetailGetCommand : IServerCommand<WPFResult>
         var result = await _service.InvoiceHeader_GetResults(_headerId);
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Set(result.Obj);
+            await _state.Set(result.Obj.Select(x => new Models.InvoiceFullResultModel(x)));
         }
         return result;
     }

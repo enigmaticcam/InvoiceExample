@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Invoice_WPF.Services.Core;
+using Invoice_WPF.Models;
 
 namespace Invoice_WPF.Observables;
 
 public class InvoiceHeaderObservable : ObservableObject
 {
-    private InvoiceHeaderEntity _invoiceHeader;
+    private InvoiceHeaderModel _invoiceHeader;
 
-    public InvoiceHeaderObservable(InvoiceHeaderEntity invoiceHeader)
+    public InvoiceHeaderObservable(InvoiceHeaderModel invoiceHeader)
     {
         _invoiceHeader = invoiceHeader;
     }

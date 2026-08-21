@@ -23,7 +23,7 @@ public class InvoiceHeaderChangeStatusCommand : IServerCommand<WPFResult<Invoice
         var result = await _service.InvoiceHeader_Update(_headerId, _statusId);
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Merge(result.Obj.Invoice);
+            await _state.Merge(new Models.InvoiceHeaderModel(result.Obj.Invoice));
         }
         return result;
     }

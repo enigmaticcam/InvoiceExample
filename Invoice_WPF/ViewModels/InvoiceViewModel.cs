@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Invoice_WPF.Models;
 using Invoice_WPF.Observables;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Commands.InvoiceDetail;
@@ -21,7 +22,6 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private IInvoiceHeaderState _invoiceHeaderState;
     private IInvoiceDetailInvoker _invoiceDetailInvoker;
     private IInvoiceDetailState _invoiceDetailState;
-    private IInvoiceDetailUpdateState _invoiceDetailUpdateState;
     private INavigation _navigation;
     private IResultStatusInvoker _resultStatusInvoker;
     private IResultStatusTypeState _resultStatusTypeState;
@@ -29,13 +29,12 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private IStatusTypeState _statusTypeState;
     private InvokerToken _token;
 
-    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IInvoiceDetailUpdateState invoiceDetailUpdateState, INavigation navigation, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState, InvokerToken token)
+    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, INavigation navigation, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState, InvokerToken token)
     {
         _invoiceHeaderInvoker = invoiceHeaderInvoker;
         _invoiceHeaderState = invoiceHeaderState;
         _invoiceDetailInvoker = invoiceDetailInvoker;
         _invoiceDetailState = invoiceDetailState;
-        _invoiceDetailUpdateState = invoiceDetailUpdateState;
         _navigation = navigation;
         _resultStatusInvoker = resultStatusInvoker;
         _resultStatusTypeState = resultStatusTypeState;
@@ -142,7 +141,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private void LoadDataDetail(IEnumerable<InvoiceFullResultDTO> items)
+    private void LoadDataDetail(IEnumerable<InvoiceFullResultModel> items)
     {
         _detail.Clear();
         foreach (var line in items)

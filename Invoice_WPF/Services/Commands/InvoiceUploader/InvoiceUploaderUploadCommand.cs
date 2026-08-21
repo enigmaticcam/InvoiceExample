@@ -23,7 +23,7 @@ public class InvoiceUploaderUploadCommand : IServerCommand<WPFResult<List<Invoic
         var result = await _service.InvoiceUploader_Upload(new FileParameter(stream));
         if (result.IsSuccess && result.Obj != null)
         {
-            await _state.Set(result.Obj);
+            await _state.Set(result.Obj.Select(x => new Models.InvoiceHeaderModel(x)));
         }
         return result;
     }
