@@ -27,7 +27,8 @@
                     />
                 <Button
                     Content="Save"
-                    IsEnabled="{Binding CanSave}"/>
+                    IsEnabled="{Binding CanSave}"
+                    Command="{Binding SaveCommand}"/>
                 <Button
                     Content="Cancel"
                     IsEnabled="{Binding CanSave}"/>

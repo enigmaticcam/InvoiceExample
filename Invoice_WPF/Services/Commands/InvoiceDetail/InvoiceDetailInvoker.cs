@@ -7,6 +7,7 @@ namespace Invoice_WPF.Services.Commands.InvoiceDetail;
 public interface IInvoiceDetailInvoker
 {
     Task<WPFResult> Get(InvokerToken token, int headerId);
+    Task<WPFResult> Update(InvokerToken token, int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates);
 }
 
 public class InvoiceDetailInvoker : IInvoiceDetailInvoker
@@ -25,6 +26,12 @@ public class InvoiceDetailInvoker : IInvoiceDetailInvoker
     public Task<WPFResult> Get(InvokerToken token, int headerId)
     {
         var command = new InvoiceDetailGetCommand(_service, _state, headerId);
+        return _invoker.Perform(token, command);
+    }
+
+    public Task<WPFResult> Update(InvokerToken token, int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates)
+    {
+        var command = new InvoiceDetailUpdateCommand(_service, _state, headerId, updates);
         return _invoker.Perform(token, command);
     }
 }

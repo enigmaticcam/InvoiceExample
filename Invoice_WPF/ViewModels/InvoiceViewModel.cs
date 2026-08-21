@@ -42,6 +42,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         _statusTypeInvoker = statusTypeInvoker;
         _statusTypeState = statusTypeState;
         _token = token;
+        SaveCommand = new AsyncRelayCommand(Save);
     }
     private ObservableCollection<InvoiceResultObservable> _detail = new();
     private int _headerId;
@@ -69,6 +70,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private bool _isEditing;
     public bool CanSave => _detail.Any(x => x.IsChanged);
     public Action? ListViewChanged { get; set; }
+    public IAsyncRelayCommand SaveCommand { get; set; }
 
     public bool IsEditing
     {
@@ -78,6 +80,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             _isEditing = value;
             OnPropertyChanged(nameof(IsEditing));
             OnPropertyChanged(nameof(IsNotEditing));
+            OnPropertyChanged(nameof(CanSave));
         }
     }
     public bool IsNotEditing => !IsEditing;
@@ -135,16 +138,22 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         var result = await _invoiceDetailInvoker.Get(_token, id);
         if (result.IsSuccess)
         {
-            foreach (var line in _invoiceDetailState.Items)
-            {
-                var add = new InvoiceResultObservable(line);
-                add.ChangedEvent += LineChanged;
-                _detail.Add(add);
-            }
-            ListViewChanged?.Invoke();
-            DetailCollectionView = CollectionViewSource.GetDefaultView(_detail);
-            Summary.Calc(_detail);
+            LoadDataDetail(_invoiceDetailState.Items);
         }
+    }
+
+    private void LoadDataDetail(IEnumerable<InvoiceFullResultDTO> items)
+    {
+        _detail.Clear();
+        foreach (var line in items)
+        {
+            var add = new InvoiceResultObservable(line);
+            add.ChangedEvent += LineChanged;
+            _detail.Add(add);
+        }
+        ListViewChanged?.Invoke();
+        DetailCollectionView = CollectionViewSource.GetDefaultView(_detail);
+        Summary.Calc(_detail);
     }
 
     private async Task LoadDataResultStatusType()
@@ -198,6 +207,26 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     {
         OnPropertyChanged(nameof(CanSave));
         ListViewChanged?.Invoke();
+    }
+
+    private async Task Save()
+    {
+        var updates = _detail
+            .Where(x => x.IsChanged)
+            .Select(x => new InvoiceDetailUpdateDTO()
+            {
+                ApprovedRate = x.ApprovedRate,
+                InvoiceDetailId = x.InvoiceDetailId
+            });
+        if (updates.Count() > 0)
+        {
+            var result = await _invoiceDetailInvoker.Update(_token, _headerId, updates);
+            if (result.IsSuccess)
+            {
+                LoadDataDetail(_invoiceDetailState.Items);
+                IsEditing = false;
+            }
+        }
     }
 
     public void Dispose()
