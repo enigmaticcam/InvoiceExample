@@ -28,6 +28,21 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     private IStatusTypeInvoker _statusTypeInvoker;
     private IStatusTypeState _statusTypeState;
     private InvokerToken _token;
+
+    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IInvoiceDetailUpdateState invoiceDetailUpdateState, INavigation navigation, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState, InvokerToken token)
+    {
+        _invoiceHeaderInvoker = invoiceHeaderInvoker;
+        _invoiceHeaderState = invoiceHeaderState;
+        _invoiceDetailInvoker = invoiceDetailInvoker;
+        _invoiceDetailState = invoiceDetailState;
+        _invoiceDetailUpdateState = invoiceDetailUpdateState;
+        _navigation = navigation;
+        _resultStatusInvoker = resultStatusInvoker;
+        _resultStatusTypeState = resultStatusTypeState;
+        _statusTypeInvoker = statusTypeInvoker;
+        _statusTypeState = statusTypeState;
+        _token = token;
+    }
     private ObservableCollection<InvoiceResultObservable> _detail = new();
     private int _headerId;
 
@@ -52,21 +67,8 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     public bool CanDelete => _permissions?.CanDelete ?? false;
     public bool CanChangeStatus => _permissions?.StatusChanges.Count > 0;
     private bool _isEditing;
-
-    public InvoiceViewModel(IInvoiceHeaderInvoker invoiceHeaderInvoker, IInvoiceHeaderState invoiceHeaderState, IInvoiceDetailInvoker invoiceDetailInvoker, IInvoiceDetailState invoiceDetailState, IInvoiceDetailUpdateState invoiceDetailUpdateState, INavigation navigation, IResultStatusInvoker resultStatusInvoker, IResultStatusTypeState resultStatusTypeState, IStatusTypeInvoker statusTypeInvoker, IStatusTypeState statusTypeState, InvokerToken token)
-    {
-        _invoiceHeaderInvoker = invoiceHeaderInvoker;
-        _invoiceHeaderState = invoiceHeaderState;
-        _invoiceDetailInvoker = invoiceDetailInvoker;
-        _invoiceDetailState = invoiceDetailState;
-        _invoiceDetailUpdateState = invoiceDetailUpdateState;
-        _navigation = navigation;
-        _resultStatusInvoker = resultStatusInvoker;
-        _resultStatusTypeState = resultStatusTypeState;
-        _statusTypeInvoker = statusTypeInvoker;
-        _statusTypeState = statusTypeState;
-        _token = token;
-    }
+    public bool CanSave => _detail.Any(x => x.IsChanged);
+    public Action? ListViewChanged { get; set; }
 
     public bool IsEditing
     {
@@ -135,8 +137,11 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         {
             foreach (var line in _invoiceDetailState.Items)
             {
-                _detail.Add(new InvoiceResultObservable(line));
+                var add = new InvoiceResultObservable(line);
+                add.ChangedEvent += LineChanged;
+                _detail.Add(add);
             }
+            ListViewChanged?.Invoke();
             DetailCollectionView = CollectionViewSource.GetDefaultView(_detail);
             Summary.Calc(_detail);
         }
@@ -187,6 +192,12 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         {
             await _navigation.NavigateToInvoiceSearchView();
         }
+    }
+
+    private void LineChanged()
+    {
+        OnPropertyChanged(nameof(CanSave));
+        ListViewChanged?.Invoke();
     }
 
     public void Dispose()

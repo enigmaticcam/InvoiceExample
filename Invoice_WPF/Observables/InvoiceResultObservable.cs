@@ -31,6 +31,7 @@ public class InvoiceResultObservable : ObservableObject
             SetProperty(_line.ApprovedRate, value, _line, (u, n) => u.ApprovedRate = n);
             OnPropertyChanged(nameof(CanPay));
             OnPropertyChanged(nameof(CanRemovePay));
+            ChangedEvent?.Invoke();
         }
     }
     public decimal Cases => _line.Cases;
@@ -44,4 +45,5 @@ public class InvoiceResultObservable : ObservableObject
     public Visibility CanRemovePay => ApprovedRate != 0 ? Visibility.Visible : Visibility.Collapsed;
     public IRelayCommand Pay { get; }
     public IRelayCommand RemovePay { get; }
+    public Action? ChangedEvent { get; set; }
 }

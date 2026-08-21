@@ -25,6 +25,12 @@
                     Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"
                     Click="DeleteButton_Click"
                     />
+                <Button
+                    Content="Save"
+                    IsEnabled="{Binding CanSave}"/>
+                <Button
+                    Content="Cancel"
+                    IsEnabled="{Binding CanSave}"/>
             </ToolBar>
             <ToolBar ItemsSource="{Binding StatusChanges}">
                 <ToolBar.ItemTemplate>
@@ -170,7 +176,7 @@
                 ScrollViewer.VerticalScrollBarVisibility="Visible"
                 ScrollViewer.CanContentScroll="True">
                 <ListView.View>
-                    <GridView>
+                    <GridView x:Name="LineGridView">
                         <GridViewColumn Header="Id">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -216,18 +222,12 @@
                                             <Button 
                                                 Command="{Binding Pay}"
                                                 Visibility="{Binding CanPay}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Images/dollar.png"/>
-                                                    <TextBlock>Pay</TextBlock>
-                                                </StackPanel>
+                                                <Image Source="/Images/dollar.png"/>
                                             </Button>
                                             <Button 
                                                 Command="{Binding RemovePay}"
                                                 Visibility="{Binding CanRemovePay}">
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Source="/Images/dollar.png"/>
-                                                    <TextBlock>Remove Pay</TextBlock>
-                                                </StackPanel>
+                                                <Image Source="/Images/dollar.png"/>
                                             </Button>
                                         </StackPanel>
                                     </StackPanel>
