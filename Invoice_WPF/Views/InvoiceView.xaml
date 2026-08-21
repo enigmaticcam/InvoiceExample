@@ -31,7 +31,8 @@
                     Command="{Binding SaveCommand}"/>
                 <Button
                     Content="Cancel"
-                    IsEnabled="{Binding CanSave}"/>
+                    IsEnabled="{Binding CanSave}"
+                    Command="{Binding CancelSaveCommand}"/>
             </ToolBar>
             <ToolBar ItemsSource="{Binding StatusChanges}">
                 <ToolBar.ItemTemplate>

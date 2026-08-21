@@ -42,6 +42,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         _statusTypeState = statusTypeState;
         _token = token;
         SaveCommand = new AsyncRelayCommand(Save);
+        CancelSaveCommand = new AsyncRelayCommand(CancelSave);
     }
     private ObservableCollection<InvoiceResultObservable> _detail = new();
     private int _headerId;
@@ -70,6 +71,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     public bool CanSave => _detail.Any(x => x.IsChanged);
     public Action? ListViewChanged { get; set; }
     public IAsyncRelayCommand SaveCommand { get; set; }
+    public IAsyncRelayCommand CancelSaveCommand { get; set; }
 
     public bool IsEditing
     {
@@ -226,6 +228,14 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
                 IsEditing = false;
             }
         }
+    }
+
+    private Task CancelSave()
+    {
+        _invoiceDetailState.Reset();
+        LoadDataDetail(_invoiceDetailState.Items);
+        IsEditing = false;
+        return Task.CompletedTask;
     }
 
     public void Dispose()

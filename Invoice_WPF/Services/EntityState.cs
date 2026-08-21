@@ -127,10 +127,12 @@ public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> whe
     public async Task Set(IEnumerable<TObject> items)
     {
         _items.Clear();
+        _oldValues.Clear();
         foreach (var i in items)
         {
             var id = GetId(i);
             _items.Add(id, i);
+            _oldValues.Add(id, i.Copy());
         }
         IsLoaded = true;
         if (OnChanged != null)
