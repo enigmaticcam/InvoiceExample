@@ -17,6 +17,7 @@ public interface IEntityState<TId, TObject> : IEntityState
     Task Remove(TId item);
     Task Remove(IEnumerable<TId> items);
     void Reset();
+    void Reset(TId id);
     Task Set(TObject item);
     Task Set(IEnumerable<TObject> items);
 }
@@ -116,6 +117,14 @@ public abstract class EntityState<TId, TObject> : IEntityState<TId, TObject> whe
             {
                 _items[id] = (TObject)_oldValues[id].Copy();
             }
+        }
+    }
+
+    public void Reset(TId id)
+    {
+        if (_oldValues.ContainsKey(id))
+        {
+            _items[id] = (TObject)_oldValues[id].Copy();
         }
     }
 

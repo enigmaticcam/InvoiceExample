@@ -279,7 +279,13 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
 
     private Task CancelSaveDetail()
     {
-        _invoiceDetailState.Reset();
+        foreach (var item in _detail)
+        {
+            if (item.IsChanged)
+            {
+                _invoiceDetailState.Reset(item.InvoiceDetailId);
+            }
+        }
         LoadDataDetail(_invoiceDetailState.Items);
         IsEditingDetail = false;
         return Task.CompletedTask;
