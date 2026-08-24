@@ -25,14 +25,6 @@
                     Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisibilityConverter}}"
                     Click="DeleteButton_Click"
                     />
-                <Button
-                    Content="Save"
-                    IsEnabled="{Binding CanSave}"
-                    Command="{Binding SaveCommand}"/>
-                <Button
-                    Content="Cancel"
-                    IsEnabled="{Binding CanSave}"
-                    Command="{Binding CancelSaveCommand}"/>
             </ToolBar>
             <ToolBar ItemsSource="{Binding StatusChanges}">
                 <ToolBar.ItemTemplate>
@@ -165,11 +157,40 @@
                     Content="Total Agreed Dollars"/>
             </Grid>
         </Grid>
-        <CheckBox
+        <StackPanel
             Grid.Row="2"
-            Content="Edit"
-            IsChecked="{Binding IsEditing}"
-            Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisibilityConverter}}" />
+            Orientation="Horizontal">
+            <Button 
+                Visibility="{Binding CanEnableDetailEditing, Converter={StaticResource BoolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotRunning}"
+                HorizontalAlignment="Left"
+                Command="{Binding ToggleEditDetailCommand}">
+                <Image 
+                    Source="/Images/edit.png"
+                    Width="15"
+                    Height="15" />
+            </Button>
+            <Button 
+                Visibility="{Binding CanDisableDetailEditing, Converter={StaticResource BoolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotRunning}"
+                HorizontalAlignment="Left"
+                Command="{Binding ToggleEditDetailCommand}">
+                <Image 
+                    Source="/Images/disable_edit.png"
+                    Width="15"
+                    Height="15" />
+            </Button>
+            <Button
+                Visibility="{Binding CanSaveDetail, Converter={StaticResource BoolToVisibilityConverter}}"
+                IsEnabled="{Binding IsNotRunning}"
+                HorizontalAlignment="Left"
+                Command="{Binding SaveDetailCommand}">
+                <Image
+                    Source="/Images/save.png"
+                    Width="15"
+                    Height="15"/>
+            </Button>
+        </StackPanel>
 
         <Grid Grid.Row="3">
             <ListView
@@ -213,10 +234,10 @@
                                     <StackPanel>
                                         <TextBlock
                                             Text="{Binding ApprovedRate}"
-                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsNotEditing, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsNotEditingDetail, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                         <StackPanel 
                                             Orientation="Horizontal"
-                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsEditing, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, Path=DataContext.IsEditingDetail, Converter={StaticResource BoolToVisibilityConverter}}">
                                             <TextBox
                                                 Name="ApprovedRate"
                                                 Padding="0 0 20 0"

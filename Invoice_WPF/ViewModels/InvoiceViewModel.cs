@@ -41,8 +41,10 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         _statusTypeInvoker = statusTypeInvoker;
         _statusTypeState = statusTypeState;
         _token = token;
-        SaveCommand = new AsyncRelayCommand(Save);
-        CancelSaveCommand = new AsyncRelayCommand(CancelSave);
+        SaveDetailCommand = new AsyncRelayCommand(SaveDetail);
+        CancelSaveCommand = new AsyncRelayCommand(CancelSaveDetail);
+        ToggleEditDetailCommand = new AsyncRelayCommand(ToggleEditDetail);
+        _token.OnRunning += SetIsRunning;
     }
     private ObservableCollection<InvoiceResultObservable> _detail = new();
     private int _headerId;
@@ -61,30 +63,68 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             OnPropertyChanged(nameof(StatusChanges));
             OnPropertyChanged(nameof(CanEdit));
             OnPropertyChanged(nameof(CanDelete));
-            IsEditing = false;
+            IsEditingHeader = false;
         }
     }
     public bool CanEdit => _permissions?.CanEdit ?? false;
     public bool CanDelete => _permissions?.CanDelete ?? false;
     public bool CanChangeStatus => _permissions?.StatusChanges.Count > 0;
-    private bool _isEditing;
-    public bool CanSave => _detail.Any(x => x.IsChanged);
+    public bool CanSaveDetail => _detail.Any(x => x.IsChanged) && IsEditingDetail;
     public Action? ListViewChanged { get; set; }
-    public IAsyncRelayCommand SaveCommand { get; set; }
+    public IAsyncRelayCommand SaveDetailCommand { get; set; }
     public IAsyncRelayCommand CancelSaveCommand { get; set; }
+    public IAsyncRelayCommand ToggleEditDetailCommand { get; set; }
 
-    public bool IsEditing
+    private bool _isRunning;
+    public bool IsRunning
     {
-        get => _isEditing;
+        get => _isRunning;
         set
         {
-            _isEditing = value;
-            OnPropertyChanged(nameof(IsEditing));
-            OnPropertyChanged(nameof(IsNotEditing));
-            OnPropertyChanged(nameof(CanSave));
+            _isRunning = value;
+            OnPropertyChanged(nameof(IsRunning));
+            OnPropertyChanged(nameof(IsNotRunning));
+            OnPropertyChanged(nameof(CanSaveDetail));
         }
     }
-    public bool IsNotEditing => !IsEditing;
+
+    private bool _isEditingHeader;
+    public bool IsEditingHeader
+    {
+        get => _isEditingHeader;
+        set
+        {
+            _isEditingHeader = value;
+            OnPropertyChanged(nameof(IsEditingHeader));
+            OnPropertyChanged(nameof(IsNotEditingHeader));
+            OnPropertyChanged(nameof(CanSaveDetail));
+            OnPropertyChanged(nameof(CanEnableDetailEditing));
+            OnPropertyChanged(nameof(CanDisableDetailEditing));
+        }
+    }
+
+    private bool _isEditingDetail;
+    public bool IsEditingDetail
+    {
+        get => _isEditingDetail;
+        set
+        {
+            _isEditingDetail = value;
+            OnPropertyChanged(nameof(IsEditingDetail));
+            OnPropertyChanged(nameof(IsNotEditingDetail));
+            OnPropertyChanged(nameof(CanSaveDetail));
+            OnPropertyChanged(nameof(CanEnableDetailEditing));
+            OnPropertyChanged(nameof(CanDisableDetailEditing));
+        }
+    }
+
+    public bool IsNotEditingHeader => !_isEditingHeader;
+    public bool IsNotEditingDetail => !_isEditingDetail;
+    public bool IsNotRunning => !IsRunning;
+    public bool CanEnableHeaderEditing => !IsEditingHeader && CanEdit;
+    public bool CanDisableHeaderEditing => IsEditingHeader;
+    public bool CanEnableDetailEditing => !IsEditingDetail && CanEdit;
+    public bool CanDisableDetailEditing => IsEditingDetail;
 
     public ObservableCollection<DynamicButton> StatusChanges
     {
@@ -108,6 +148,12 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     public string? StatusTypeText
     {
         get => _statusTypeState.GetText(Header?.StatusTypeId);
+    }
+
+    private Task SetIsRunning(bool isRunning)
+    {
+        IsRunning = isRunning;
+        return Task.CompletedTask;
     }
 
     public async Task LoadData(int id)
@@ -206,11 +252,12 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
 
     private void LineChanged()
     {
-        OnPropertyChanged(nameof(CanSave));
+        OnPropertyChanged(nameof(CanSaveDetail));
+        OnPropertyChanged(nameof(CanEnableHeaderEditing));
         ListViewChanged?.Invoke();
     }
 
-    private async Task Save()
+    private async Task SaveDetail()
     {
         var updates = _detail
             .Where(x => x.IsChanged)
@@ -225,22 +272,53 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             if (result.IsSuccess)
             {
                 LoadDataDetail(_invoiceDetailState.Items);
-                IsEditing = false;
+                IsEditingDetail = false;
             }
         }
     }
 
-    private Task CancelSave()
+    private Task CancelSaveDetail()
     {
         _invoiceDetailState.Reset();
         LoadDataDetail(_invoiceDetailState.Items);
-        IsEditing = false;
+        IsEditingDetail = false;
         return Task.CompletedTask;
+    }
+
+    private async Task CancelSaveHeader()
+    {
+        _invoiceHeaderState.Reset();
+        await LoadDataHeader(_headerId);
+        IsEditingHeader = false;
+    }
+
+    private async Task ToggleEditDetail()
+    {
+        if (IsEditingDetail)
+        {
+            await CancelSaveDetail();
+        }
+        else
+        {
+            IsEditingDetail = true;
+        }
+    }
+
+    private async Task ToggleEditHeader()
+    {
+        if (IsEditingHeader)
+        {
+            await CancelSaveHeader();
+        }
+        else
+        {
+            IsEditingHeader = true;
+        }
     }
 
     public void Dispose()
     {
-
+        _token.OnRunning -= SetIsRunning;
     }
 }
 

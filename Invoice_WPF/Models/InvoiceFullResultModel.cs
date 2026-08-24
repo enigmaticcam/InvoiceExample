@@ -11,6 +11,7 @@ public class InvoiceFullResultModel : ICopy<InvoiceFullResultModel>
         InvoiceDetailId = source.InvoiceDetailId;
         CustItemCode = source.CustItemCode;
         CustItemDesc = source.CustItemDesc;
+        CustomerRate = source.CustomerRate;
         ApprovedRate = source.ApprovedRate;
         Cases = source.Cases;
         OurItemCode = source.OurItemCode;
