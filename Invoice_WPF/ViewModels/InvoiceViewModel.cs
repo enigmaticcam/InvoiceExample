@@ -41,8 +41,10 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         _statusTypeInvoker = statusTypeInvoker;
         _statusTypeState = statusTypeState;
         _token = token;
+        SaveHeaderCommand = new AsyncRelayCommand(SaveHeader);
         SaveDetailCommand = new AsyncRelayCommand(SaveDetail);
         CancelSaveCommand = new AsyncRelayCommand(CancelSaveDetail);
+        ToggleEditHeaderCommand = new AsyncRelayCommand(ToggleEditHeader);
         ToggleEditDetailCommand = new AsyncRelayCommand(ToggleEditDetail);
         _token.OnRunning += SetIsRunning;
     }
@@ -72,7 +74,9 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
     public bool CanSaveDetail => _detail.Any(x => x.IsChanged) && IsEditingDetail;
     public Action? ListViewChanged { get; set; }
     public IAsyncRelayCommand SaveDetailCommand { get; set; }
+    public IAsyncRelayCommand SaveHeaderCommand { get; set; }
     public IAsyncRelayCommand CancelSaveCommand { get; set; }
+    public IAsyncRelayCommand ToggleEditHeaderCommand { get; set; }
     public IAsyncRelayCommand ToggleEditDetailCommand { get; set; }
 
     private bool _isRunning;
@@ -97,9 +101,8 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
             _isEditingHeader = value;
             OnPropertyChanged(nameof(IsEditingHeader));
             OnPropertyChanged(nameof(IsNotEditingHeader));
-            OnPropertyChanged(nameof(CanSaveDetail));
-            OnPropertyChanged(nameof(CanEnableDetailEditing));
-            OnPropertyChanged(nameof(CanDisableDetailEditing));
+            OnPropertyChanged(nameof(CanEnableHeaderEditing));
+            OnPropertyChanged(nameof(CanDisableHeaderEditing));
         }
     }
 
@@ -277,6 +280,23 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
         }
     }
 
+    private async Task SaveHeader()
+    {
+        if (Header != null)
+        {
+            var result = await _invoiceHeaderInvoker.Update(_token, _headerId, new InvoiceHeaderUpdateDTO()
+            {
+                Description = Header.Description,
+                HeaderId = _headerId
+            });
+            if (result.IsSuccess)
+            {
+                await LoadDataHeader(_headerId);
+                IsEditingHeader = false;
+            }
+        }
+    }
+
     private Task CancelSaveDetail()
     {
         foreach (var item in _detail)
@@ -293,7 +313,7 @@ public partial class InvoiceViewModel : ViewModelBase, IDisposable
 
     private async Task CancelSaveHeader()
     {
-        _invoiceHeaderState.Reset();
+        _invoiceHeaderState.Reset(_headerId);
         await LoadDataHeader(_headerId);
         IsEditingHeader = false;
     }

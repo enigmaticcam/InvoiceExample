@@ -118,6 +118,13 @@ public class InvoiceHeaderCore : IInvoiceHeaderCore
         return await GetResults(headerId);
     }
 
+    public async Task<InvoiceHeaderEntity> Update(int headerId, InvoiceHeaderUpdateDTO update)
+    {
+        var result = await _invoiceHeaderCacheEntity.Update(headerId, update);
+        await _factory.Repository.SaveChanges();
+        return result.LoadObject!;
+    }
+
     public async Task<List<InvoiceFullResultDTO>> UpdateRefreshResults(int headerId)
     {
         await CanPerform(headerId, enumInvoiceActionType.RefreshResults);

@@ -12,6 +12,11 @@ public static class Mapper
         target.ApprovedRate = source.ApprovedRate;
     }
 
+    public static void Copy(InvoiceHeaderUpdateDTO source, InvoiceHeader target)
+    {
+        target.Description = source.Description;
+    }
+
     public static InvoiceDetail ToEf(InvoiceDetailCreateDTO source)
     {
         return new InvoiceDetail()

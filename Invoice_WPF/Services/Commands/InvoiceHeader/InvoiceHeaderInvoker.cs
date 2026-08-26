@@ -11,6 +11,7 @@ public interface IInvoiceHeaderInvoker
     Task<WPFResult<InvoicePermissionsDTO>> GetPermissions(InvokerToken token, int headerId);
     Task<WPFResult<RandomInvoiceDTO>> GetRandom(InvokerToken token);
     Task<WPFResult<InvoiceUpdateResultDTO>> Update(InvokerToken token, int headerId, int statusTypeId);
+    Task<WPFResult> Update(InvokerToken token, int headerId, InvoiceHeaderUpdateDTO update);
 }
 
 public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
@@ -53,6 +54,12 @@ public class InvoiceHeaderInvoker : IInvoiceHeaderInvoker
     public Task<WPFResult<InvoiceUpdateResultDTO>> Update(InvokerToken token, int headerId, int statusTypeId)
     {
         var command = new InvoiceHeaderChangeStatusCommand(_service, _state, headerId, statusTypeId);
+        return _invoker.Perform(token, command);
+    }
+
+    public Task<WPFResult> Update(InvokerToken token, int headerId, InvoiceHeaderUpdateDTO update)
+    {
+        var command = new InvoiceHeaderUpdateCommand(_service, _state, headerId, update);
         return _invoker.Perform(token, command);
     }
 }

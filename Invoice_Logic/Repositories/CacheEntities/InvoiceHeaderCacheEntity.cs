@@ -2,6 +2,7 @@
 using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Repositories.DbEntities.Interfaces;
 
 namespace Invoice_Logic.Repositories.CacheEntities;
@@ -13,6 +14,7 @@ public interface IInvoiceHeaderCacheEntity
     Task<InvoiceHeaderEntity> Get(int id);
     Task<List<InvoiceHeaderEntity>> Get(InvoiceFilterDTO filter);
     Task<LateLoader<InvoiceHeaderEntity>> Update(int id, int statusTypeId);
+    Task<LateLoader<InvoiceHeaderEntity>> Update(int id, InvoiceHeaderUpdateDTO update);
 }
 
 public class InvoiceHeaderCacheEntity : CacheEntity<int, InvoiceHeaderEntity>, IInvoiceHeaderCacheEntity
@@ -52,6 +54,13 @@ public class InvoiceHeaderCacheEntity : CacheEntity<int, InvoiceHeaderEntity>, I
     public async Task<LateLoader<InvoiceHeaderEntity>> Update(int id, int statusTypeId)
     {
         var result = await _invoiceHeaderDbEntity.Update(id, statusTypeId);
+        CacheQueueSet(() => result.LoadObject!);
+        return result;
+    }
+
+    public async Task<LateLoader<InvoiceHeaderEntity>> Update(int id, InvoiceHeaderUpdateDTO update)
+    {
+        var result = await _invoiceHeaderDbEntity.Update(id, update);
         CacheQueueSet(() => result.LoadObject!);
         return result;
     }

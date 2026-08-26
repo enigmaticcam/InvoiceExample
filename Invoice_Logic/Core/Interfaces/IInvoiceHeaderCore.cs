@@ -18,5 +18,6 @@ public interface IInvoiceHeaderCore
     Task QueueCreate(int headerId, IEnumerable<InvoiceDetailCreateDTO> creates);
     Task<InvoiceUpdateResultDTO> Update(int headerId, int statusTypeId);
     Task<List<InvoiceFullResultDTO>> Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates);
+    Task<InvoiceHeaderEntity> Update(int headerId, InvoiceHeaderUpdateDTO update);
     Task<List<InvoiceFullResultDTO>> UpdateRefreshResults(int headerId);
 }

@@ -2,6 +2,7 @@
 using Invoice_Logic.Data.DTOs;
 using Invoice_Logic.Data.DTOs.Create;
 using Invoice_Logic.Data.DTOs.Entity;
+using Invoice_Logic.Data.DTOs.Update;
 using Invoice_Logic.Data.EF;
 using Invoice_Logic.Repositories.DbEntities.Interfaces;
 using Invoice_Logic.Repositories.ItemCollections;
@@ -63,6 +64,13 @@ public class InvoiceHeaderDbEntity : IInvoiceHeaderDbEntity
     {
         var header = await GetFromDb(headerId);
         header.StatusTypeId = statusTypeId;
+        return _lateLoaderCollection.Add(() => Task.FromResult(Mapper.FromEf(header)));
+    }
+
+    public async Task<LateLoader<InvoiceHeaderEntity>> Update(int headerId, InvoiceHeaderUpdateDTO update)
+    {
+        var header = await GetFromDb(headerId);
+        Mapper.Copy(update, header);
         return _lateLoaderCollection.Add(() => Task.FromResult(Mapper.FromEf(header)));
     }
 

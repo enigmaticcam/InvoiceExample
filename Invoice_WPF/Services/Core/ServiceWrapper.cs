@@ -8,6 +8,7 @@ public interface IServiceWrapper
     Task<WPFResult<List<InvoiceFullResultDTO>>> InvoiceHeader_GetResults(int headerId);
     Task<WPFResult<List<InvoiceFullResultDTO>>> InvoiceHeader_RefreshResults(int headerId);
     Task<WPFResult<InvoiceUpdateResultDTO>> InvoiceHeader_Update(int headerId, int statusTypeId);
+    Task<WPFResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int headerId, InvoiceHeaderUpdateDTO update);
     Task<WPFResult<List<InvoiceFullResultDTO>>> InvoiceHeader_Update(int headerId, IEnumerable<InvoiceDetailUpdateDTO> updates);
     Task<WPFResult<InvoiceSearchDTO>> InvoiceSearch_Get();
     Task<WPFResult<InvoiceSearchDTO>> InvoiceSearch_Get(InvoiceFilterDTO filter);
@@ -160,7 +161,7 @@ public class ServiceWrapper : IServiceWrapper
 
     public async Task<WPFResult<InvoiceUpdateResultDTO>> InvoiceHeader_Update(int headerId, int statusTypeId)
     {
-        var result = await _client.ApiInvoiceheaderPutAsync(headerId, statusTypeId);
+        var result = await _client.ApiInvoiceheaderStatusAsync(headerId, statusTypeId);
         return new WPFResult<InvoiceUpdateResultDTO>()
         {
             IsSuccess = result.Success,
@@ -173,6 +174,17 @@ public class ServiceWrapper : IServiceWrapper
     {
         var result = await _client.ApiInvoiceheaderDetailAsync(headerId, updates);
         return new WPFResult<List<InvoiceFullResultDTO>>()
+        {
+            IsSuccess = result.Success,
+            Message = result.Message,
+            Obj = result.Obj
+        };
+    }
+
+    public async Task<WPFResult<InvoiceHeaderEntity>> InvoiceHeader_Update(int headerId, InvoiceHeaderUpdateDTO update)
+    {
+        var result = await _client.ApiInvoiceheaderHeaderAsync(headerId, update);
+        return new WPFResult<InvoiceHeaderEntity>()
         {
             IsSuccess = result.Success,
             Message = result.Message,
