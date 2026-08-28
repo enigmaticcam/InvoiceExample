@@ -6,11 +6,15 @@
         xmlns:local="clr-namespace:Invoice_WPF" xmlns:views="clr-namespace:Invoice_WPF.Views"
         xmlns:vms="clr-namespace:Invoice_WPF.ViewModels"
         xmlns:modal="clr-namespace:ModalControl;assembly=ModalControl"
+        xmlns:conv="clr-namespace:Invoice_WPF.Converters"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600" 
         Width="800"
         FontSize="14">
+    <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Grid Margin="20 10">
         <Grid.Resources>
             <DataTemplate DataType="{x:Type vms:InvoiceSearchViewModel}">
@@ -33,8 +37,13 @@
             <ColumnDefinition Width="125"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
         <StackPanel 
             Grid.Column="0"
+            Grid.Row="0"
             Orientation="Vertical">
             <Button 
                 Content="Invoice Search" 
@@ -50,6 +59,7 @@
         <ContentControl
             Margin="20 0"
             Grid.Column="1"
+            Grid.Row="0"
             Content="{Binding CurrentViewModel}"/>
         <modal:Modal
             Panel.ZIndex="1"
@@ -57,5 +67,29 @@
             IsOpen="{Binding IsModalOpen}">
             <ContentControl Content="{Binding CurrentModalViewModel}"/>
         </modal:Modal>
+        <StackPanel
+            Grid.Column="1"
+            Grid.Row="1"
+            Orientation="Vertical"
+            Visibility="{Binding LastResultSetHasError, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBlock
+                Text="The following errors occurred:"/>
+            <ListView
+                Grid.Column="1"
+                Grid.Row="1"
+                ItemsSource="{Binding LastResultSet}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Error">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Message}"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
     </Grid>
 </Window>

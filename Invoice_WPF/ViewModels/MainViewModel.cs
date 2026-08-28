@@ -1,6 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Services;
+using Invoice_WPF.Services.Core;
 using Invoice_WPF.Services.Invoking;
 
 namespace Invoice_WPF.ViewModels;
@@ -18,15 +18,37 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         _navigation.CurrentViewModelChanged += OnCurrentViewModelChanged;
         _modalNavigation.CurrentViewModelChanged += OnCurrentModalViewModelChanged;
         _token.OnRunning += SetIsOnRunning;
+        _token.OnComplete += SetOnComplete;
         OpenInvoiceSearchCommand = new AsyncRelayCommand(OpenInvoiceSearch);
         OpenInvoiceUploaderCommand = new AsyncRelayCommand(OpenInvoiceUploader);
     }
 
     public ViewModelBase? CurrentViewModel => _navigation.CurrentViewModel;
     public ViewModelBase? CurrentModalViewModel => _modalNavigation.CurrentViewModel;
-    [ObservableProperty]
-    public partial bool IsNotRunning { get; set; } = true;
+    private bool _isNotRunning = true;
+    public bool IsNotRunning
+    {
+        get => _isNotRunning;
+        set
+        {
+            _isNotRunning = value;
+            OnPropertyChanged(nameof(IsNotRunning));
+            OnPropertyChanged(nameof(LastResultSetHasError));
+        }
+    }
     public bool IsModalOpen => _modalNavigation.IsOpen;
+    private List<WPFResult>? _lastResultSet;
+    public List<WPFResult>? LastResultSet
+    {
+        get => _lastResultSet;
+        set
+        {
+            _lastResultSet = value;
+            OnPropertyChanged(nameof(LastResultSet));
+            OnPropertyChanged(nameof(LastResultSetHasError));
+        }
+    }
+    public bool LastResultSetHasError => (LastResultSet?.Count ?? 0) > 0 && IsNotRunning;
 
     public Task OnCurrentViewModelChanged()
     {
@@ -55,6 +77,14 @@ public partial class MainViewModel : ViewModelBase, IDisposable
     public Task SetIsOnRunning(bool isRunning)
     {
         IsNotRunning = !isRunning;
+        return Task.CompletedTask;
+    }
+
+    public Task SetOnComplete(List<WPFResult> results)
+    {
+        LastResultSet = results
+            .Where(x => !x.IsSuccess)
+            .ToList();
         return Task.CompletedTask;
     }
 
