@@ -67,29 +67,41 @@
             IsOpen="{Binding IsModalOpen}">
             <ContentControl Content="{Binding CurrentModalViewModel}"/>
         </modal:Modal>
-        <StackPanel
+        <Border
             Grid.Column="1"
             Grid.Row="1"
-            Orientation="Vertical"
-            Visibility="{Binding LastResultSetHasError, Converter={StaticResource BoolToVisibilityConverter}}">
-            <TextBlock
-                Text="The following errors occurred:"/>
-            <ListView
-                Grid.Column="1"
-                Grid.Row="1"
-                ItemsSource="{Binding LastResultSet}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Error">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Message}"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </StackPanel>
+            Padding="10">
+            <Grid Visibility="{Binding ShowError, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Text="The following errors occurred:"/>
+                <ListView
+                    Grid.Row="1"
+                    ItemsSource="{Binding LastResultSet}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Error">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Message}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Button
+                    Grid.Row="2"
+                    Content="Hide"
+                    Command="{Binding CloseErrorsCommand}"
+                    HorizontalAlignment="Left"/>
+            </Grid>
+        </Border>
+        
     </Grid>
 </Window>

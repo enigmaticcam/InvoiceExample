@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Invoice_WPF.Services;
 using Invoice_WPF.Services.Core;
 using Invoice_WPF.Services.Invoking;
@@ -21,6 +22,7 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         _token.OnComplete += SetOnComplete;
         OpenInvoiceSearchCommand = new AsyncRelayCommand(OpenInvoiceSearch);
         OpenInvoiceUploaderCommand = new AsyncRelayCommand(OpenInvoiceUploader);
+        CloseErrorsCommand = new AsyncRelayCommand(CloseErrors);
     }
 
     public ViewModelBase? CurrentViewModel => _navigation.CurrentViewModel;
@@ -33,22 +35,14 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         {
             _isNotRunning = value;
             OnPropertyChanged(nameof(IsNotRunning));
-            OnPropertyChanged(nameof(LastResultSetHasError));
         }
     }
     public bool IsModalOpen => _modalNavigation.IsOpen;
-    private List<WPFResult>? _lastResultSet;
-    public List<WPFResult>? LastResultSet
-    {
-        get => _lastResultSet;
-        set
-        {
-            _lastResultSet = value;
-            OnPropertyChanged(nameof(LastResultSet));
-            OnPropertyChanged(nameof(LastResultSetHasError));
-        }
-    }
-    public bool LastResultSetHasError => (LastResultSet?.Count ?? 0) > 0 && IsNotRunning;
+    [ObservableProperty]
+    public partial List<WPFResult>? LastResultSet { get; set; }
+
+    [ObservableProperty]
+    public partial bool ShowError { get; set; }
 
     public Task OnCurrentViewModelChanged()
     {
@@ -65,6 +59,7 @@ public partial class MainViewModel : ViewModelBase, IDisposable
 
     public IAsyncRelayCommand OpenInvoiceSearchCommand { get; }
     public IAsyncRelayCommand OpenInvoiceUploaderCommand { get; }
+    public IAsyncRelayCommand CloseErrorsCommand { get; }
     public async Task OpenInvoiceSearch()
     {
         await _navigation.NavigateToInvoiceSearchView();
@@ -72,6 +67,10 @@ public partial class MainViewModel : ViewModelBase, IDisposable
     public async Task OpenInvoiceUploader()
     {
         await _navigation.NavigateToInvoiceUploaderView();
+    }
+    public async Task CloseErrors()
+    {
+        ShowError = false;
     }
 
     public Task SetIsOnRunning(bool isRunning)
@@ -85,6 +84,7 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         LastResultSet = results
             .Where(x => !x.IsSuccess)
             .ToList();
+        ShowError = LastResultSet.Count > 0;
         return Task.CompletedTask;
     }
 

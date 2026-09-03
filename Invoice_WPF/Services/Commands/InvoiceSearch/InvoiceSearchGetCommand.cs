@@ -36,6 +36,7 @@ public class InvoiceSearchGetCommand : IServerCommand<WPFResult>
 
     private async Task<WPFResult> Perform()
     {
+        throw new Exception("error!");
         var result = await _service.InvoiceSearch_Get();
         if (result.IsSuccess && result.Obj != null)
         {
