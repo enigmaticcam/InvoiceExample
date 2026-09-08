@@ -31,5 +31,11 @@ Our pricing is maintained by a third-party pricing vendor, which would send us d
 ### Invoices
 Invoices would be loaded manually into the application by the finance team when they are received.
 
-# SQL Server
+# Solution Project: Invoice_SQL (SQL Project)
 This is a standard relational database. This mock version only contains the essentials; the real application necessitated many tables to support various and nuanced validation logic. Since this does not contain real data, there are several functions and stored procedures to assist with randomly generating fake data.
+
+# Solution Project: Invoice_Logic (C# Class Library Project)
+This contains all primary business logic and is the core of the application. The best way to understand this layer is to follow the data from the database all the way up to the API
+
+## Data Persistence - SQL
+As stated earlier, this is a standard relational database. 
