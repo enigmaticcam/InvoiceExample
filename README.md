@@ -38,4 +38,4 @@ This is a standard relational database. This mock version only contains the esse
 This contains all primary business logic and is the core of the application. The best way to understand this layer is to follow the data from the database all the way up to the API
 
 ## Data Persistence - SQL
-As stated earlier, this is a standard relational database. 
+As stated earlier, this is a standard relational database. Depletions are stored in dbo.CaseSummary, Pricing in dbo.PriceDeal, and Invoices split between dbo.InvoiceHeader and dbo.InvoiceDetail. The main interest is the ProcessInvoices stored procedure which has all the business rules on validating an invoice line by line. These rules are in a stored procedure instead of .NET because the datasets are large, and it was more efficient to bring the logic directly to the data instead of loading data in the API.
