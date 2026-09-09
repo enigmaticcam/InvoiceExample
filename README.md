@@ -60,3 +60,9 @@ Core contains primary business logic. Each core class can only use the Cache Ent
 
 ## API
 This is not the Web API, but rather an API into the class library. All core business logic is reduced to a single API interface (IAPICaller) where cross-application logic is relegated via pipeline classes. Essentially, anything that needs to happen every API call will have its own class in the pipeline, such as exception logging, api logging, security authorization checks, etc. All API calls are wrapped in a Result object. This Result object is designed only to capture business logic errors (handled or unhandled); web api will still return standard HTTP errors otherwise.
+
+# Solution Project: Invoice_API (SQL Project)
+This is the Minimal Web API project. There should be no business logic here except only to satisfy necessary web API tasks. Otherwise, everything is delegated via IAPICaller.
+
+# Solution Project: Invoice_BlazorWASM
+Blazor Web Assembly project assisted by MudBlazor. 
