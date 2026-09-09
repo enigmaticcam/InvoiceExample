@@ -51,4 +51,12 @@ DbEntity classes are separated by data domain, and they do not have any dependen
 Because DbEntity caches changes, Update and Create methods return a Late Loader object that initially is empty. This object will be populated with results after SaveChanges. This is useful for retrieving Db generated values like auto-increment ids.
 
 ## Cache Entity (Repositories\CacheEntities)
-This layer is responsible for keeping the cache update to date as data is queried and changed. Similar to DbEntity, it uses a UoW approach and caches changes and only commits then when SaveChanges is called in the IRepository. All Cache Entity classes inherit from CacheEntity to standardize how data is stored in the cache.
+This layer is responsible for keeping the cache up to date as data is queried and changed. Similar to DbEntity, it uses a UoW approach and caches changes that are only committed when SaveChanges is called in the IRepository. All Cache Entity classes inherit from CacheEntity to standardize how data is stored in the cache. Also similar to DbEntity, data domains without Cache Entity do not depend on each other.
+
+Each domain object is stored by id in a set so that an entire domain set can be cleared without needing to know what it contains. A list of objects can be retrieved by a list of id's and only what is not in the cache will be requested from the database (supporting db entity object). A list of id's can also be stored together so that the db need not be queried at all when displaying a list of objects.
+
+## Core
+Core contains primary business logic. Each core class can only use the Cache Entities within its domain, but any Core class can use other Core classes.
+
+## API
+This is not the Web API, but rather an API into the class library. All core business logic is reduced to a single API interface (IAPICaller) where cross-application logic is relegated via pipeline classes. Essentially, anything that needs to happen every API call will have its own class in the pipeline, such as exception logging, api logging, security authorization checks, etc. All API calls are wrapped in a Result object. This Result object is designed only to capture business logic errors (handled or unhandled); web api will still return standard HTTP errors otherwise.
