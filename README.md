@@ -39,3 +39,16 @@ This contains all primary business logic and is the core of the application. The
 
 ## Data Persistence - SQL
 As stated earlier, this is a standard relational database. Depletions are stored in dbo.CaseSummary, Pricing in dbo.PriceDeal, and Invoices split between dbo.InvoiceHeader and dbo.InvoiceDetail. The main interest is the ProcessInvoices stored procedure which has all the business rules on validating an invoice line by line. These rules are in a stored procedure instead of .NET because the datasets are large, and it was more efficient to bring the logic directly to the data instead of loading data in the API.
+
+## Entity Framework/Dapper
+EF Core is the primary ORM that I use. Dapper is used occasionally for easy DTO mapping. I use a database-first approach and therefore do not use EF migrations. This gives me more control over the data at the cost of some manual work when it comes to schema changes.
+
+## Db Entity (Repositories\DbEntities)
+This layer is responsible for CRUD operations against the database. Generally speaking, I don't keep interfaces in separate folders; but I do here in case the ORM changes from EF Core to something else like Dapper. Regardless of which ORM is used, ORM coupling is kept entirely within the Db Entity classes; only DTO's are exposed to any layers above.
+
+DbEntity classes are separated by data domain, and they do not have any dependencies between each other. Also, all DbEntity classes work under a UoW approach to caching changes and committing only when SaveChanges is called in the IRepository implementation. IRepository is not meant to be a true repository, as EF Core already fulfills that role, and is instead meant to coordinate several sets of classes when data is saved to the db.
+
+Because DbEntity caches changes, Update and Create methods return a Late Loader object that initially is empty. This object will be populated with results after SaveChanges. This is useful for retrieving Db generated values like auto-increment ids.
+
+## Cache Entity (Repositories\CacheEntities)
+This layer is responsible for keeping the cache update to date as data is queried and changed. Similar to DbEntity, it uses a UoW approach and cache changes and comitting only when SaveChanges is called in the IRepository. All Cache Entity classes inherit from CacheEntity
