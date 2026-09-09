@@ -51,4 +51,4 @@ DbEntity classes are separated by data domain, and they do not have any dependen
 Because DbEntity caches changes, Update and Create methods return a Late Loader object that initially is empty. This object will be populated with results after SaveChanges. This is useful for retrieving Db generated values like auto-increment ids.
 
 ## Cache Entity (Repositories\CacheEntities)
-This layer is responsible for keeping the cache update to date as data is queried and changed. Similar to DbEntity, it uses a UoW approach and cache changes and comitting only when SaveChanges is called in the IRepository. All Cache Entity classes inherit from CacheEntity
+This layer is responsible for keeping the cache update to date as data is queried and changed. Similar to DbEntity, it uses a UoW approach and caches changes and only commits then when SaveChanges is called in the IRepository. All Cache Entity classes inherit from CacheEntity to standardize how data is stored in the cache.
