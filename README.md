@@ -86,3 +86,9 @@ Several classes work together to update the UI during API calls using a Command 
 - ServerStatus: Broadcast when the concurrent API count increases from 0 to 1, or when it decreases from 1 to 0.
 - ServerInvoker: Implement the command pattern by invoking ServerStatus before executing a command, then executing the command, then invoking the ServerStatus again afterward
 - BroadcastToken: lightweight event token used by any component that needs to subscribe to API-call events
+
+# Solution Project: Invoice_WPF & Invoice_Avalonia
+These projects are an attempt to teach myself WPF, MMV, Avalonia, and ReactiveUI.
+
+# Conclusion
+While this might seem like over-engineering, the actual version of this application was much more complex and had many other business layers. I used these concepts across all my applications, and it was always easy to incorporate them into new designs that had significantly different objectives.
