@@ -56,13 +56,33 @@ This layer is responsible for keeping the cache up to date as data is queried an
 Each domain object is stored by id in a set so that an entire domain set can be cleared without needing to know what it contains. A list of objects can be retrieved by a list of id's and only what is not in the cache will be requested from the database (supporting db entity object). A list of id's can also be stored together so that the db need not be queried at all when displaying a list of objects.
 
 ## Core
-Core contains primary business logic. Each core class can only use the Cache Entities within its domain, but any Core class can use other Core classes.
+Core contains primary business logic. Each core class can only use the Cache Entities within its domain, but any Core class can use other Core classes. Core functions that are complex and more than a few lines long will be moved to an action class to keep the Core class simple.
 
 ## API
-This is not the Web API, but rather an API into the class library. All core business logic is reduced to a single API interface (IAPICaller) where cross-application logic is relegated via pipeline classes. Essentially, anything that needs to happen every API call will have its own class in the pipeline, such as exception logging, api logging, security authorization checks, etc. All API calls are wrapped in a Result object. This Result object is designed only to capture business logic errors (handled or unhandled); web api will still return standard HTTP errors otherwise.
+This is not the Web API, but rather an API into the class library. All core business logic is reduced to a single API interface (IAPICaller) where cross-application logic is relegated via pipeline classes. Essentially, anything that needs to happen for every API call will have its own class in the pipeline, such as exception logging, api logging, security authorization checks, etc. All API calls are wrapped in a Result object. This Result object is designed only to capture business logic errors (handled or unhandled); web api will still return standard HTTP errors otherwise.
 
 # Solution Project: Invoice_API (SQL Project)
 This is the Minimal Web API project. There should be no business logic here except only to satisfy necessary web API tasks. Otherwise, everything is delegated via IAPICaller.
 
 # Solution Project: Invoice_BlazorWASM
-Blazor Web Assembly project assisted by MudBlazor. 
+Blazor Web Assembly project assisted by MudBlazor.
+
+## ServiceClient / ServiceWrapper (Services\Core)
+I use NSwagStudio to generate the ServiceClient class that is used for calling all the API functions. API specification does not support generics, such as Result<T>, so the ServiceWrapper class will convert all the ServiceClient classes into the Result<T> equivalent (although in this projected it's BlazorResult<T>).
+
+## Entities (Services\Entities)
+EntityState persists data by domain and has functions that allow for adding/updating/removing data after it has changed via an API call.
+
+## ServerCommand (Services\ServerCommand)
+Several classes work together to update the UI during API calls using a Command pattern.
+
+### Requirements:
+- When an API call is made, multiple controls might need to be disabled on any given page
+- Multiple API calls might be made concurrently, where order of completion is not guaranteed and any of which might return a fail result
+- All error results need to be captured and displayed to the user
+
+### Classes:
+- IServerCommand: Interface implemented by a command
+- ServerStatus: Broadcast when the concurrent API count increases from 0 to 1, or when it decreases from 1 to 0.
+- ServerInvoker: Implement the command pattern by invoking ServerStatus before executing a command, then executing the command, then invoking the ServerStatus again afterward
+- BroadcastToken: lightweight event token used by any component that needs to subscribe to API-call events
