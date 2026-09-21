@@ -15,8 +15,18 @@
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <TextBox Text="{Binding Greeting}"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center" />
+    <Grid ColumnDefinitions="Auto, Auto">
+        <ScrollViewer Grid.Column="0" 
+                      Padding="10">
+            <StackPanel Orientation="Vertical" Spacing="6">
+                <Button Command="{Binding OpenInvoiceSearchCommand}"
+                        Content="Invoice Search"/>
+                <Button Content="Invoice Upload" />
+            </StackPanel>
+        </ScrollViewer>
+        <ContentControl Grid.Column="1" 
+                        Content="{Binding CurrentViewModel}" />
+    </Grid>
+    
 
 </Window>

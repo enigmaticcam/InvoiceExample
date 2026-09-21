@@ -1,8 +1,8 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Invoice_Avalonia.ViewModels;
+using Invoice_Avalonia.Views;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Invoice_Avalonia;
 
@@ -16,22 +16,13 @@ public class ViewLocator : IDataTemplate
 {
     public Control? Build(object? param)
     {
-        if (param is null)
-            return null;
-        
-        var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var type = Type.GetType(name);
-
-        if (type != null)
+        return param switch
         {
-            return (Control)Activator.CreateInstance(type)!;
-        }
-        
-        return new TextBlock { Text = "Not Found: " + name };
+            MainViewModel => new MainWindow(),
+            InvoiceSearchViewModel => new InvoiceSearchView(),
+            _ => new TextBlock { Text = $"No view for {param?.GetType().Name}" }
+        };
     }
 
-    public bool Match(object? data)
-    {
-        return data is ViewModelBase;
-    }
+    public bool Match(object? data) => data is ViewModelBase;
 }
