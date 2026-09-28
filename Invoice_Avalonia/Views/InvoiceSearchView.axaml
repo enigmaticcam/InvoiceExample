@@ -2,9 +2,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:Invoice_Avalonia.Views"
+             xmlns:vm="using:Invoice_Avalonia.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Invoice_Avalonia.Views.InvoiceSearchView">
-    <Grid>
-        <TextBlock Text="Invoice Search"/>
-    </Grid>
+             x:Class="Invoice_Avalonia.Views.InvoiceSearchView"
+             x:DataType="vm:InvoiceSearchViewModel">
+    <Border Padding="16">
+        <Grid RowDefinitions="Auto,Auto">
+            <Button Grid.Row="0"
+                    Content="Search"
+                    Command="{Binding SearchInvoicesCommand}" />
+            <local:InvoiceSelectorControl Grid.Row="1"
+                                          Invoices="{Binding Invoices}"/>
+        </Grid>
+        
+    </Border>
 </UserControl>

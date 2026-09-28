@@ -23,4 +23,10 @@
     </PackageReference>
     <PackageReference Include="ReactiveUI.Avalonia" Version="12.0.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\InvoiceSelectorControl.axaml.cs">
+      <DependentUpon>InvoiceSelectorControl.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

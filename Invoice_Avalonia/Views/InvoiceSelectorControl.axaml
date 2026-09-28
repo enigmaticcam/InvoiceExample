@@ -1,0 +1,27 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:Invoice_Avalonia.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Invoice_Avalonia.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Invoice_Avalonia.Views.InvoiceSelectorControl"
+             x:DataType="local:InvoiceSelectorControl"
+             x:Name="root">
+    <Border Padding="16">
+        <Grid RowDefinitions="*,Auto,Auto">
+            <TableView Grid.Row="0"
+                       ItemsSource="{Binding #root.Invoices}">
+                <TableView.Columns>
+                    <TableViewColumn Header="Id" Binding="{Binding InvoiceHeaderId}" />
+                    <TableViewColumn Header="Customer" Binding="{Binding Customer}" />
+                    <TableViewColumn Header="Status" Binding="{Binding StatusTypeId}" />
+                    <TableViewColumn Header="Date" Binding="{Binding InvoiceDate}" />
+                    <TableViewColumn Header="Description" Binding="{Binding Description}" />
+                </TableView.Columns>
+            </TableView>
+            <Button Content="Open" Grid.Row="1" />
+            <TextBlock Grid.Row="2" Text="{Binding #root.Invoices.Count}"/>
+        </Grid>
+    </Border>
+</UserControl>

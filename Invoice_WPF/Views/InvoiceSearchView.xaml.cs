@@ -10,4 +10,6 @@ public partial class InvoiceSearchView : UserControl
     {
         InitializeComponent();
     }
+
+
 }

@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:Invoice_Avalonia.ViewModels"
+             x:DataType="vm:InvoiceUploaderViewModel"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Invoice_Avalonia.Views.InvoiceUploaderView"
+             >
+    <Grid ColumnDefinitions="Auto, *">
+        <Border Padding="16" Grid.Column="0">
+            <StackPanel Orientation="Vertical"
+                        Spacing="10">
+                <Button Content="Download Template"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"/>
+                <Button Content="Upload File"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"/>
+                <Button Content="Random"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"/>
+                <Button Content="Open (tied to the Invoice selector)"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"/>
+            </StackPanel>
+        </Border>
+        <Border Padding="16" Grid.Column="1">
+            
+        </Border>
+    </Grid>
+</UserControl>
