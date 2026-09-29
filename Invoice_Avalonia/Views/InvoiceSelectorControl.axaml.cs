@@ -11,10 +11,6 @@ public partial class InvoiceSelectorControl : UserControl
     public InvoiceSelectorControl()
     {
         InitializeComponent();
-        //Invoices = new List<InvoiceHeaderEntity>()
-        //{
-        //    new InvoiceHeaderEntity() { InvoiceHeaderId = 15 }
-        //};
     }
 
     private List<InvoiceHeaderEntity> _invoices = new List<InvoiceHeaderEntity>() { new InvoiceHeaderEntity() { InvoiceHeaderId = 15 } };
@@ -23,12 +19,6 @@ public partial class InvoiceSelectorControl : UserControl
         get => _invoices;
         set => SetAndRaise(InvoicesProperty, ref _invoices, value);
     }
-
-    //public List<InvoiceHeaderEntity> Invoices
-    //{
-    //    get => GetValue(InvoicesProperty);
-    //    set => SetValue(InvoicesProperty, value);
-    //}
 
     private InvoiceHeaderEntity? _selectedInvoice;
     public InvoiceHeaderEntity? SelectedInvoice
@@ -48,8 +38,6 @@ public partial class InvoiceSelectorControl : UserControl
             nameof(Invoices),
             o => o.Invoices,
             (o, v) => o.Invoices = v);
-    //public static readonly StyledProperty<List<InvoiceHeaderEntity>> InvoicesProperty =
-    //    AvaloniaProperty.Register<InvoiceSelectorControl, List<InvoiceHeaderEntity>>(nameof(Invoices));
 
     public static readonly DirectProperty<InvoiceSelectorControl, InvoiceHeaderEntity?> SelectedInvoiceProperty =
         AvaloniaProperty.RegisterDirect<InvoiceSelectorControl, InvoiceHeaderEntity?>(

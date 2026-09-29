@@ -9,7 +9,7 @@
              x:DataType="local:InvoiceSelectorControl"
              x:Name="root">
     <Border Padding="16">
-        <Grid RowDefinitions="*,Auto,Auto">
+        <Grid RowDefinitions="*,Auto">
             <TableView Grid.Row="0"
                        ItemsSource="{Binding #root.Invoices}">
                 <TableView.Columns>
@@ -21,7 +21,6 @@
                 </TableView.Columns>
             </TableView>
             <Button Content="Open" Grid.Row="1" />
-            <TextBlock Grid.Row="2" Text="{Binding #root.Invoices.Count}"/>
         </Grid>
     </Border>
 </UserControl>

@@ -8,11 +8,26 @@
              x:Class="Invoice_Avalonia.Views.InvoiceSearchView"
              x:DataType="vm:InvoiceSearchViewModel">
     <Border Padding="16">
-        <Grid RowDefinitions="Auto,Auto">
-            <Button Grid.Row="0"
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+            <TextBlock Grid.Row="0" Text="Invoice Search" />
+            <TextBlock Grid.Row="1" Text="Invoice Id"/>
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding ByHeaderId}" />
+                <TextBox Name="InvoiceIdText" 
+                         Text="{Binding HeaderId}"/>
+            </StackPanel>
+            <TextBlock Grid.Row="3" Text="Customer"/>
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding ByCustomer}" />
+                <TextBox Name="CustomerText"
+                         Text="{Binding Customer}" />
+            </StackPanel>
+            <Button Grid.Row="5"
                     Content="Search"
                     Command="{Binding SearchInvoicesCommand}" />
-            <local:InvoiceSelectorControl Grid.Row="1"
+            <local:InvoiceSelectorControl Grid.Row="6"
                                           Invoices="{Binding Invoices}"/>
         </Grid>
         
